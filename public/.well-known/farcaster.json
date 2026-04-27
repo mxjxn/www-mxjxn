@@ -1,0 +1,23 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjQ5MDUsInR5cGUiOiJhdXRoIiwia2V5IjoiMHg5Rjg2NzlDOEY2NjJmZEYwOTY1NEZFNzNCRDM3MDJlRGVlRDFCOWYzIn0",
+    "payload": "eyJkb21haW4iOiJ3d3cubXhqeG4uY29tIn0",
+    "signature": "UN9zwndXyxc4n0uEbsyS3RqZ2G8BO2alH5NjqqIpI71IbgLud1Q3DD18gV1fplOBxU21gSj7bqAdM19V+JhlVxs="
+  },
+  "miniapp": {
+    "version": "1",
+    "name": "Max Jackson",
+    "homeUrl": "https://www.mxjxn.com",
+    "iconUrl": "https://www.mxjxn.com/icon.png",
+    "splashImageUrl": "https://www.mxjxn.com/splash.png",
+    "splashBackgroundColor": "#0a0a0a",
+    "subtitle": "Artist and builder",
+    "description": "Personal site — art, projects, cryptoart, and the glitch pipeline.",
+    "primaryCategory": "art-creativity",
+    "tags": ["art", "cryptoart", "glitch", "generative", "builder"],
+    "tagline": "Artist, builder, orchestrator",
+    "ogTitle": "Max Jackson",
+    "ogDescription": "Artist, builder, agent orchestrator. Making things with code, ink, and crypto.",
+    "ogImageUrl": "https://www.mxjxn.com/og.png"
+  }
+}

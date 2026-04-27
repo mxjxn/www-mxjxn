@@ -1,0 +1,117 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  ogType?: string;
+}
+
+const {
+  title = "Max Jackson",
+  description = "Artist, builder, agent orchestrator. Making things with code, ink, and crypto.",
+  image = "https://www.mxjxn.com/og.png",
+  ogType = "website",
+} = Astro.props;
+
+const pageUrl = new URL(Astro.url.pathname, new URL(Astro.site)).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={pageUrl} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={image} />
+
+    <meta name="fc:miniapp" content={JSON.stringify({
+      version: "1",
+      imageUrl: image,
+      aspectRatio: "3:2",
+      button: {
+        title: title === "Max Jackson" ? "Open" : title,
+        action: {
+          type: "launch_miniapp",
+          url: pageUrl,
+          name: "Max Jackson",
+          splashImageUrl: "https://www.mxjxn.com/splash.png",
+          splashBackgroundColor: "#0a0a0a"
+        }
+      }
+    })} />
+  </head>
+  <body>
+    <slot />
+    <script is:inline>
+      import('https://esm.sh/@farcaster/miniapp-sdk').then(function(m) { m.sdk.actions.ready(); }).catch(function(e) { console.error('miniapp sdk:', e); });
+    </script>
+  </body>
+</html>
+
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg-secondary: #0f0f0f;
+    --bg-card: #141414;
+    --text: #e5e5e5;
+    --text-muted: #888888;
+    --accent: #8B5CF6;
+    --accent-light: #A78BFA;
+    --border: #2a2a2a;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    background: linear-gradient(180deg, #e5e5e5 0%, #d4d4d4 20%, #a0a0a0 40%, #7a7a7a 50%, #a0a0a0 60%, #d4d4d4 80%, #e5e5e5 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-fill-color: transparent;
+  }
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  a:hover {
+    color: var(--accent-light);
+  }
+
+  code, pre {
+    font-family: 'Space Mono', monospace;
+  }
+</style>

@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Synth UI Kit</title>
+<style>
+  :root {
+    --bg: #08080e;
+    --panel: #0f0f18;
+    --module: #141420;
+    --border: #222236;
+    --track: #1c1c2c;
+    --text-dim: #555570;
+    --text: #9999b0;
+    --text-bright: #cccce0;
+    --cyan: #00d4ff;
+    --magenta: #ff3399;
+    --orange: #ff8833;
+    --green: #00ff88;
+    --red: #ff3344;
+    --yellow: #ffcc00;
+    --purple: #aa55ff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, 'Segoe UI', Helvetica, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 24px 16px;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .synth-rack {
+    width: 100%;
+    max-width: 960px;
+  }
+
+  .rack-header {
+    text-align: center;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .rack-header h1 {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--text-dim);
+  }
+
+  .rack-header .subtitle {
+    font-size: 11px;
+    color: var(--text-dim);
+    opacity: 0.6;
+    margin-top: 4px;
+    letter-spacing: 1px;
+  }
+
+  .modules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .module {
+    background: var(--module);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 16px 14px;
+  }
+
+  .module-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    color: var(--text-dim);
+    text-align: center;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .module-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 28px;
+    margin-bottom: 16px;
+  }
+
+  .module-row:last-child { margin-bottom: 0; }
+
+  .module-row.gauges {
+    justify-content: center;
+    padding: 4px 0;
+  }
+
+  .module-row.faders {
+    justify-content: center;
+    gap: 18px;
+  }
+
+  .module-row.buttons {
+    justify-content: center;
+    gap: 14px;
+  }
+
+  /* ── Knob ── */
+  .knob-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .knob-wrap svg {
+    width: 72px;
+    height: 72px;
+    cursor: ns-resize;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+  }
+
+  .knob-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+  }
+
+  /* ── Fader ── */
+  .fader-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .fader-track {
+    width: 6px;
+    height: 110px;
+    background: var(--track);
+    border-radius: 3px;
+    position: relative;
+    cursor: ns-resize;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
+  }
+
+  .fader-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    border-radius: 3px;
+    transition: height 0.05s ease;
+  }
+
+  .fader-thumb {
+    position: absolute;
+    width: 22px;
+    height: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, #3a3a50, #28283a);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 2px;
+    cursor: grab;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+    transition: box-shadow 0.15s;
+  }
+
+  .fader-thumb:hover {
+    box-shadow: 0 1px 8px rgba(0,0,0,0.6);
+  }
+
+  .fader-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+  }
+
+  /* ── Display ── */
+  .display-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .led-display {
+    background: #0a0a12;
+    border: 1px solid #1a1a28;
+    border-radius: 4px;
+    padding: 6px 14px;
+    min-width: 110px;
+    text-align: center;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);
+  }
+
+  .led-value {
+    font-family: 'Courier New', 'Menlo', monospace;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+
+  .led-unit {
+    font-family: 'Courier New', monospace;
+    font-size: 9px;
+    opacity: 0.6;
+    margin-left: 4px;
+  }
+
+  /* ── Gauge ── */
+  .gauge-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .gauge-wrap svg {
+    width: 100px;
+    height: 100px;
+  }
+
+  /* ── Button ── */
+  .btn-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .synth-btn {
+    background: linear-gradient(180deg, #2a2a3e, #1e1e2e);
+    border: 1px solid #333348;
+    border-radius: 6px;
+    padding: 10px 16px 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-width: 64px;
+    transition: all 0.1s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .synth-btn:active {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.3), inset 0 2px 6px rgba(0,0,0,0.4);
+    transform: translateY(1px);
+  }
+
+  .btn-led {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #1a1a28;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);
+    transition: all 0.2s;
+  }
+
+  .synth-btn.active .btn-led {
+    box-shadow: 0 0 6px currentColor, 0 0 12px currentColor, inset 0 1px 1px rgba(255,255,255,0.3);
+  }
+
+  .btn-label {
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+  }
+
+  .btn-value {
+    font-family: 'Courier New', monospace;
+    font-size: 9px;
+    color: var(--text);
+    min-height: 12px;
+  }
+
+  @media (max-width: 600px) {
+    .modules-grid {
+      grid-template-columns: 1fr;
+    }
+    body { padding: 12px 8px; }
+    .module-row { gap: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="synth-rack">
+  <header class="rack-header">
+    <h1>SYNTH UI KIT</h1>
+    <div class="subtitle">drag knobs · scroll wheels · click buttons</div>
+  </header>
+  <div class="modules-grid" id="rack"></div>
+</div>
+
+<script>
+// ─── Utilities ───
+const NS = 'http://www.w3.org/2000/svg';
+
+function arcPath(cx, cy, r, startDeg, sweepDeg) {
+  const toRad = d => (d - 90) * Math.PI / 180;
+  const s = toRad(startDeg), e = toRad(startDeg + sweepDeg);
+  const x1 = cx + r * Math.cos(s), y1 = cy + r * Math.sin(s);
+  const x2 = cx + r * Math.cos(e), y2 = cy + r * Math.sin(e);
+  return `M ${x1} ${y1} A ${r} ${r} 0 ${sweepDeg > 180 ? 1 : 0} 1 ${x2} ${y2}`;
+}
+
+function polarXY(cx, cy, r, deg) {
+  const rad = (deg - 90) * Math.PI / 180;
+  return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+}
+
+function svgEl(tag, attrs = {}) {
+  const el = document.createElementNS(NS, tag);
+  for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+  return el;
+}
+
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+function fmt(v, decimals = 2) {
+  if (decimals === 0) return Math.round(v).toString();
+  return v.toFixed(decimals);
+}
+
+const KNOB_START = 225, KNOB_SWEEP = 270;
+
+// ─── SynthKnob ───
+class SynthKnob {
+  constructor(parent, opts = {}) {
+    this.min = opts.min ?? 0;
+    this.max = opts.max ?? 1;
+    this.value = opts.value ?? this.min;
+    this.defaultVal = opts.default ?? this.value;
+    this.step = opts.step ?? 0;
+    this.color = opts.color ?? 'var(--cyan)';
+    this.label = opts.label ?? '';
+    this.decimals = opts.decimals ?? 2;
+    this.unit = opts.unit ?? '';
+    this.onChange = opts.onChange ?? (() => {});
+    this._size = 100;
+    this._dragging = false;
+    this._startY = 0;
+    this._startVal = 0;
+
+    this._build(parent);
+    this._render();
+  }
+
+  _build(parent) {
+    this.wrap = document.createElement('div');
+    this.wrap.className = 'knob-wrap';
+
+    const svg = svgEl('svg', { viewBox: '0 0 100 100', class: 'knob-svg' });
+
+    // Defs
+    const defs = svgEl('defs');
+    const grad = svgEl('radialGradient', { id: `kg-${Math.random().toString(36).slice(2,8)}`, cx: '40%', cy: '35%' });
+    grad.appendChild(svgEl('stop', { offset: '0%', 'stop-color': '#3a3a50' }));
+    grad.appendChild(svgEl('stop', { offset: '100%', 'stop-color': '#1e1e2e' }));
+    defs.appendChild(grad);
+    this._gradId = grad.id;
+    svg.appendChild(defs);
+
+    // Track arc
+    this._track = svgEl('path', {
+      d: arcPath(50, 50, 38, KNOB_START, KNOB_SWEEP),
+      fill: 'none', stroke: 'var(--track)', 'stroke-width': '5', 'stroke-linecap': 'round'
+    });
+    svg.appendChild(this._track);
+
+    // Value arc
+    this._arc = svgEl('path', {
+      fill: 'none', stroke: this.color, 'stroke-width': '5', 'stroke-linecap': 'round',
+      style: `filter: drop-shadow(0 0 3px ${this.color})`
+    });
+    svg.appendChild(this._arc);
+
+    // Ticks
+    for (let i = 0; i <= 10; i++) {
+      const a = KNOB_START + (i / 10) * KNOB_SWEEP;
+      const inner = polarXY(50, 50, 33, a);
+      const outer = polarXY(50, 50, 37, a);
+      svg.appendChild(svgEl('line', {
+        x1: inner.x, y1: inner.y, x2: outer.x, y2: outer.y,
+        stroke: 'var(--text-dim)', 'stroke-width': i % 5 === 0 ? '1.5' : '0.7',
+        opacity: '0.5'
+      }));
+    }
+
+    // Knob body
+    svg.appendChild(svgEl('circle', {
+      cx: 50, cy: 50, r: 25, fill: `url(#${this._gradId})`,
+      stroke: 'rgba(255,255,255,0.06)', 'stroke-width': '1'
+    }));
+
+    // Pointer
+    this._ptr = svgEl('line', {
+      x1: 50, y1: 50, stroke: this.color, 'stroke-width': '2', 'stroke-linecap': 'round'
+    });
+    svg.appendChild(this._ptr);
+
+    // Center dot
+    svg.appendChild(svgEl('circle', { cx: 50, cy: 50, r: 2.5, fill: '#0e0e18' }));
+
+    this.svg = svg;
+    this.wrap.appendChild(svg);
+
+    // Label
+    const lbl = document.createElement('div');
+    lbl.className = 'knob-label';
+    lbl.textContent = this.label;
+    this.wrap.appendChild(lbl);
+
+    parent.appendChild(this.wrap);
+
+    // Events
+    const onDown = e => {
+      e.preventDefault();
+      this._dragging = true;
+      const pt = e.touches ? e.touches[0] : e;
+      this._startY = pt.clientY;
+      this._startVal = this.value;
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+      document.addEventListener('touchmove', onMove, { passive: false });
+      document.addEventListener('touchend', onUp);
+    };
+    const onMove = e => {
+      if (!this._dragging) return;
+      e.preventDefault();
+      const pt = e.touches ? e.touches[0] : e;
+      const dy = this._startY - pt.clientY;
+      const range = this.max - this.min;
+      const sens = 0.004;
+      this.setValue(this._startVal + dy * range * sens);
+    };
+    const onUp = () => {
+      this._dragging = false;
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+      document.removeEventListener('touchmove', onMove);
+      document.removeEventListener('touchend', onUp);
+    };
+
+    svg.addEventListener('mousedown', onDown);
+    svg.addEventListener('touchstart', onDown, { passive: false });
+    svg.addEventListener('wheel', e => {
+      e.preventDefault();
+      const dir = e.deltaY < 0 ? 1 : -1;
+      const range = this.max - this.min;
+      const step = this.step || range / 200;
+      this.setValue(this.value + dir * step);
+    }, { passive: false });
+    svg.addEventListener('dblclick', () => this.setValue(this.defaultVal));
+  }
+
+  _valueAngle() {
+    const t = (this.value - this.min) / (this.max - this.min);
+    return KNOB_START + t * KNOB_SWEEP;
+  }
+
+  _render() {
+    const t = clamp((this.value - this.min) / (this.max - this.min), 0, 1);
+    const sweep = t * KNOB_SWEEP;
+    this._arc.setAttribute('d', sweep > 0.5 ? arcPath(50, 50, 38, KNOB_START, sweep) : '');
+    const a = this._valueAngle();
+    const p = polarXY(50, 50, 19, a);
+    this._ptr.setAttribute('x2', p.x);
+    this._ptr.setAttribute('y2', p.y);
+  }
+
+  setValue(v) {
+    v = clamp(v, this.min, this.max);
+    if (this.step) v = Math.round(v / this.step) * this.step;
+    v = clamp(v, this.min, this.max);
+    if (v === this.value) return;
+    this.value = v;
+    this._render();
+    this.onChange(v);
+  }
+
+  getValue() { return this.value; }
+}
+
+// ─── SynthFader ───
+class SynthFader {
+  constructor(parent, opts = {}) {
+    this.min = opts.min ?? 0;
+    this.max = opts.max ?? 1;
+    this.value = opts.value ?? this.min;
+    this.defaultVal = opts.default ?? this.value;
+    this.step = opts.step ?? 0;
+    this.color = opts.color ?? 'var(--cyan)';
+    this.label = opts.label ?? '';
+    this.decimals = opts.decimals ?? 2;
+    this.onChange = opts.onChange ?? (() => {});
+    this._dragging = false;
+
+    this._build(parent);
+    this._render();
+  }
+
+  _build(parent) {
+    this.wrap = document.createElement('div');
+    this.wrap.className = 'fader-wrap';
+
+    // Track
+    const track = document.createElement('div');
+    track.className = 'fader-track';
+
+    const fill = document.createElement('div');
+    fill.className = 'fader-fill';
+    fill.style.background = `linear-gradient(to top, ${this.color}, ${this.color}88)`;
+    track.appendChild(fill);
+    this._fill = fill;
+
+    const thumb = document.createElement('div');
+    thumb.className = 'fader-thumb';
+    track.appendChild(thumb);
+    this._thumb = thumb;
+    this._track = track;
+
+    // Events
+    const onDown = e => {
+      e.preventDefault();
+      this._dragging = true;
+      const pt = e.touches ? e.touches[0] : e;
+      this._trackRect = track.getBoundingClientRect();
+      this._updateFromY(pt.clientY);
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+      document.addEventListener('touchmove', onMove, { passive: false });
+      document.addEventListener('touchend', onUp);
+    };
+    const onMove = e => {
+      if (!this._dragging) return;
+      e.preventDefault();
+      const pt = e.touches ? e.touches[0] : e;
+      this._updateFromY(pt.clientY);
+    };
+    const onUp = () => {
+      this._dragging = false;
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+      document.removeEventListener('touchmove', onMove);
+      document.removeEventListener('touchend', onUp);
+    };
+
+    track.addEventListener('mousedown', onDown);
+    track.addEventListener('touchstart', onDown, { passive: false });
+    track.addEventListener('wheel', e => {
+      e.preventDefault();
+      const dir = e.deltaY < 0 ? 1 : -1;
+      const range = this.max - this.min;
+      const step = this.step || range / 200;
+      this.setValue(this.value + dir * step);
+    }, { passive: false });
+    track.addEventListener('dblclick', () => this.setValue(this.defaultVal));
+
+    this.wrap.appendChild(track);
+
+    // Label
+    const lbl = document.createElement('div');
+    lbl.className = 'fader-label';
+    lbl.textContent = this.label;
+    this.wrap.appendChild(lbl);
+
+    parent.appendChild(this.wrap);
+  }
+
+  _updateFromY(clientY) {
+    const rect = this._trackRect || this._track.getBoundingClientRect();
+    const t = 1 - clamp((clientY - rect.top) / rect.height, 0, 1);
+    this.setValue(this.min + t * (this.max - this.min));
+  }
+
+  _render() {
+    const t = (this.value - this.min) / (this.max - this.min);
+    this._fill.style.height = `${t * 100}%`;
+    this._thumb.style.bottom = `calc(${t * 100}% - 4px)`;
+  }
+
+  setValue(v) {
+    v = clamp(v, this.min, this.max);
+    if (this.step) v = Math.round(v / this.step) * this.step;
+    v = clamp(v, this.min, this.max);
+    if (v === this.value) return;
+    this.value = v;
+    this._render();
+    this.onChange(v);
+  }
+
+  getValue() { return this.value; }
+}
+
+// ─── SynthDisplay ───
+class SynthDisplay {
+  constructor(parent, opts = {}) {
+    this.color = opts.color ?? 'var(--green)';
+    this.unit = opts.unit ?? '';
+    this.decimals = opts.decimals ?? 2;
+    this.prefix = opts.prefix ?? '';
+
+    this.wrap = document.createElement('div');
+    this.wrap.className = 'display-wrap';
+
+    const box = document.createElement('div');
+    box.className = 'led-display';
+
+    const val = document.createElement('span');
+    val.className = 'led-value';
+    val.style.color = this.color;
+    val.style.textShadow = `0 0 8px ${this.color}66`;
+    this._valEl = val;
+
+    const unit = document.createElement('span');
+    unit.className = 'led-unit';
+    unit.style.color = this.color;
+    unit.textContent = this.unit;
+    this._unitEl = unit;
+
+    box.appendChild(val);
+    box.appendChild(unit);
+    this.wrap.appendChild(box);
+    parent.appendChild(this.wrap);
+  }
+
+  setValue(v) {
+    if (typeof v === 'string') {
+      this._valEl.textContent = this.prefix + v;
+    } else {
+      this._valEl.textContent = this.prefix + fmt(v, this.decimals);
+    }
+  }
+}
+
+// ─── SynthGauge ───
+class SynthGauge {
+  constructor(parent, opts = {}) {
+    this.min = opts.min ?? 0;
+    this.max = opts.max ?? 1;
+    this.value = opts.value ?? 0;
+    this.color = opts.color ?? 'var(--green)';
+    this.label = opts.label ?? '';
+    this.decimals = opts.decimals ?? 1;
+    this.unit = opts.unit ?? '';
+    this._animated = opts.animated ?? false;
+    this._displayVal = this.value;
+
+    this._build(parent);
+    this._render();
+  }
+
+  _build(parent) {
+    this.wrap = document.createElement('div');
+    this.wrap.className = 'gauge-wrap';
+
+    const svg = svgEl('svg', { viewBox: '0 0 100 100' });
+
+    // Defs for gradient
+    const defs = svgEl('defs');
+    const lg = svgEl('linearGradient', { id: `gg-${Math.random().toString(36).slice(2,8)}` });
+    lg.appendChild(svgEl('stop', { offset: '0%', 'stop-color': this.color }));
+    lg.appendChild(svgEl('stop', { offset: '100%', 'stop-color': this.color, 'stop-opacity': '0.4' }));
+    defs.appendChild(lg);
+    svg.appendChild(defs);
+    this._gradId = lg.id;
+
+    // Track
+    svg.appendChild(svgEl('path', {
+      d: arcPath(50, 50, 40, KNOB_START, KNOB_SWEEP),
+      fill: 'none', stroke: 'var(--track)', 'stroke-width': '7', 'stroke-linecap': 'round'
+    }));
+
+    // Value arc
+    this._arc = svgEl('path', {
+      fill: 'none', stroke: `url(#${this._gradId})`, 'stroke-width': '7', 'stroke-linecap': 'round',
+      style: `filter: drop-shadow(0 0 4px ${this.color}88)`
+    });
+    svg.appendChild(this._arc);
+
+    // Center text
+    this._text = svgEl('text', {
+      x: 50, y: 52, 'text-anchor': 'middle', 'dominant-baseline': 'middle',
+      fill: 'var(--text-bright)', 'font-family': 'Courier New, monospace',
+      'font-size': '13', 'font-weight': '700'
+    });
+    svg.appendChild(this._text);
+
+    // Unit text
+    this._unitText = svgEl('text', {
+      x: 50, y: 66, 'text-anchor': 'middle',
+      fill: 'var(--text-dim)', 'font-family': 'Courier New, monospace',
+      'font-size': '8'
+    });
+    this._unitText.textContent = this.unit;
+    svg.appendChild(this._unitText);
+
+    // Ticks
+    for (let i = 0; i <= 10; i++) {
+      const a = KNOB_START + (i / 10) * KNOB_SWEEP;
+      const inner = polarXY(50, 50, 34, a);
+      const outer = polarXY(50, 50, 37, a);
+      svg.appendChild(svgEl('line', {
+        x1: inner.x, y1: inner.y, x2: outer.x, y2: outer.y,
+        stroke: 'var(--text-dim)', 'stroke-width': i % 5 === 0 ? '1.2' : '0.6',
+        opacity: '0.4'
+      }));
+    }
+
+    this.wrap.appendChild(svg);
+    parent.appendChild(this.wrap);
+  }
+
+  _render() {
+    const t = clamp((this._displayVal - this.min) / (this.max - this.min), 0, 1);
+    const sweep = t * KNOB_SWEEP;
+    this._arc.setAttribute('d', sweep > 0.5 ? arcPath(50, 50, 40, KNOB_START, sweep) : '');
+    this._text.textContent = fmt(this._displayVal, this.decimals);
+  }
+
+  setValue(v) {
+    this.value = clamp(v, this.min, this.max);
+    if (this._animated) {
+      this._animateTo(this.value);
+    } else {
+      this._displayVal = this.value;
+      this._render();
+    }
+  }
+
+  _animateTo(target) {
+    const start = this._displayVal;
+    const diff = target - start;
+    const duration = 150;
+    const t0 = performance.now();
+    const step = (now) => {
+      const p = clamp((now - t0) / duration, 0, 1);
+      const ease = 1 - Math.pow(1 - p, 3); // ease-out cubic
+      this._displayVal = start + diff * ease;
+      this._render();
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+}
+
+// ─── SynthButton ───
+class SynthButton {
+  constructor(parent, opts = {}) {
+    this.label = opts.label ?? '';
+    this.active = opts.active ?? false;
+    this.color = opts.color ?? 'var(--green)';
+    this.modes = opts.modes ?? null; // array of { label, value } for cycling
+    this._modeIdx = opts.modeIndex ?? 0;
+    this.onChange = opts.onChange ?? (() => {});
+
+    this._build(parent);
+    this._render();
+  }
+
+  _build(parent) {
+    this.wrap = document.createElement('div');
+    this.wrap.className = 'btn-wrap';
+
+    this.btn = document.createElement('button');
+    this.btn.className = 'synth-btn' + (this.active ? ' active' : '');
+
+    const led = document.createElement('div');
+    led.className = 'btn-led';
+    this._led = led;
+
+    const lbl = document.createElement('div');
+    lbl.className = 'btn-label';
+    lbl.textContent = this.label;
+    this._lbl = lbl;
+
+    const val = document.createElement('div');
+    val.className = 'btn-value';
+    this._valEl = val;
+
+    this.btn.appendChild(led);
+    this.btn.appendChild(lbl);
+    this.btn.appendChild(val);
+
+    this.btn.addEventListener('click', () => {
+      if (this.modes) {
+        this._modeIdx = (this._modeIdx + 1) % this.modes.length;
+        this._render();
+        this.onChange(this.modes[this._modeIdx].value, this.modes[this._modeIdx].label);
+      } else {
+        this.active = !this.active;
+        this._render();
+        this.onChange(this.active);
+      }
+    });
+
+    this.wrap.appendChild(this.btn);
+    parent.appendChild(this.wrap);
+  }
+
+  _render() {
+    this.btn.classList.toggle('active', this.active || !!this.modes);
+    this._led.style.background = (this.active || this.modes) ? this.color : '#1a1a28';
+    this._led.style.color = this.color;
+    if (this.modes) {
+      this._valEl.textContent = this.modes[this._modeIdx].label;
+    }
+  }
+
+  getMode() { return this.modes ? this.modes[this._modeIdx] : null; }
+}
+
+// ─── Module Builder ───
+function createModule(title) {
+  const mod = document.createElement('section');
+  mod.className = 'module';
+  const t = document.createElement('div');
+  t.className = 'module-title';
+  t.textContent = title;
+  mod.appendChild(t);
+  return mod;
+}
+
+function addRow(module, className) {
+  const row = document.createElement('div');
+  row.className = 'module-row' + (className ? ` ${className}` : '');
+  module.appendChild(row);
+  return row;
+}
+
+// ─── Demo Setup ───
+const rack = document.getElementById('rack');
+
+// ── OSCILLATOR ──
+const oscMod = createModule('OSCILLATOR');
+const oscRow = addRow(oscMod);
+
+const oscCoarse = new SynthKnob(oscRow, {
+  min: 0, max: 8, value: 3, step: 1, default: 3,
+  color: 'var(--cyan)', label: 'COARSE', decimals: 0,
+  onChange: updateOscFreq
+});
+const oscFine = new SynthKnob(oscRow, {
+  min: -50, max: 50, value: 0, step: 1, default: 0,
+  color: 'var(--cyan)', label: 'FINE', decimals: 0, unit: '¢',
+  onChange: updateOscFreq
+});
+
+const oscRow2 = addRow(oscMod);
+const oscFreqDisp = new SynthDisplay(oscRow2, {
+  color: 'var(--cyan)', unit: 'Hz', decimals: 1
+});
+
+rack.appendChild(oscMod);
+
+const NOTE_FREQS = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25, 587.33];
+
+function updateOscFreq() {
+  const base = NOTE_FREQS[clamp(oscCoarse.value, 0, 8)];
+  const cents = oscFine.value;
+  const freq = base * Math.pow(2, cents / 1200);
+  oscFreqDisp.setValue(freq);
+}
+updateOscFreq();
+
+// ── FILTER ──
+const filtMod = createModule('FILTER');
+const filtRow = addRow(filtMod);
+
+const filtCutoff = new SynthKnob(filtRow, {
+  min: 20, max: 20000, value: 2000, default: 2000,
+  color: 'var(--magenta)', label: 'CUTOFF', decimals: 0,
+  onChange: updateFilter
+});
+const filtReso = new SynthKnob(filtRow, {
+  min: 0, max: 1, value: 0.3, default: 0.3, step: 0.01,
+  color: 'var(--magenta)', label: 'RESO', decimals: 2,
+  onChange: updateFilter
+});
+
+const filtRow2 = addRow(filtMod, 'gauges');
+const filtGauge = new SynthGauge(filtRow2, {
+  min: 0, max: 100, value: 0, color: 'var(--magenta)', unit: '%', decimals: 1,
+  animated: true
+});
+
+const filtRow3 = addRow(filtMod);
+const filtDisp = new SynthDisplay(filtRow3, {
+  color: 'var(--magenta)', unit: 'Hz', decimals: 0
+});
+
+rack.appendChild(filtMod);
+
+function updateFilter() {
+  const t = Math.log10(filtCutoff.value / 20) / Math.log10(20000 / 20);
+  filtGauge.setValue(t * 100);
+  filtDisp.setValue(filtCutoff.value);
+}
+updateFilter();
+
+// ── ENVELOPE ──
+const envMod = createModule('ENVELOPE');
+const envRow = addRow(envMod, 'faders');
+
+const envA = new SynthFader(envRow, { min: 0.001, max: 5, value: 0.01, default: 0.01, color: 'var(--orange)', label: 'A', decimals: 3, onChange: updateEnv });
+const envD = new SynthFader(envRow, { min: 0.001, max: 5, value: 0.1, default: 0.1, color: 'var(--orange)', label: 'D', decimals: 3, onChange: updateEnv });
+const envS = new SynthFader(envRow, { min: 0, max: 1, value: 0.7, default: 0.7, step: 0.01, color: 'var(--orange)', label: 'S', decimals: 2, onChange: updateEnv });
+const envR = new SynthFader(envRow, { min: 0.001, max: 10, value: 0.3, default: 0.3, color: 'var(--orange)', label: 'R', decimals: 3, onChange: updateEnv });
+
+const envRow2 = addRow(envMod);
+const envDisp = new SynthDisplay(envRow2, { color: 'var(--orange)', unit: 's', decimals: 2 });
+
+rack.appendChild(envMod);
+
+function updateEnv() {
+  const total = envA.value + envD.value + envR.value;
+  envDisp.setValue(total);
+}
+updateEnv();
+
+// ── OUTPUT ──
+const outMod = createModule('OUTPUT');
+const outRow = addRow(outMod, 'gauges');
+
+const outGauge = new SynthGauge(outRow, {
+  min: -60, max: 0, value: -12, color: 'var(--green)', unit: 'dB', decimals: 1,
+  animated: true
+});
+
+const outRow2 = addRow(outMod);
+const outLevel = new SynthFader(outRow2, {
+  min: 0, max: 1, value: 0.75, default: 0.75, step: 0.01,
+  color: 'var(--green)', label: 'LEVEL', decimals: 2,
+  onChange: () => {
+    const db = outLevel.value > 0 ? 20 * Math.log10(outLevel.value) : -60;
+    outGauge.setValue(clamp(db, -60, 0));
+  }
+});
+
+const outRow3 = addRow(outMod);
+const outDisp = new SynthDisplay(outRow3, { color: 'var(--green)', unit: 'dB', decimals: 1 });
+
+// Wire gauge to display
+const origSetGauge = outGauge.setValue.bind(outGauge);
+outGauge.setValue = v => {
+  origSetGauge(v);
+  outDisp.setValue(v);
+};
+outGauge.setValue(-12);
+
+rack.appendChild(outMod);
+
+// ── LFO ──
+const lfoMod = createModule('LFO');
+const lfoRow = addRow(lfoMod);
+
+const lfoRate = new SynthKnob(lfoRow, {
+  min: 0.1, max: 20, value: 2, default: 2, step: 0.1,
+  color: 'var(--purple)', label: 'RATE', decimals: 1, unit: 'Hz',
+  onChange: () => lfoRateDisp.setValue(lfoRate.value)
+});
+
+const lfoDepth = new SynthKnob(lfoRow, {
+  min: 0, max: 1, value: 0.5, default: 0.5, step: 0.01,
+  color: 'var(--purple)', label: 'DEPTH', decimals: 2,
+  onChange: () => lfoDepthDisp.setValue(lfoDepth.value)
+});
+
+const lfoRow2 = addRow(lfoMod);
+const lfoRateDisp = new SynthDisplay(lfoRow2, { color: 'var(--purple)', unit: 'Hz', decimals: 1 });
+const lfoDepthDisp = new SynthDisplay(lfoRow2, { color: 'var(--purple)', unit: '', decimals: 2 });
+lfoRateDisp.setValue(2);
+lfoDepthDisp.setValue(0.5);
+
+const lfoRow3 = addRow(lfoMod, 'buttons');
+const lfoWaveBtn = new SynthButton(lfoRow3, {
+  label: 'WAVE',
+  color: 'var(--purple)',
+  modes: [
+    { label: 'SIN', value: 'sine' },
+    { label: 'SQR', value: 'square' },
+    { label: 'SAW', value: 'sawtooth' },
+    { label: 'TRI', value: 'triangle' }
+  ],
+  onChange: (val, label) => lfoWaveDisp.setValue(label)
+});
+
+const lfoRow4 = addRow(lfoMod);
+const lfoWaveDisp = new SynthDisplay(lfoRow4, { color: 'var(--purple)', unit: '', decimals: 0, prefix: '' });
+lfoWaveDisp.setValue('SIN');
+
+rack.appendChild(lfoMod);
+</script>
+</body>
+</html>

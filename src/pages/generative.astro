@@ -1,0 +1,1144 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Generative — mxjxn.com" description="Algorithmic generative music. Time-synchronized, deterministic, endless." image="https://www.mxjxn.com/generative/og.png">
+
+  <main class="page" style="display:flex;flex-direction:column;align-items:center;min-height:80vh;padding-bottom:3rem;">
+
+    <section class="header-section" style="text-align:center;margin-top:4rem;">
+      <h1 class="name" style="font-size:1.6rem;margin-bottom:0.25rem;">generative</h1>
+      <p class="tagline" style="margin-bottom:2rem;">algorithmic music · grows with time</p>
+
+      <div id="epoch-info" class="epoch-info"></div>
+
+      <button id="play-btn" class="btn-play" aria-label="Play or pause">
+        <span id="play-icon">▶</span>
+      </button>
+
+      <div id="status" class="status">press to begin</div>
+    </section>
+
+    <!-- Synth UI Visualizer Rack -->
+    <div id="viz-rack" class="viz-rack" style="display:none;">
+
+      <div class="viz-grid">
+
+        <!-- KEY module -->
+        <section class="module" id="mod-key">
+          <div class="module-title">KEY</div>
+          <div class="module-row">
+            <div class="key-display">
+              <span id="viz-root-note" class="key-note">—</span>
+              <span id="viz-chord-name" class="key-chord">—</span>
+            </div>
+          </div>
+          <div class="module-row" style="margin-top:10px;">
+            <div id="viz-chord-notes" class="chord-notes"></div>
+          </div>
+        </section>
+
+        <!-- DRONE module -->
+        <section class="module" id="mod-drone">
+          <div class="module-title">DRONE</div>
+          <div class="module-row" id="row-drone-knobs"></div>
+          <div class="module-row" style="margin-top:10px;" id="row-drone-disps"></div>
+        </section>
+
+        <!-- FORM module -->
+        <section class="module" id="mod-form">
+          <div class="module-title">FORM</div>
+          <div class="module-row" id="row-form-gauges"></div>
+          <div class="module-row" style="margin-top:6px;">
+            <div id="viz-form-word" class="form-word-viz">—</div>
+          </div>
+        </section>
+
+        <!-- RHYTHM module -->
+        <section class="module" id="mod-rhythm">
+          <div class="module-title">RHYTHM</div>
+          <div class="module-row">
+            <div class="pattern-col">
+              <div class="pattern-label">melodic</div>
+              <div id="viz-mel-pattern" class="step-row"></div>
+            </div>
+          </div>
+          <div class="module-row" style="margin-top:12px;">
+            <div class="pattern-col">
+              <div class="pattern-label">textural</div>
+              <div id="viz-tex-pattern" class="step-row"></div>
+            </div>
+          </div>
+          <div class="module-row" style="margin-top:12px;" id="row-rhythm-disps"></div>
+        </section>
+
+        <!-- PHASE module -->
+        <section class="module" id="mod-phase">
+          <div class="module-title">PHASE</div>
+          <div class="module-row" id="row-phase-gauges"></div>
+        </section>
+
+      </div>
+    </div>
+
+  </main>
+
+  <style>
+    .epoch-info {
+      font-size: 0.75rem;
+      opacity: 0.4;
+      margin-bottom: 2rem;
+      font-family: monospace;
+      letter-spacing: 0.05em;
+    }
+    .btn-play {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.05);
+      color: inherit;
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .btn-play:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.35); }
+    .btn-play:active { transform: scale(0.95); }
+    .btn-play.loading { opacity: 0.5; cursor: wait; }
+    .btn-play.playing { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.08); }
+    .status {
+      margin-top: 1.25rem;
+      font-size: 0.8rem;
+      opacity: 0.5;
+      font-family: monospace;
+    }
+
+    /* ── Viz Rack ── */
+    .viz-rack {
+      width: 100%;
+      max-width: 960px;
+      margin-top: 3rem;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+    .viz-rack.visible { opacity: 1; }
+
+    .viz-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .module {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px;
+      padding: 16px 14px 12px;
+    }
+    .module-title {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      color: rgba(255,255,255,0.25);
+      text-align: center;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .module-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+    }
+
+    /* Key display */
+    .key-display {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .key-note {
+      font-size: 22px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.8);
+      font-family: -apple-system, 'Segoe UI', Helvetica, sans-serif;
+    }
+    .key-chord {
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      font-family: monospace;
+      letter-spacing: 0.5px;
+    }
+    .chord-notes {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+    }
+    .chord-pill {
+      font-size: 10px;
+      font-family: monospace;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* Form word */
+    .form-word-viz {
+      font-size: 11px;
+      font-family: monospace;
+      color: rgba(255,255,255,0.3);
+      text-transform: lowercase;
+      letter-spacing: 0.15em;
+      text-align: center;
+      transition: color 0.5s;
+    }
+
+    /* Step pattern */
+    .pattern-label {
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      color: rgba(255,255,255,0.2);
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    .pattern-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .step-row {
+      display: flex;
+      gap: 4px;
+      justify-content: center;
+    }
+    .step-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: all 0.12s ease;
+    }
+    .step-dot.hit {
+      background: rgba(255,255,255,0.15);
+      border-color: rgba(255,255,255,0.2);
+    }
+    .step-dot.active {
+      box-shadow: 0 0 6px currentColor, 0 0 12px currentColor;
+      border-color: currentColor;
+    }
+
+    /* Knob (readonly) */
+    .knob-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+    .knob-wrap svg {
+      width: 60px;
+      height: 60px;
+      pointer-events: none;
+    }
+    .knob-label {
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      color: rgba(255,255,255,0.25);
+    }
+
+    /* Display (readonly) */
+    .display-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+    .led-display {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 4px;
+      padding: 4px 10px;
+      min-width: 80px;
+      text-align: center;
+    }
+    .led-value {
+      font-family: 'Courier New', monospace;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 1px;
+    }
+    .led-unit {
+      font-family: 'Courier New', monospace;
+      font-size: 8px;
+      opacity: 0.5;
+      margin-left: 3px;
+    }
+
+    /* Gauge (readonly) */
+    .gauge-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .gauge-wrap svg {
+      width: 90px;
+      height: 90px;
+      pointer-events: none;
+    }
+
+    /* Rhythm displays row */
+    .rhythm-disp-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+    .rhythm-disp-label {
+      font-size: 8px;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.2);
+      font-family: monospace;
+    }
+
+    @media (max-width: 600px) {
+      .viz-grid { grid-template-columns: 1fr; }
+      .module-row { gap: 16px; }
+      .knob-wrap svg { width: 52px; height: 52px; }
+      .gauge-wrap svg { width: 76px; height: 76px; }
+    }
+  </style>
+
+  <script>
+    // ================================================================
+    // PRNG — mulberry32
+    // ================================================================
+    function mulberry32(seed: number): () => number {
+      return () => {
+        seed |= 0;
+        seed = seed + 0x6D2B79F5 | 0;
+        let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+        t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      };
+    }
+
+    // ================================================================
+    // EUCLIDEAN RHYTHM — Bjorklund
+    // ================================================================
+    function bjorklund(k: number, n: number): number[] {
+      if (k <= 0) return new Array(n).fill(0);
+      if (k >= n) return new Array(n).fill(1);
+      const buckets: number[][] = [];
+      for (let i = 0; i < k; i++) buckets.push([1]);
+      for (let i = k; i < n; i++) buckets.push([0]);
+      let offset = 0;
+      while (buckets.length - offset > 1) {
+        const a = buckets[offset];
+        const b = buckets[offset + 1];
+        if (a.length <= b.length) {
+          a.push(...b);
+          buckets.splice(offset + 1, 1);
+          if (offset > 0) offset--;
+        } else {
+          offset++;
+        }
+      }
+      const result = buckets[0] ?? new Array(n).fill(0);
+      while (result.length < n) result.push(0);
+      return result.slice(0, n);
+    }
+
+    // ================================================================
+    // MARKOV CHAIN — pitch transitions
+    // ================================================================
+    class PitchMarkov {
+      private weights: Map<number, [number, number][]>;
+      private current: number;
+      private rng: () => number;
+      constructor(scaleSize: number, transitionWeights: Map<number, [number, number][]>, rng: () => number) {
+        this.weights = transitionWeights;
+        this.rng = rng;
+        this.current = 0;
+      }
+      next(): number {
+        const transitions = this.weights.get(this.current) ?? [];
+        const total = transitions.reduce((s, [, w]) => s + w, 0);
+        if (total === 0) return this.current;
+        let r = this.rng() * total;
+        for (const [state, weight] of transitions) {
+          r -= weight;
+          if (r <= 0) { this.current = state; return state; }
+        }
+        this.current = transitions[transitions.length - 1][0];
+        return this.current;
+      }
+      reset() { this.current = 0; }
+    }
+
+    // ================================================================
+    // SYNTH UI VISUALIZER COMPONENTS (readonly)
+    // ================================================================
+    const NS = 'http://www.w3.org/2000/svg';
+    const KNOB_START = 225, KNOB_SWEEP = 270;
+
+    function arcPath(cx: number, cy: number, r: number, startDeg: number, sweepDeg: number): string {
+      const toRad = (d: number) => (d - 90) * Math.PI / 180;
+      const s = toRad(startDeg), e = toRad(startDeg + sweepDeg);
+      const x1 = cx + r * Math.cos(s), y1 = cy + r * Math.sin(s);
+      const x2 = cx + r * Math.cos(e), y2 = cy + r * Math.sin(e);
+      return `M ${x1} ${y1} A ${r} ${r} 0 ${sweepDeg > 180 ? 1 : 0} 1 ${x2} ${y2}`;
+    }
+
+    function polarXY(cx: number, cy: number, r: number, deg: number) {
+      const rad = (deg - 90) * Math.PI / 180;
+      return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+    }
+
+    function svgEl(tag: string, attrs: Record<string, string | number> = {}) {
+      const el = document.createElementNS(NS, tag);
+      for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, String(v));
+      return el;
+    }
+
+    function clamp(v: number, lo: number, hi: number) { return Math.max(lo, Math.min(hi, v)); }
+    function fmt(v: number, decimals = 2): string {
+      return decimals === 0 ? Math.round(v).toString() : v.toFixed(decimals);
+    }
+
+    const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const CHORD_NAMES: Record<string, string> = {
+      '0,7': '5', '0,3,7': 'm', '0,7,12': '5+8', '0,5,7': 'sus', '0,3,12': 'm+8', '0,7,10': 'm7',
+    };
+
+    // ── VizKnob (readonly) ──
+    class VizKnob {
+      el: HTMLElement;
+      private _arc: SVGPathElement;
+      private _ptr: SVGLineElement;
+      private _min: number; private _max: number;
+      private _val: number;
+      constructor(parent: HTMLElement, opts: { min?: number; max?: number; value?: number; color?: string; label?: string; decimals?: number; unit?: string } = {}) {
+        this._min = opts.min ?? 0; this._max = opts.max ?? 1;
+        this._val = opts.value ?? this._min;
+        const color = opts.color ?? 'rgba(255,255,255,0.4)';
+
+        this.el = document.createElement('div');
+        this.el.className = 'knob-wrap';
+        const svg = svgEl('svg', { viewBox: '0 0 100 100' });
+
+        // Track
+        svg.appendChild(svgEl('path', {
+          d: arcPath(50, 50, 38, KNOB_START, KNOB_SWEEP),
+          fill: 'none', stroke: 'rgba(255,255,255,0.06)', 'stroke-width': '5', 'stroke-linecap': 'round'
+        }));
+
+        // Value arc
+        this._arc = svgEl('path', {
+          fill: 'none', stroke: color, 'stroke-width': '5', 'stroke-linecap': 'round',
+          style: `filter: drop-shadow(0 0 3px ${color})`
+        });
+        svg.appendChild(this._arc);
+
+        // Ticks
+        for (let i = 0; i <= 10; i++) {
+          const a = KNOB_START + (i / 10) * KNOB_SWEEP;
+          const inner = polarXY(50, 50, 33, a);
+          const outer = polarXY(50, 50, 37, a);
+          svg.appendChild(svgEl('line', {
+            x1: inner.x, y1: inner.y, x2: outer.x, y2: outer.y,
+            stroke: 'rgba(255,255,255,0.12)', 'stroke-width': i % 5 === 0 ? '1.2' : '0.6'
+          }));
+        }
+
+        // Body
+        svg.appendChild(svgEl('circle', {
+          cx: 50, cy: 50, r: 25, fill: 'rgba(255,255,255,0.03)',
+          stroke: 'rgba(255,255,255,0.05)', 'stroke-width': '1'
+        }));
+
+        // Pointer
+        this._ptr = svgEl('line', {
+          x1: 50, y1: 50, stroke: color, 'stroke-width': '2', 'stroke-linecap': 'round'
+        });
+        svg.appendChild(this._ptr);
+
+        svg.appendChild(svgEl('circle', { cx: 50, cy: 50, r: 2.5, fill: 'rgba(0,0,0,0.3)' }));
+
+        this.el.appendChild(svg);
+
+        // Value text below knob
+        const valRow = document.createElement('div');
+        valRow.className = 'display-wrap';
+        const box = document.createElement('div');
+        box.className = 'led-display';
+        const valSpan = document.createElement('span');
+        valSpan.className = 'led-value';
+        valSpan.style.color = color;
+        valSpan.style.textShadow = `0 0 6px ${color}44`;
+        valSpan.textContent = fmt(this._val, opts.decimals ?? 1);
+        this._valSpan = valSpan;
+        if (opts.unit) {
+          const unit = document.createElement('span');
+          unit.className = 'led-unit';
+          unit.style.color = color;
+          unit.textContent = opts.unit;
+          box.appendChild(unit);
+        }
+        box.insertBefore(valSpan, box.firstChild);
+        valRow.appendChild(box);
+        this.el.appendChild(valRow);
+
+        // Label
+        const lbl = document.createElement('div');
+        lbl.className = 'knob-label';
+        lbl.textContent = opts.label ?? '';
+        this.el.appendChild(lbl);
+
+        parent.appendChild(this.el);
+        this._render();
+      }
+      private _valSpan!: HTMLSpanElement;
+      _render() {
+        const t = clamp((this._val - this._min) / (this._max - this._min), 0, 1);
+        const sweep = t * KNOB_SWEEP;
+        this._arc.setAttribute('d', sweep > 0.5 ? arcPath(50, 50, 38, KNOB_START, sweep) : '');
+        const a = KNOB_START + t * KNOB_SWEEP;
+        const p = polarXY(50, 50, 19, a);
+        this._ptr.setAttribute('x2', p.x);
+        this._ptr.setAttribute('y2', p.y);
+      }
+      setValue(v: number, label?: string) {
+        this._val = clamp(v, this._min, this._max);
+        this._render();
+        if (label !== undefined) {
+          this._valSpan.textContent = label;
+        }
+      }
+    }
+
+    // ── VizGauge (readonly, animated) ──
+    class VizGauge {
+      el: HTMLElement;
+      private _arc: SVGPathElement;
+      private _text: SVGTextElement;
+      private _min: number; private _max: number;
+      private _displayVal: number;
+      private _color: string;
+      private _decimals: number;
+      private _unit: string;
+      constructor(parent: HTMLElement, opts: { min?: number; max?: number; value?: number; color?: string; label?: string; unit?: string; decimals?: number } = {}) {
+        this._min = opts.min ?? 0; this._max = opts.max ?? 1;
+        this._displayVal = opts.value ?? 0;
+        this._color = opts.color ?? 'rgba(255,255,255,0.4)';
+        this._decimals = opts.decimals ?? 2;
+        this._unit = opts.unit ?? '';
+
+        this.el = document.createElement('div');
+        this.el.className = 'gauge-wrap';
+        const svg = svgEl('svg', { viewBox: '0 0 100 100' });
+
+        // Track
+        svg.appendChild(svgEl('path', {
+          d: arcPath(50, 50, 40, KNOB_START, KNOB_SWEEP),
+          fill: 'none', stroke: 'rgba(255,255,255,0.06)', 'stroke-width': '7', 'stroke-linecap': 'round'
+        }));
+
+        // Value arc
+        this._arc = svgEl('path', {
+          fill: 'none', stroke: this._color, 'stroke-width': '7', 'stroke-linecap': 'round',
+          style: `filter: drop-shadow(0 0 4px ${this._color}66)`
+        });
+        svg.appendChild(this._arc);
+
+        // Center text
+        this._text = svgEl('text', {
+          x: 50, y: 50, 'text-anchor': 'middle', 'dominant-baseline': 'middle',
+          fill: 'rgba(255,255,255,0.7)', 'font-family': 'Courier New, monospace',
+          'font-size': '13', 'font-weight': '700'
+        });
+        svg.appendChild(this._text);
+
+        // Unit text
+        const unitText = svgEl('text', {
+          x: 50, y: 64, 'text-anchor': 'middle',
+          fill: 'rgba(255,255,255,0.2)', 'font-family': 'Courier New, monospace', 'font-size': '8'
+        });
+        unitText.textContent = this._unit;
+        svg.appendChild(unitText);
+
+        // Ticks
+        for (let i = 0; i <= 10; i++) {
+          const a = KNOB_START + (i / 10) * KNOB_SWEEP;
+          const inner = polarXY(50, 50, 34, a);
+          const outer = polarXY(50, 50, 37, a);
+          svg.appendChild(svgEl('line', {
+            x1: inner.x, y1: inner.y, x2: outer.x, y2: outer.y,
+            stroke: 'rgba(255,255,255,0.1)', 'stroke-width': i % 5 === 0 ? '1' : '0.5'
+          }));
+        }
+
+        // Label below
+        const lbl = document.createElement('div');
+        lbl.className = 'knob-label';
+        lbl.style.marginTop = '4px';
+        lbl.textContent = opts.label ?? '';
+        this.el.appendChild(svg);
+        this.el.appendChild(lbl);
+
+        parent.appendChild(this.el);
+        this._render();
+      }
+      _render() {
+        const t = clamp((this._displayVal - this._min) / (this._max - this._min), 0, 1);
+        const sweep = t * KNOB_SWEEP;
+        this._arc.setAttribute('d', sweep > 0.5 ? arcPath(50, 50, 40, KNOB_START, sweep) : '');
+        this._text.textContent = fmt(this._displayVal, this._decimals);
+      }
+      setValue(v: number) {
+        const target = clamp(v, this._min, this._max);
+        const start = this._displayVal;
+        const diff = target - start;
+        if (Math.abs(diff) < 0.001) return;
+        const duration = 180;
+        const t0 = performance.now();
+        const step = (now: number) => {
+          const p = clamp((now - t0) / duration, 0, 1);
+          const ease = 1 - Math.pow(1 - p, 3);
+          this._displayVal = start + diff * ease;
+          this._render();
+          if (p < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      }
+    }
+
+    // ── StepIndicator ──
+    class StepIndicator {
+      private dots: HTMLDivElement[];
+      private color: string;
+      constructor(parent: HTMLElement, pattern: number[], color: string) {
+        this.dots = [];
+        this.color = color;
+        const row = document.createElement('div');
+        row.className = 'step-row';
+        for (let i = 0; i < pattern.length; i++) {
+          const dot = document.createElement('div');
+          dot.className = 'step-dot' + (pattern[i] ? ' hit' : '');
+          if (pattern[i]) dot.style.color = color;
+          row.appendChild(dot);
+          this.dots.push(dot);
+        }
+        parent.appendChild(row);
+      }
+      setStep(index: number) {
+        for (let i = 0; i < this.dots.length; i++) {
+          this.dots[i].classList.toggle('active', i === index);
+        }
+      }
+    }
+
+    // ================================================================
+    // COMPOSITION ENGINE
+    // ================================================================
+    class GenerativeComposition {
+      private sonic: any;
+      private playing = false;
+      private tickTimer: number | null = null;
+      private nodeId = 2000;
+      private startTimestamp = 0;
+      private lastDronePhase = -1;
+      private lastMelodicStep = -1;
+      private lastTexturalStep = -1;
+      private lastFormUpdate = -1;
+
+      private readonly SCALE = [0, 3, 5, 7, 10];
+      private readonly OCTAVES = [-1, 0, 1, 2];
+      private readonly EPOCH_MS = 3600000;
+      private readonly FORM_MS = 20000;
+      private readonly GESTURE_MS = 220;
+      private readonly DRONE_PROPHET_MS = 18000;
+      private readonly DRONE_AMBIENCE_MS = 25000;
+
+      private epochSeed = 0;
+      private rng: () => number;
+      private epoch: any = {};
+      private euclideanPatterns: any = {};
+      private markov: PitchMarkov;
+
+      // Visualization callbacks
+      onTick?: (state: any) => void;
+
+      constructor(sonic: any) {
+        this.sonic = sonic;
+        this.rng = mulberry32(0);
+        this.markov = new PitchMarkov(5, new Map(), this.rng);
+        this.computeEpoch();
+        this.showEpochInfo();
+      }
+
+      getEpoch() { return this.epoch; }
+      getEuclidean() { return this.euclideanPatterns; }
+
+      private computeEpoch() {
+        this.epochSeed = Math.floor(Date.now() / this.EPOCH_MS);
+        this.rng = mulberry32(this.epochSeed);
+
+        const chordShapes = [
+          [0, 7], [0, 3, 7], [0, 7, 12], [0, 5, 7], [0, 3, 12], [0, 7, 10],
+        ];
+        const chord = chordShapes[Math.floor(this.rng() * chordShapes.length)];
+
+        this.epoch = {
+          root: 36 + Math.floor(this.rng() * 12),
+          densityBias: 0.3 + this.rng() * 0.35,
+          energyBias: 0.25 + this.rng() * 0.35,
+          drone: {
+            chord,
+            prophetCutoff: 40 + this.rng() * 30,
+            prophetRes: 0.3 + this.rng() * 0.4,
+            ambienceCutoff: 30 + this.rng() * 25,
+            ambienceRoom: 50 + this.rng() * 80,
+          },
+          euclidean: {
+            melodic: { k: 3 + Math.floor(this.rng() * 5), n: 8 + Math.floor(this.rng() * 8), stepMs: 400 + Math.floor(this.rng() * 600) },
+            textural: { k: 1 + Math.floor(this.rng() * 3), n: 10 + Math.floor(this.rng() * 14), stepMs: 800 + Math.floor(this.rng() * 1200) },
+          },
+          phasePeriods: {
+            melodic: 3000 + this.rng() * 5000,
+            textural: 8000 + this.rng() * 14000,
+          },
+        };
+
+        this.euclideanPatterns = {
+          melodic: bjorklund(this.epoch.euclidean.melodic.k, this.epoch.euclidean.melodic.n),
+          textural: bjorklund(this.epoch.euclidean.textural.k, this.epoch.euclidean.textural.n),
+        };
+
+        const weights = this.buildMarkovWeights();
+        this.markov = new PitchMarkov(this.SCALE.length, weights, this.rng);
+
+        setTimeout(() => {
+          if (Math.floor(Date.now() / this.EPOCH_MS) !== this.epochSeed) {
+            this.computeEpoch();
+            this.showEpochInfo();
+          }
+        }, 60000);
+      }
+
+      private buildMarkovWeights(): Map<number, [number, number][]> {
+        const w = new Map<number, [number, number][]>();
+        const n = this.SCALE.length;
+        for (let i = 0; i < n; i++) {
+          const transitions: [number, number][] = [];
+          for (let j = 0; j < n; j++) {
+            let weight = 1;
+            if (Math.abs(j - i) === 1) weight = 4;
+            if (j === i) weight = 2;
+            if (Math.abs(j - i) > 2) weight = 0.5;
+            if (j === 0) weight += 2.5;
+            if (i === 0 && j > 0 && j <= 2) weight += 1.5;
+            weight *= (0.6 + this.rng() * 0.8);
+            transitions.push([j, Math.max(0.1, weight)]);
+          }
+          w.set(i, transitions);
+        }
+        return w;
+      }
+
+      private showEpochInfo() {
+        const el = document.getElementById('epoch-info');
+        if (!el) return;
+        const start = new Date(this.epochSeed * this.EPOCH_MS);
+        const end = new Date((this.epochSeed + 1) * this.EPOCH_MS);
+        const fmt = (d: Date) => d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const dayFmt = (d: Date) => d.toLocaleDateString([], { month: 'short', day: 'numeric' });
+        el.textContent = `movement ${this.epochSeed.toLocaleString()} · ${dayFmt(start)} ${fmt(start)}–${fmt(end)}`;
+      }
+
+      private getFormState() {
+        const formIndex = Math.floor(Date.now() / this.FORM_MS);
+        const t = (Date.now() % this.FORM_MS) / this.FORM_MS;
+        const smooth = t * t * (3 - 2 * t);
+        const prevRng = mulberry32(this.epochSeed * 7919 + formIndex - 1);
+        const currRng = mulberry32(this.epochSeed * 7919 + formIndex);
+        const lerp = (a: number, b: number) => a + (b - a) * smooth;
+        const density = lerp(
+          this.epoch.densityBias * (0.4 + prevRng() * 0.8),
+          this.epoch.densityBias * (0.4 + currRng() * 0.8)
+        );
+        const energy = lerp(
+          this.epoch.energyBias * (0.4 + prevRng() * 0.8),
+          this.epoch.energyBias * (0.4 + currRng() * 0.8)
+        );
+        return { density: Math.min(1, Math.max(0, density)), energy: Math.min(1, Math.max(0, energy)) };
+      }
+
+      private getFormWord(density: number, energy: number): string {
+        const avg = (density + energy) / 2;
+        if (avg < 0.2) return 'still';
+        if (avg < 0.35) return 'quiet';
+        if (avg < 0.5) return 'emerging';
+        if (avg < 0.65) return 'active';
+        if (avg < 0.8) return 'flowing';
+        return 'dense';
+      }
+
+      private getPhase(period: number): number {
+        return (Date.now() % period) / period;
+      }
+
+      private gestureTick() {
+        if (!this.playing) return;
+        const form = this.getFormState();
+        const now = Date.now();
+        const elapsed = now - this.startTimestamp;
+
+        // === VISUALIZATION STATE ===
+        const melStepMs = this.epoch.euclidean.melodic.stepMs;
+        const melStep = Math.floor(now / melStepMs);
+        const melIdx = melStep % this.euclideanPatterns.melodic.length;
+        const texStepMs = this.epoch.euclidean.textural.stepMs;
+        const texStep = Math.floor(now / texStepMs);
+        const texIdx = texStep % this.euclideanPatterns.textural.length;
+
+        if (this.onTick) {
+          this.onTick({
+            form,
+            elapsed,
+            melodicStep: melIdx,
+            texturalStep: texIdx,
+            melodicPhase: this.getPhase(this.epoch.phasePeriods.melodic),
+            texturalPhase: this.getPhase(this.epoch.phasePeriods.textural),
+          });
+        }
+
+        // === DRONE LAYER ===
+        if (elapsed > 0) {
+          const drone = this.epoch.drone;
+          const isFirstCycle = elapsed < 5000;
+          const attack = isFirstCycle ? 4.0 : 2.0;
+
+          const chordLen = drone.chord.length;
+          for (let i = 0; i < chordLen; i++) {
+            const offset = i * (this.DRONE_PROPHET_MS / chordLen);
+            const phase = Math.floor((now - offset) / this.DRONE_PROPHET_MS);
+            const phaseKey = `prophet_${i}`;
+            if (phase !== (this as any)[`last_${phaseKey}`]) {
+              (this as any)[`last_${phaseKey}`] = phase;
+              const note = this.epoch.root + drone.chord[i];
+              const voiceAmp = i === 0 ? 0.18 : (i === 1 ? 0.14 : 0.10);
+              const pan = chordLen === 1 ? 0 : (i / (chordLen - 1)) * 0.6 - 0.3;
+              const id = this.nodeId++;
+              this.sonic.send('/s_new', 'sonic-pi-prophet', id, 1, 0,
+                'note', note, 'amp', voiceAmp, 'attack', attack, 'release', 22,
+                'cutoff', drone.prophetCutoff, 'res', drone.prophetRes, 'pan', pan,
+              );
+              setTimeout(() => { try { this.sonic.send('/n_free', id); } catch {} }, (attack + 22 + 2) * 1000);
+            }
+          }
+
+          const ambPhase = Math.floor(now / this.DRONE_AMBIENCE_MS);
+          if (ambPhase !== this.lastDronePhase) {
+            this.lastDronePhase = ambPhase;
+            const note = this.epoch.root - 12;
+            const id = this.nodeId++;
+            this.sonic.send('/s_new', 'sonic-pi-dark_ambience', id, 1, 0,
+              'note', note, 'amp', 0.12, 'attack', attack + 1, 'release', 28,
+              'cutoff', drone.ambienceCutoff, 'res', 0.4, 'pan', 0,
+              'room', drone.ambienceRoom, 'reverb_time', 100,
+            );
+            setTimeout(() => { try { this.sonic.send('/n_free', id); } catch {} }, (attack + 1 + 28 + 2) * 1000);
+          }
+        }
+
+        // === MELODIC LAYER (starts after 6s) ===
+        if (elapsed > 6000) {
+          const melLen = this.euclideanPatterns.melodic.length;
+          if (melStep !== this.lastMelodicStep) {
+            this.lastMelodicStep = melStep;
+            if (this.euclideanPatterns.melodic[melIdx]) {
+              const phase = this.getPhase(this.epoch.phasePeriods.melodic);
+              const phaseThreshold = 0.6 - form.density * 0.35;
+              if (phase < phaseThreshold) {
+                const octave = this.OCTAVES[1 + (this.rng() < 0.3 ? 1 : 0)];
+                const degree = this.markov.next();
+                const note = this.epoch.root + this.SCALE[degree] + (octave * 12);
+                const synth = this.rng() < 0.55 ? 'sonic-pi-pretty_bell' : 'sonic-pi-pluck';
+                this.triggerNote(synth, note, {
+                  amp: 0.08 + form.energy * 0.15,
+                  attack: 0.01 + this.rng() * 0.15,
+                  release: 0.8 + this.rng() * 2.5 + (1 - form.energy) * 2.0,
+                  cutoff: 55 + form.energy * 55,
+                  pan: (this.rng() - 0.5) * 0.6,
+                });
+              }
+            }
+          }
+        }
+
+        // === TEXTURAL LAYER (starts after 12s) ===
+        if (elapsed > 12000) {
+          const texLen = this.euclideanPatterns.textural.length;
+          if (texStep !== this.lastTexturalStep) {
+            this.lastTexturalStep = texStep;
+            if (this.euclideanPatterns.textural[texIdx]) {
+              const phase = this.getPhase(this.epoch.phasePeriods.textural);
+              if (phase < 0.2 && this.rng() < form.density * 0.6) {
+                const degree = Math.floor(this.rng() * this.SCALE.length);
+                const octave = this.OCTAVES[1 + Math.floor(this.rng() * 2)];
+                const note = this.epoch.root + this.SCALE[degree] + (octave * 12);
+                const synth = this.rng() < 0.5 ? 'sonic-pi-blade' : 'sonic-pi-dsaw';
+                this.triggerNote(synth, note, {
+                  amp: 0.04 + form.energy * 0.06,
+                  attack: 0.3 + this.rng() * 0.7,
+                  release: 2.0 + this.rng() * 4.0,
+                  cutoff: 45 + form.energy * 40,
+                  pan: (this.rng() - 0.5) * 0.8,
+                });
+              }
+            }
+          }
+        }
+      }
+
+      private triggerNote(synth: string, note: number, params: { amp: number; attack: number; release: number; cutoff: number; pan: number }) {
+        const id = this.nodeId++;
+        this.sonic.send('/s_new', synth, id, 1, 0,
+          'note', note, 'amp', params.amp, 'attack', params.attack, 'release', params.release,
+          'cutoff', params.cutoff, 'pan', params.pan,
+        );
+        const freeMs = (params.attack + params.release + 1.5) * 1000;
+        setTimeout(() => { try { this.sonic.send('/n_free', id); } catch {} }, freeMs);
+      }
+
+      start() {
+        if (this.playing) return;
+        this.playing = true;
+        this.startTimestamp = Date.now();
+        this.lastDronePhase = -1;
+        this.lastMelodicStep = -1;
+        this.lastTexturalStep = -1;
+        this.markov.reset();
+        this.tickTimer = window.setInterval(() => this.gestureTick(), this.GESTURE_MS);
+        this.gestureTick();
+      }
+
+      stop() {
+        if (!this.playing) return;
+        this.playing = false;
+        if (this.tickTimer !== null) { clearInterval(this.tickTimer); this.tickTimer = null; }
+      }
+    }
+
+    // ================================================================
+    // UI + VISUALIZATION WIRING
+    // ================================================================
+    const playBtn = document.getElementById('play-btn')!;
+    const playIcon = document.getElementById('play-icon')!;
+    const statusEl = document.getElementById('status')!;
+    const vizRack = document.getElementById('viz-rack')!;
+
+    let sonic: any = null;
+    let composition: GenerativeComposition | null = null;
+
+    // Viz component refs
+    let vizState: any = {};
+
+    function buildVisualizers(epoch: any, euclidean: any) {
+      // ── KEY module ──
+      const rootMidi = epoch.root;
+      const rootName = NOTE_NAMES[rootMidi % 12];
+      const rootOct = Math.floor(rootMidi / 12) - 1;
+      document.getElementById('viz-root-note')!.textContent = `${rootName}${rootOct}`;
+
+      const chordKey = epoch.drone.chord.join(',');
+      const chordName = CHORD_NAMES[chordKey] ?? chordKey;
+      document.getElementById('viz-chord-name')!.textContent = chordName;
+
+      const chordNotesEl = document.getElementById('viz-chord-notes')!;
+      chordNotesEl.innerHTML = '';
+      epoch.drone.chord.forEach((interval: number) => {
+        const midi = rootMidi + interval;
+        const pill = document.createElement('span');
+        pill.className = 'chord-pill';
+        pill.textContent = `${NOTE_NAMES[midi % 12]}${Math.floor(midi / 12) - 1}`;
+        chordNotesEl.appendChild(pill);
+      });
+
+      // ── DRONE module ──
+      const droneKnobRow = document.getElementById('row-drone-knobs')!;
+      const droneDispRow = document.getElementById('row-drone-disps')!;
+
+      vizState.prophetCutKnob = new VizKnob(droneKnobRow, {
+        min: 20, max: 100, value: epoch.drone.prophetCutoff,
+        color: 'rgba(0, 212, 255, 0.6)', label: 'CUTOFF', decimals: 0, unit: ''
+      });
+      vizState.prophetResKnob = new VizKnob(droneKnobRow, {
+        min: 0, max: 1, value: epoch.drone.prophetRes,
+        color: 'rgba(0, 212, 255, 0.6)', label: 'RESO', decimals: 2, unit: ''
+      });
+      vizState.ambienceCutKnob = new VizKnob(droneKnobRow, {
+        min: 20, max: 80, value: epoch.drone.ambienceCutoff,
+        color: 'rgba(255, 51, 153, 0.5)', label: 'SUB CUT', decimals: 0, unit: ''
+      });
+
+      // ── FORM module ──
+      const formGaugeRow = document.getElementById('row-form-gauges')!;
+      vizState.densityGauge = new VizGauge(formGaugeRow, {
+        min: 0, max: 1, value: 0, color: 'rgba(255, 136, 51, 0.6)', label: 'density', unit: '', decimals: 2
+      });
+      vizState.energyGauge = new VizGauge(formGaugeRow, {
+        min: 0, max: 1, value: 0, color: 'rgba(255, 204, 0, 0.5)', label: 'energy', unit: '', decimals: 2
+      });
+
+      // ── RHYTHM module ──
+      vizState.melStepIndicator = new StepIndicator(
+        document.getElementById('viz-mel-pattern')!,
+        euclidean.melodic,
+        'rgba(0, 255, 136, 0.6)'
+      );
+      vizState.texStepIndicator = new StepIndicator(
+        document.getElementById('viz-tex-pattern')!,
+        euclidean.textural,
+        'rgba(170, 85, 255, 0.6)'
+      );
+
+      // Rhythm param displays
+      const rhythmDispRow = document.getElementById('row-rhythm-disps')!;
+      const melEucl = epoch.euclidean.melodic;
+      const texEucl = epoch.euclidean.textural;
+
+      function addRhythmDisp(label: string, text: string) {
+        const item = document.createElement('div');
+        item.className = 'rhythm-disp-item';
+        const lbl = document.createElement('div');
+        lbl.className = 'rhythm-disp-label';
+        lbl.textContent = label;
+        const val = document.createElement('div');
+        val.className = 'led-display';
+        const span = document.createElement('span');
+        span.className = 'led-value';
+        span.style.color = 'rgba(255,255,255,0.45)';
+        span.style.fontSize = '11px';
+        span.textContent = text;
+        val.appendChild(span);
+        item.appendChild(lbl);
+        item.appendChild(val);
+        rhythmDispRow.appendChild(item);
+      }
+
+      addRhythmDisp('mel', `${melEucl.k}/${melEucl.n} · ${(melEucl.stepMs / 1000).toFixed(1)}s`);
+      addRhythmDisp('tex', `${texEucl.k}/${texEucl.n} · ${(texEucl.stepMs / 1000).toFixed(1)}s`);
+
+      // ── PHASE module ──
+      const phaseGaugeRow = document.getElementById('row-phase-gauges')!;
+      vizState.melodicPhaseGauge = new VizGauge(phaseGaugeRow, {
+        min: 0, max: 1, value: 0, color: 'rgba(0, 255, 136, 0.4)', label: 'melodic', unit: '', decimals: 2
+      });
+      vizState.texturalPhaseGauge = new VizGauge(phaseGaugeRow, {
+        min: 0, max: 1, value: 0, color: 'rgba(170, 85, 255, 0.4)', label: 'textural', unit: '', decimals: 2
+      });
+    }
+
+    function updateVisualizers(state: any) {
+      // Form gauges
+      vizState.densityGauge.setValue(state.form.density);
+      vizState.energyGauge.setValue(state.form.energy);
+
+      // Form word
+      const avg = (state.form.density + state.form.energy) / 2;
+      let word = 'still';
+      if (avg < 0.2) word = 'still';
+      else if (avg < 0.35) word = 'quiet';
+      else if (avg < 0.5) word = 'emerging';
+      else if (avg < 0.65) word = 'active';
+      else if (avg < 0.8) word = 'flowing';
+      else word = 'dense';
+      const wordEl = document.getElementById('viz-form-word')!;
+      wordEl.textContent = word;
+      // Brighten the word based on activity
+      wordEl.style.color = `rgba(255,255,255,${0.2 + avg * 0.4})`;
+
+      // Step indicators
+      vizState.melStepIndicator.setStep(state.melodicStep);
+      vizState.texStepIndicator.setStep(state.texturalStep);
+
+      // Phase gauges
+      vizState.melodicPhaseGauge.setValue(state.melodicPhase);
+      vizState.texturalPhaseGauge.setValue(state.texturalPhase);
+    }
+
+    playBtn.addEventListener('click', async () => {
+      if (!sonic) {
+        playBtn.classList.add('loading');
+        playIcon.textContent = '⟳';
+        statusEl.textContent = 'initializing audio engine…';
+
+        try {
+          const module = await import('https://unpkg.com/supersonic-scsynth@latest/dist/supersonic.js');
+          const { SuperSonic } = module;
+
+          sonic = new SuperSonic({
+            baseURL: 'https://unpkg.com/supersonic-scsynth@latest/dist/',
+            coreBaseURL: 'https://unpkg.com/supersonic-scsynth-core@latest/',
+            synthdefBaseURL: 'https://unpkg.com/supersonic-scsynth-synthdefs@latest/synthdefs/',
+          });
+
+          await sonic.init();
+
+          statusEl.textContent = 'loading instruments…';
+          await sonic.loadSynthDefs([
+            'sonic-pi-prophet', 'sonic-pi-dark_ambience', 'sonic-pi-hollow',
+            'sonic-pi-pretty_bell', 'sonic-pi-pluck', 'sonic-pi-blade', 'sonic-pi-dsaw',
+          ]);
+          await sonic.sync();
+
+          composition = new GenerativeComposition(sonic);
+
+          // Build visualizers from epoch state
+          buildVisualizers(composition.getEpoch(), composition.getEuclidean());
+
+          // Wire tick callback
+          composition.onTick = updateVisualizers;
+
+          // Show rack
+          vizRack.style.display = 'block';
+          requestAnimationFrame(() => vizRack.classList.add('visible'));
+
+          // Start
+          composition.start();
+          playBtn.classList.remove('loading');
+          playBtn.classList.add('playing');
+          playIcon.textContent = '❚❚';
+          statusEl.textContent = 'listening…';
+
+        } catch (err: any) {
+          statusEl.textContent = 'error: ' + (err.message || err);
+          playBtn.classList.remove('loading');
+          playIcon.textContent = '▶';
+          console.error('[generative] boot failed:', err);
+        }
+
+      } else if (composition?.playing) {
+        composition.stop();
+        playBtn.classList.remove('playing');
+        playIcon.textContent = '▶';
+        statusEl.textContent = 'paused';
+        vizRack.classList.remove('visible');
+
+      } else if (composition) {
+        composition.start();
+        playBtn.classList.add('playing');
+        playIcon.textContent = '❚❚';
+        statusEl.textContent = 'listening…';
+        vizRack.classList.add('visible');
+      }
+    });
+  </script>
+
+</Layout>

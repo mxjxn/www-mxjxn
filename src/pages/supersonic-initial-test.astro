@@ -1,0 +1,175 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="SuperSonic Test — mxjxn.com" description="Interactive SuperCollider in the browser.">
+
+  <main class="page">
+    <section class="hero">
+      <h1 class="name">SuperSonic Test</h1>
+      <p class="tagline">SuperCollider in your browser — postMessage mode</p>
+    </section>
+
+    <section class="content-section">
+      <p class="bio">No COOP/COEP headers required. Uses postMessage transport for miniapp compatibility.</p>
+
+      <div id="supersonic-status" class="status">🟡 Not initialized</div>
+
+      <div id="boot-section">
+        <button id="boot-btn" class="btn btn-primary">🎵 Boot Engine</button>
+      </div>
+
+      <div id="play-section" style="display:none; margin-top: 1.5rem;">
+        <p style="margin-bottom: 1rem; opacity: 0.7; font-size: 0.9rem;">Choose a synth:</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <button class="btn" data-synth="sonic-pi-prophet" data-note="40" data-release="4" data-cutoff="80">
+            🔮 Prophet E2
+          </button>
+          <button class="btn" data-synth="sonic-pi-beep" data-note="60" data-release="2" data-cutoff="100">
+            💠 Beep C4
+          </button>
+          <button class="btn" data-synth="sonic-pi-saw" data-note="48" data-release="3" data-cutoff="60">
+            🪚 Saw C3
+          </button>
+          <button class="btn" data-synth="sonic-pi-pulse" data-note="55" data-release="3" data-cutoff="75">
+            ⚡ Pulse G3
+          </button>
+          <button class="btn" data-synth="sonic-pi-tri" data-note="67" data-release="4" data-cutoff="90">
+            🔺 Triangle G4
+          </button>
+          <button class="btn" id="stop-all-btn" style="grid-column: 1 / -1;">
+            ⏹ Stop All
+          </button>
+        </div>
+
+        <div id="active-nodes" style="margin-top: 1rem; font-size: 0.8rem; opacity: 0.6;"></div>
+      </div>
+    </section>
+  </main>
+
+  <style>
+    .status {
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.05);
+      text-align: center;
+      margin: 1rem 0;
+      font-family: monospace;
+      font-size: 0.85rem;
+    }
+    .btn {
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.08);
+      color: inherit;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    .btn:active {
+      transform: scale(0.96);
+      background: rgba(255,255,255,0.15);
+    }
+    .btn-primary {
+      background: rgba(99, 102, 241, 0.3);
+      border-color: rgba(99, 102, 241, 0.5);
+      font-size: 1.1rem;
+      padding: 1rem 2rem;
+    }
+    .content-section {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+  </style>
+
+  <script>
+    // Load SuperSonic via CDN — postMessage mode (default, no COOP/COEP needed)
+    let sonic: any = null;
+    let nodeIdCounter = 1000;
+
+    const statusEl = document.getElementById('supersonic-status')!;
+    const bootBtn = document.getElementById('boot-btn')!;
+    const playSection = document.getElementById('play-section')!;
+    const activeNodesEl = document.getElementById('active-nodes')!;
+    const synthBtns = document.querySelectorAll('[data-synth]');
+
+    bootBtn.addEventListener('click', async () => {
+      statusEl.textContent = '🟠 Loading SuperSonic...';
+      bootBtn.disabled = true;
+
+      try {
+        // Dynamic import — named export, postMessage is default transport
+        const module = await import('https://unpkg.com/supersonic-scsynth@latest/dist/supersonic.js');
+        const { SuperSonic } = module;
+        console.log('[test] SuperSonic imported:', typeof SuperSonic);
+
+        sonic = new SuperSonic({
+          baseURL: 'https://unpkg.com/supersonic-scsynth@latest/dist/',
+          coreBaseURL: 'https://unpkg.com/supersonic-scsynth-core@latest/',
+          synthdefBaseURL: 'https://unpkg.com/supersonic-scsynth-synthdefs@latest/synthdefs/',
+          debug: true,
+        });
+
+        // Listen for errors and debug messages
+        sonic.on('error', (err: any) => console.error('[test] sonic error:', err));
+        sonic.on('debug', (msg: any) => console.log('[test] sonic debug:', msg.text));
+        sonic.on('in:text', (msg: any) => console.log('[test] ← OSC:', msg.text));
+
+        console.log('[test] Calling init()...');
+        await sonic.init();
+        console.log('[test] init() done. AudioContext state:', sonic.audioContext?.state);
+        console.log('[test] Capabilities:', sonic.initialized);
+
+        // Load synthdefs one at a time with error checking
+        const synthdefs = ['sonic-pi-prophet', 'sonic-pi-beep', 'sonic-pi-saw', 'sonic-pi-pulse', 'sonic-pi-tri'];
+        const results = await sonic.loadSynthDefs(synthdefs);
+        console.log('[test] loadSynthDefs results:', JSON.stringify(results));
+        console.log('[test] Loaded defs:', [...sonic.loadedSynthDefs.keys()]);
+
+        // Wait for scsynth worklet to actually process the /d_recv messages
+        console.log('[test] Syncing...');
+        await sonic.sync();
+        console.log('[test] Synced!');
+
+        statusEl.textContent = '🟢 Engine ready — pick a synth (check console)';
+        playSection.style.display = 'block';
+      } catch (err: any) {
+        statusEl.textContent = '🔴 Error: ' + (err.message || err);
+        bootBtn.disabled = false;
+        console.error('[test] SuperSonic init failed:', err);
+      }
+    });
+
+    // Synth trigger buttons
+    synthBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (!sonic) return;
+        const synth = (btn as HTMLElement).dataset.synth;
+        const note = parseInt((btn as HTMLElement).dataset.note || '60');
+        const release = parseFloat((btn as HTMLElement).dataset.release || '2');
+        const cutoff = parseFloat((btn as HTMLElement).dataset.cutoff || '80');
+        const id = nodeIdCounter++;
+
+        console.log('[test] send /s_new', synth, id, 'note:', note, 'release:', release, 'cutoff:', cutoff);
+        console.log('[test] AudioContext state before send:', sonic.audioContext?.state);
+        sonic.send('/s_new', synth, id, 0, 0, 'note', note, 'release', release, 'cutoff', cutoff, 'amp', 0.5);
+        statusEl.textContent = `🔊 Playing ${synth} (node ${id})`;
+
+        // Auto-free after release
+        setTimeout(() => {
+          try { sonic.send('/n_free', id); } catch {}
+        }, release * 1000 + 500);
+      });
+    });
+
+    // Stop all
+    document.getElementById('stop-all-btn')?.addEventListener('click', () => {
+      if (!sonic) return;
+      sonic.send('/g_freeAll', 0);
+      statusEl.textContent = '🟢 Engine ready — pick a synth';
+    });
+  </script>
+
+</Layout>
