@@ -38,6 +38,7 @@ export default config({
     skills: collection({
       label: 'Skills',
       path: 'src/content/skills/*/',
+      slugField: 'title',
       schema: {
         icon: fields.text({ label: 'Icon (emoji)' }),
         title: fields.text({ label: 'Title' }),
@@ -47,6 +48,7 @@ export default config({
     recently: collection({
       label: 'Recently',
       path: 'src/content/recently/*/',
+      slugField: 'title',
       schema: {
         tag: fields.text({ label: 'Tag', description: 'e.g. Residency' }),
         title: fields.text({ label: 'Title' }),
@@ -57,6 +59,7 @@ export default config({
     art: collection({
       label: 'Art',
       path: 'src/content/art/*/',
+      slugField: 'title',
       schema: {
         title: fields.text({ label: 'Title' }),
         subtitle: fields.text({ label: 'Subtitle' }),
@@ -67,6 +70,7 @@ export default config({
     projects: collection({
       label: 'Projects',
       path: 'src/content/projects/*/',
+      slugField: 'title',
       schema: {
         icon: fields.text({ label: 'Icon (emoji)' }),
         title: fields.text({ label: 'Title' }),
@@ -77,11 +81,30 @@ export default config({
     links: collection({
       label: 'Links',
       path: 'src/content/links/*/',
+      slugField: 'title',
       schema: {
         icon: fields.text({ label: 'Icon (emoji)' }),
         title: fields.text({ label: 'Title' }),
         subtitle: fields.text({ label: 'Subtitle' }),
         url: fields.text({ label: 'URL' }),
+      },
+    }),
+    posts: collection({
+      label: 'Blog Posts',
+      path: 'src/content/posts/*/',
+      slugField: 'slug',
+      format: { contentField: 'body' },
+      schema: {
+        title: fields.text({ label: 'Title' }),
+        slug: fields.text({ label: 'Slug', description: 'Short name used in the URL, e.g. keystatic-cms' }),
+        date: fields.date({ label: 'Publish Date' }),
+        tags: fields.array(fields.text({ label: 'Tag' }), {
+          label: 'Tags',
+          itemLabel: 'Tag',
+        }),
+        excerpt: fields.text({ label: 'Excerpt', description: 'Short description for the post listing' }),
+        draft: fields.checkbox({ label: 'Draft', description: 'Drafts are hidden from the blog listing' }),
+        body: fields.markdoc({ label: 'Body' }),
       },
     }),
   },

@@ -140,7 +140,7 @@ const isDaytime = romeHour >= 6 && romeHour < 20;
 
     <!-- Footer -->
     <footer class="footer">
-      <p>© {now.getFullYear()} Max Jackson · <a href="/about">About</a></p>
+      <p>© {now.getFullYear()} Max Jackson · <a href="/blog">Blog</a> · <a href="/about">About</a></p>
     </footer>
 
   </main>
@@ -211,6 +211,17 @@ const isDaytime = romeHour >= 6 && romeHour < 20;
     overflow: hidden;
   }
 
+  .hero-video-wrap::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: linear-gradient(to bottom, transparent, #000);
+    pointer-events: none;
+  }
+
   #hero-video {
     display: block;
     position: absolute;
@@ -268,10 +279,22 @@ const isDaytime = romeHour >= 6 && romeHour < 20;
   }
 
   .tagline {
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    letter-spacing: 0.02em;
-    margin-bottom: 0.75rem;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .tagline + .bio::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--text-muted);
+    margin: 0 auto 0.75rem;
+    opacity: 0.4;
   }
 
   .bio {
@@ -282,6 +305,7 @@ const isDaytime = romeHour >= 6 && romeHour < 20;
     margin: 0 auto 1rem;
     font-family: 'Space Mono', monospace;
     font-size: 0.78rem;
+    text-align: justify;
     min-height: 4.2em;
   }
 
