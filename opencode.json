@@ -1,0 +1,54 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "github-copilot/claude-sonnet-4.5",
+  "small_model": "github-copilot/claude-haiku-4.5",
+  "permission": {
+    "edit": "allow",
+    "bash": "allow",
+    "external_directory": "allow"
+  },
+  "agent": {
+    "www-mxjxn": {
+      "description": "Maintains www.mxjxn.com — Astro SSR personal site with Keystatic CMS",
+      "instructions": ["~/.config/opencode/agents/www-mxjxn.md"],
+      "permission": {
+        "external_directory": "allow",
+        "read": "allow",
+        "edit": "allow",
+        "bash": "allow",
+        "write": "allow"
+      },
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "glob": true,
+        "grep": true,
+        "list": true
+      }
+    },
+    "snap-builder": {
+      "description": "Builds Farcaster snaps — reads the snap spec, implements UI, validates, and deploys to host.neynar.app or snap.mxjxn.com",
+      "instructions": ["~/.config/opencode/agents/snap-builder.md"],
+      "permission": {
+        "external_directory": "allow",
+        "read": "allow",
+        "edit": "allow",
+        "bash": "allow",
+        "write": "allow"
+      },
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "glob": true,
+        "grep": true,
+        "list": true,
+        "webfetch": true,
+        "websearch": true
+      }
+    }
+  }
+}

@@ -1,207 +1,246 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { reader } from '../lib/reader';
 
-// Fetch latest blog posts from bot.mxjxn.com
-let blogPosts: Array<{ title: string; slug: string; date: string; category: string }> = [];
-try {
-  const res = await fetch('https://bot.mxjxn.com/api/blog.json');
-  if (res.ok) {
-    const data = await res.json();
-    blogPosts = (Array.isArray(data) ? data : data.posts || []).slice(0, 4);
-  }
-} catch {}
+const hero = await reader.singletons.hero.read();
+const skills = await reader.collections.skills.all();
+const recently = await reader.collections.recently.all();
+const art = await reader.collections.art.all();
+const projects = await reader.collections.projects.all();
+const links = await reader.collections.links.all();
 
 const now = new Date();
+const romeHour = (now.getUTCHours() + 2) % 24;
+const isDaytime = romeHour >= 6 && romeHour < 20;
 ---
 
-<Layout title="Max Jackson" description="Artist, builder, agent orchestrator. Making things with code, ink, and crypto. Currently in Rome.">
+<Layout title="Max Jackson" description="Full-stack engineer, agentic AI systems, and tools for the cryptoart ecosystem.">
+
+  <!-- Hero / Intro (full-width, outside .page container) -->
+  <section class="hero">
+    <div class="hero-video-wrap">
+      <video id="hero-video" autoplay muted loop playsinline poster="https://img.mxjxn.com/image/www-banner-poster.jpg">
+        <source src="https://img.mxjxn.com/image/www-banner.mp4" type="video/mp4" />
+      </video>
+    </div>
+    <div class="hero-content">
+      <div class="hero-text-bg">
+        <div class="avatar-ring">
+          <img src="https://img.mxjxn.com/image/max-avatar.jpg" alt="Max Jackson" class="avatar" />
+        </div>
+        <h1 class="name">Max Jackson</h1>
+        <p class="tagline">{hero?.tagline ?? ''}</p>
+        <p class="bio" id="bio-text" data-text={hero?.bio ?? ''}>&nbsp;</p>
+        <div class="status" data-daytime={isDaytime ? 'true' : 'false'}>
+          <span class="status-dot"></span>
+          <span class="status-text">{hero?.status ?? ''}</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <main class="page">
 
-    <!-- Hero / Intro -->
-    <section class="hero">
-      <div class="avatar-ring">
-        <img src="https://img.mxjxn.com/image/max-avatar.jpg" alt="Max Jackson" class="avatar" />
-      </div>
-      <h1 class="name">Max Jackson</h1>
-      <p class="tagline">artist · builder · agent orchestrator</p>
-      <p class="bio">
-        Making things with code, ink, and crypto. Building autonomous agents,
-        generative art systems, and tools that blur the line between human and machine creativity.
-      </p>
-      <div class="status">
-        <span class="status-dot"></span>
-        <span class="status-text">Currently in Rome</span>
+    <!-- What I Do -->
+    <section class="section">
+      <h2 class="section-label">What I Do</h2>
+      <div class="skills-grid">
+        {skills.map(({ entry }) => (
+          <div class="skill-card">
+            <span class="skill-icon">{entry.icon}</span>
+            <div class="skill-info">
+              <span class="skill-title">{entry.title}</span>
+              <span class="skill-sub">{entry.description}</span>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
 
-    <!-- Featured -->
+    <!-- Recently -->
     <section class="featured">
-      <h2 class="section-label">Current Focus</h2>
-      <div class="featured-card">
-        <span class="featured-tag">Residency</span>
-        <h3 class="featured-title">Rome — Kismet Casa</h3>
-        <p class="featured-desc">Printmaking, calligraphy, and street photography.
-          Exploring ancient techniques through a contemporary lens.</p>
-        <div class="featured-meta">
-          <span class="featured-date">Apr — May 2026</span>
+      <h2 class="section-label">Recently</h2>
+      {recently.map(({ entry }) => (
+        <div class="featured-card">
+          <span class="featured-tag">{entry.tag}</span>
+          <h3 class="featured-title">{entry.title}</h3>
+          <p class="featured-desc">{entry.description}</p>
+          <div class="featured-meta">
+            <span class="featured-date">{entry.date}</span>
+          </div>
         </div>
-      </div>
+      ))}
     </section>
 
     <!-- Art -->
     <section class="section">
       <h2 class="section-label">Art</h2>
-      <div class="links">
-        <a href="https://cryptoart.social" target="_blank" class="link-card">
-          <span class="link-icon">🎨</span>
-          <div>
-            <span class="link-title">Cryptoart.social</span>
-            <span class="link-sub">Auctionhouse &amp; marketplace</span>
-          </div>
-          <span class="link-arrow">↗</span>
-        </a>
-        <a href="https://warpcast.com/~/channel/cryptoart" target="_blank" class="link-card">
-          <span class="link-icon">📻</span>
-          <div>
-            <span class="link-title">/cryptoart</span>
-            <span class="link-sub">Host on Farcaster</span>
-          </div>
-          <span class="link-arrow">↗</span>
-        </a>
-        <div class="link-row">
-          <a href="/glitch" class="link-card">
-            <span class="link-icon">⚡</span>
-            <div>
-              <span class="link-title">Glitch Pipeline</span>
-              <span class="link-sub">Image manipulation on Farcaster</span>
+      <div class="art-grid">
+        {art.map(({ entry }) => (
+          <a href={entry.url} target="_blank" class="art-card">
+            <div class="art-thumb" style={`background: ${entry.gradient}`}></div>
+            <div class="art-info">
+              <span class="art-title">{entry.title}</span>
+              <span class="art-sub">{entry.subtitle}</span>
             </div>
-            <span class="link-arrow">→</span>
           </a>
-          <a href="https://mxjxn.github.io/wheelgen/" target="_blank" class="link-card">
-            <span class="link-icon">🎡</span>
-            <div>
-              <span class="link-title">Wheelgen</span>
-              <span class="link-sub">Generative color wheel tool</span>
-            </div>
-            <span class="link-arrow">↗</span>
-          </a>
-        </div>
+        ))}
       </div>
     </section>
 
-    <!-- Projects -->
-    <section class="section">
-      <h2 class="section-label">Projects</h2>
-      <div class="links">
-        <a href="https://suchbot.mxjxn.com" target="_blank" class="link-card">
-          <span class="link-icon">🤖</span>
-          <div>
-            <span class="link-title">Suchbot</span>
-            <span class="link-sub">Autonomous AI agent on Farcaster</span>
-          </div>
-          <span class="link-arrow">↗</span>
-        </a>
-        <a href="https://snap.mxjxn.com" target="_blank" class="link-card">
-          <span class="link-icon">⚡</span>
-          <div>
-            <span class="link-title">Such Snap</span>
-            <span class="link-sub">Interactive Farcaster frames</span>
-          </div>
-          <span class="link-arrow">↗</span>
-        </a>
-      </div>
-    </section>
-
-    <!-- Links -->
-    <section class="section">
-      <h2 class="section-label">Links</h2>
-      <div class="links">
-        <a href="https://warpcast.com/mxjxn" target="_blank" class="link-card">
-          <span class="link-icon">🔮</span>
-          <div>
-            <span class="link-title">Farcaster</span>
-            <span class="link-sub">@mxjxn</span>
-          </div>
-          <span class="link-arrow">↗</span>
-        </a>
-        <div class="link-row">
-          <a href="https://github.com/mxjxn" target="_blank" class="link-card">
-            <span class="link-icon">🐙</span>
-            <div>
-              <span class="link-title">GitHub</span>
-              <span class="link-sub">@mxjxn</span>
-            </div>
-            <span class="link-arrow">↗</span>
-          </a>
-          <a href="https://github.com/wowsuchbot" target="_blank" class="link-card">
-            <span class="link-icon">🤖</span>
-            <div>
-              <span class="link-title">Suchbot</span>
-              <span class="link-sub">@wowsuchbot</span>
-            </div>
-            <span class="link-arrow">↗</span>
-          </a>
-        </div>
-        <div class="link-row">
-          <a href="https://opensea.io/mxjxn" target="_blank" class="link-card">
-            <span class="link-icon">🖼️</span>
-            <div>
-              <span class="link-title">OpenSea</span>
-              <span class="link-sub">@mxjxn</span>
-            </div>
-            <span class="link-arrow">↗</span>
-          </a>
-          <a href="https://mxjxn.eth.limo" target="_blank" class="link-card">
-            <span class="link-icon">🌐</span>
-            <div>
-              <span class="link-title">ENS</span>
-              <span class="link-sub">mxjxn.eth</span>
-            </div>
-            <span class="link-arrow">↗</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Latest Blog Posts -->
-    {blogPosts.length > 0 && (
+    <!-- Projects + Listen (side by side on large) -->
+    <div class="projects-listen-row">
+      <!-- Projects -->
       <section class="section">
-        <h2 class="section-label">Writing</h2>
+        <h2 class="section-label">Projects</h2>
         <div class="links">
-          {blogPosts.map(post => (
-            <a href={`https://bot.mxjxn.com/blog/${post.slug}/`} target="_blank" class="link-card">
-              <span class="link-icon">✏️</span>
+          {projects.map(({ entry }) => (
+            <a href={entry.url} target="_blank" class="link-card">
+              <span class="link-icon">{entry.icon}</span>
               <div>
-                <span class="link-title">{post.title}</span>
-                <span class="link-sub">{post.date}{post.category ? ` · ${post.category}` : ''}</span>
+                <span class="link-title">{entry.title}</span>
+                <span class="link-sub">{entry.subtitle}</span>
               </div>
               <span class="link-arrow">↗</span>
             </a>
           ))}
         </div>
       </section>
-    )}
+
+      <!-- Listen -->
+      <section class="section">
+        <h2 class="section-label">Listen</h2>
+        <div class="coming-soon-card">
+          <span class="construction-icon">🚧</span>
+          <div class="coming-soon-info">
+            <span class="coming-soon-title">Paraminimal</span>
+            <span class="coming-soon-sub">Generative music · time-synchronized · endless</span>
+          </div>
+          <span class="coming-soon-badge">COMING SOON</span>
+        </div>
+      </section>
+    </div>
+
+    <!-- Links -->
+    <section class="section">
+      <h2 class="section-label">Links</h2>
+      <div class="links">
+        {links.map(({ entry }) => (
+          <a href={entry.url} target="_blank" class="link-card">
+            <span class="link-icon">{entry.icon}</span>
+            <div>
+              <span class="link-title">{entry.title}</span>
+              <span class="link-sub">{entry.subtitle}</span>
+            </div>
+            <span class="link-arrow">↗</span>
+          </a>
+        ))}
+      </div>
+    </section>
 
     <!-- Footer -->
     <footer class="footer">
-      <p>© {now.getFullYear()} Max Jackson</p>
+      <p>© {now.getFullYear()} Max Jackson · <a href="/about">About</a></p>
     </footer>
 
   </main>
 </Layout>
 
+<script is:inline>
+(function() {
+  // Respect prefers-reduced-motion
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ── Hero Video (replaces wheelgen canvas) ──
+  // Video autoplays via HTML attributes — no JS needed
+
+  // ── Typewriter Effect ──
+  (function() {
+    var el = document.getElementById('bio-text');
+    if (!el || prefersReducedMotion) {
+      if (el) el.textContent = el.getAttribute('data-text');
+      return;
+    }
+    var text = el.getAttribute('data-text');
+    var i = 0;
+    var speed = Math.max(15, 2000 / text.length);
+    el.classList.add('typing');
+
+    function type() {
+      if (i < text.length) {
+        el.textContent = text.substring(0, i + 1);
+        i++;
+        setTimeout(type, speed);
+      } else {
+        el.classList.remove('typing');
+        el.classList.add('typing-done');
+      }
+    }
+    setTimeout(type, 600);
+  })();
+})();
+</script>
+
 <style>
+  /* ── Page Layout ── */
   .page {
     max-width: 480px;
     margin: 0 auto;
-    padding: 2rem 1.25rem 3rem;
+    padding: 1.5rem 1.25rem 3rem;
   }
 
-  /* Hero */
+  /* ── Hero ── */
   .hero {
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    min-height: 420px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-video-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  #hero-video {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    padding: 2rem 1.25rem;
+    width: 100%;
+  }
+
+  .hero-text-bg {
+    background: rgba(10, 10, 10, 0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 2rem 2rem 1.5rem;
+    max-width: 400px;
     text-align: center;
-    padding: 1rem 0 2rem;
   }
 
   .avatar-ring {
@@ -241,38 +280,72 @@ const now = new Date();
     line-height: 1.6;
     max-width: 360px;
     margin: 0 auto 1rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    min-height: 4.2em;
   }
 
+  .bio.typing::after {
+    content: '▌';
+    animation: blink 0.7s step-end infinite;
+    color: var(--accent-light);
+  }
+
+  .bio.typing-done::after {
+    display: none;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* ── Status (Now) ── */
   .status {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    padding: 0.3rem 0.75rem;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
+    gap: 0.5rem;
+    padding: 0.5rem 1.25rem;
     border-radius: 9999px;
-    font-size: 0.75rem;
-    color: var(--text-muted);
+    font-size: 0.8rem;
+    color: var(--text);
+    border: 1px solid var(--border);
+    animation: breathe 4s ease-in-out infinite;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .status[data-daytime="true"] {
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.08), rgba(245, 158, 11, 0.05), rgba(139, 92, 246, 0.03));
+  }
+
+  .status[data-daytime="false"] {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.06), rgba(59, 130, 246, 0.04));
+  }
+
+  @keyframes breathe {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
+    50% { box-shadow: 0 0 20px 2px rgba(139, 92, 246, 0.08); }
   }
 
   .status-dot {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background: #34d399;
     animation: pulse 2s ease-in-out infinite;
+    flex-shrink: 0;
   }
 
   @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.4); }
+    50% { opacity: 0.6; box-shadow: 0 0 6px 2px rgba(52, 211, 153, 0.2); }
   }
 
   .status-text {
     font-family: 'Space Mono', monospace;
   }
 
-  /* Sections */
+  /* ── Sections ── */
   .section {
     margin-bottom: 1.75rem;
   }
@@ -287,9 +360,60 @@ const now = new Date();
     margin-bottom: 0.75rem;
   }
 
-  /* Featured */
+  /* ── Featured ── */
   .featured {
     margin-bottom: 1.75rem;
+  }
+
+  /* ── Skill Cards ── */
+  .skills-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .skill-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    padding: 1rem 1.1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    transition: border-color 0.15s;
+  }
+
+  .skill-card:hover {
+    border-color: var(--accent);
+  }
+
+  .skill-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    width: 28px;
+    text-align: center;
+    padding-top: 0.1rem;
+  }
+
+  .skill-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .skill-title {
+    font-weight: 700;
+    font-size: 0.9rem;
+    line-height: 1.3;
+    color: var(--text);
+  }
+
+  .skill-sub {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.55;
   }
 
   .featured-card {
@@ -331,7 +455,126 @@ const now = new Date();
     color: var(--text-muted);
   }
 
-  /* Link cards */
+  /* ── Art Cards ── */
+  .art-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+
+  .art-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color 0.15s, transform 0.15s;
+  }
+
+  .art-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    color: var(--text);
+  }
+
+  .art-thumb {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    flex-shrink: 0;
+  }
+
+  .art-info {
+    padding: 0.6rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .art-title {
+    font-weight: 600;
+    font-size: 0.82rem;
+    line-height: 1.3;
+  }
+
+  .art-sub {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* ── Projects + Listen Row ── */
+  .projects-listen-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 1.75rem;
+  }
+
+  .projects-listen-row .section {
+    margin-bottom: 0;
+  }
+
+  /* ── Coming Soon Card ── */
+  .coming-soon-card {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    background: var(--bg-card);
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+    opacity: 0.75;
+  }
+
+  .construction-icon {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+
+  .coming-soon-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .coming-soon-title {
+    font-weight: 600;
+    font-size: 0.9rem;
+    line-height: 1.3;
+  }
+
+  .coming-soon-sub {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .coming-soon-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--accent-light);
+    border: 1px dotted var(--accent);
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    transform: skewX(-4deg);
+    animation: badge-glow 3s ease-in-out infinite;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  @keyframes badge-glow {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; text-shadow: 0 0 6px rgba(167, 139, 250, 0.4); }
+  }
+
+  /* ── Link Cards ── */
   .links {
     display: flex;
     flex-direction: column;
@@ -400,7 +643,7 @@ const now = new Date();
     color: var(--accent-light);
   }
 
-  /* Footer */
+  /* ── Footer ── */
   .footer {
     padding-top: 2rem;
     border-top: 1px solid var(--border);
@@ -413,10 +656,100 @@ const now = new Date();
     font-family: 'Space Mono', monospace;
   }
 
-  /* Mobile */
+  /* ── Responsive: Tablet ── */
+  @media (min-width: 640px) {
+    .page {
+      max-width: 720px;
+    }
+
+    .bio {
+      max-width: 440px;
+    }
+  }
+
+  /* ── Responsive: Large Desktop (two-column) ── */
+  @media (min-width: 1024px) {
+    .page {
+      max-width: 960px;
+    }
+
+    .hero {
+      min-height: 480px;
+    }
+
+    .hero-text-bg {
+      max-width: 440px;
+      padding: 2.5rem 2.5rem 2rem;
+    }
+
+    .avatar-ring {
+      margin: 0 auto 1rem;
+    }
+
+    .bio {
+      max-width: 100%;
+      margin: 0 0 1rem;
+    }
+
+    .status {
+      margin: 0;
+    }
+
+    .projects-listen-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .projects-listen-row .section {
+      margin-bottom: 0;
+    }
+
+    .art-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .art-card {
+      flex-direction: row;
+    }
+
+    .art-thumb {
+      width: 72px;
+      aspect-ratio: 1;
+    }
+
+    .art-info {
+      justify-content: center;
+    }
+  }
+
+  /* ── Mobile Small ── */
   @media (max-width: 480px) {
     .page {
       padding: 1.5rem 1rem 2.5rem;
+    }
+  }
+
+  /* ── Reduced Motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    .bio.typing::after {
+      animation: none;
+    }
+    .status {
+      animation: none;
+    }
+    .status-dot {
+      animation: none;
+    }
+    .coming-soon-badge {
+      animation: none;
     }
   }
 </style>

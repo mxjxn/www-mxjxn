@@ -1,0 +1,100 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { reader } from '../lib/reader';
+
+const about = await reader.singletons.about.read();
+---
+
+<Layout title="About — Max Jackson" description="The story behind the work.">
+
+  <main class="page">
+
+    <a href="/" class="back-link">← Back</a>
+
+    <h1 class="page-title">About</h1>
+
+    <div class="prose">
+      {about?.paragraphs?.map((p: string) => (
+        <p>{p}</p>
+      ))}
+    </div>
+
+    <footer class="footer">
+      <p><a href="/">mxjxn.com</a></p>
+    </footer>
+
+  </main>
+</Layout>
+
+<style>
+  .page {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 3rem;
+  }
+
+  .back-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    display: inline-block;
+  }
+
+  .back-link:hover {
+    color: var(--accent-light);
+  }
+
+  .page-title {
+    font-size: 1.75rem;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+
+  .prose {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .prose p {
+    color: var(--text);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .footer {
+    padding-top: 2rem;
+    margin-top: 2.5rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .footer p {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  @media (min-width: 640px) {
+    .page {
+      max-width: 600px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      max-width: 680px;
+    }
+
+    .prose p {
+      font-size: 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .page {
+      padding: 1.5rem 1rem 2.5rem;
+    }
+  }
+</style>

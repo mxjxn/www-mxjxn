@@ -3,237 +3,416 @@ import Layout from '../layouts/Layout.astro';
 
 const title = "The Glitch Pipeline";
 const description = "17 effects, masks, pipelines, and parallel blending — an image manipulation system running entirely on Farcaster.";
+
+const toc = [
+  { id: "how-it-works", label: "How it works" },
+  { id: "effects", label: "Effects", children: [
+    { id: "color-effects", label: "Color" },
+    { id: "geometry-effects", label: "Geometry" },
+  ]},
+  { id: "pipelines", label: "Pipelines" },
+  { id: "masking", label: "Masking" },
+  { id: "ai-powered", label: "AI-powered steps" },
+  { id: "remix", label: "Remix" },
+  { id: "bare-glitch", label: "The bare glitch" },
+  { id: "presets", label: "Presets" },
+  { id: "reference", label: "Reference & docs" },
+];
 ---
 
 <Layout title={title} description={description}>
 
-  <main class="page">
+  <div class="glitch-layout">
+    <nav class="toc" id="toc" aria-label="Table of contents">
+      <div class="toc-label">On this page</div>
+      <ul class="toc-list">
+        {toc.map(item => (
+          <li>
+            <a href={`#${item.id}`} class="toc-link" data-target={item.id}>
+              {item.label}
+            </a>
+            {item.children && (
+              <ul class="toc-sub">
+                {item.children.map(child => (
+                  <li>
+                    <a href={`#${child.id}`} class="toc-link toc-sub-link" data-target={child.id}>
+                      {child.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
 
-    <a href="/" class="back-link">← mxjxn.com</a>
+    <main class="page">
+      <a href="/" class="back-link">← mxjxn.com</a>
 
-    <article class="article">
-      <h1 class="title">{title}</h1>
-      <p class="subtitle">An image manipulation playground running entirely on Farcaster.</p>
+      <article class="article">
+        <h1 class="title">{title}</h1>
+        <p class="subtitle">An image manipulation playground running entirely on Farcaster.</p>
 
-      <p class="intro">
-        Reply to any cast with a command and get back a glitched, distorted, or entirely
-        generated image. No apps, no uploads, no friction. Just words on a timeline.
-      </p>
-
-      <section class="section">
-        <h2>How it works</h2>
-        <p>
-          Mention <strong>@suchbot</strong> with a command. The webhook parses it, downloads
-          attached images (or generates new ones), runs them through a pipeline of effects,
-          and posts the result back to the thread.
+        <p class="intro">
+          Reply to any cast with a command and get back a glitched, distorted, or entirely
+          generated image. No apps, no uploads, no friction. Just words on a timeline.
         </p>
-        <p>
-          Everything runs on a single server. No external image APIs, no cloud GPU inference
-          for effects — just raw pixel manipulation in Node.js with
-          <a href="https://sharp.pixelplumbing.com/" target="_blank">sharp</a>. The only
-          external call is to an image generation model when you use <code>generate</code>.
-        </p>
-        <div class="example">
-          <code>@suchbot generate cosmic void | kaleidoscope::8 | posterize::3</code>
-        </div>
-      </section>
 
-      <section class="section">
-        <h2>Effects</h2>
-        <p>
-          There are 17 built-in effects, split between color manipulation and geometry:
-        </p>
-        <div class="two-col">
-          <div>
-            <h3>Color</h3>
-            <ul>
-              <li>rgb-shift</li>
-              <li>pixel-sort</li>
-              <li>posterize</li>
-              <li>invert</li>
-              <li>colorswap</li>
-              <li>noise</li>
-              <li>dither</li>
-              <li>halftone</li>
-            </ul>
+        <section class="section" id="how-it-works">
+          <h2>How it works</h2>
+          <p>
+            Mention <strong>@suchbot</strong> with a command. The webhook parses it, downloads
+            attached images (or generates new ones), runs them through a pipeline of effects,
+            and posts the result back to the thread.
+          </p>
+          <p>
+            Everything runs on a single server. No external image APIs, no cloud GPU inference
+            for effects — just raw pixel manipulation in Node.js with
+            <a href="https://sharp.pixelplumbing.com/" target="_blank">sharp</a>. The only
+            external call is to an image generation model when you use <code>generate</code>.
+          </p>
+          <div class="example">
+            <code>@suchbot generate cosmic void | kaleidoscope::8 | posterize::3</code>
           </div>
-          <div>
-            <h3>Geometry</h3>
-            <ul>
-              <li>kaleidoscope</li>
-              <li>lens-distortion</li>
-              <li>pixelate</li>
-              <li>wave</li>
-              <li>swirl</li>
-              <li>barrel</li>
-              <li>spherical</li>
-              <li>globe</li>
-              <li>slice</li>
-            </ul>
-          </div>
-        </div>
-        <p>
-          Each effect has its own parameter space. Some are simple — posterize takes a levels
-          count. Others are deep — lens-distortion has 5 sub-modes with chromatic aberration,
-          radius, frequency, and falloff. The kaleidoscope alone has segments, zoom, rotation,
-          angle offsets, source panning, and source rotation.
-        </p>
-      </section>
+        </section>
 
-      <section class="section">
-        <h2>Pipelines</h2>
-        <p>
-          The real power is chaining effects with pipes. Each pipe feeds the output of one
-          step into the next. You can stack as many as you want.
-        </p>
-        <div class="example" set:html={`<pre><code>@suchbot &gt;&gt;
+        <section class="section" id="effects">
+          <h2>Effects</h2>
+          <p>
+            There are 17 built-in effects, split between color manipulation and geometry:
+          </p>
+          <div class="two-col">
+            <div id="color-effects">
+              <h3>Color</h3>
+              <ul>
+                <li>rgb-shift</li>
+                <li>pixel-sort</li>
+                <li>posterize</li>
+                <li>invert</li>
+                <li>colorswap</li>
+                <li>noise</li>
+                <li>dither</li>
+                <li>halftone</li>
+              </ul>
+            </div>
+            <div id="geometry-effects">
+              <h3>Geometry</h3>
+              <ul>
+                <li>kaleidoscope</li>
+                <li>lens-distortion</li>
+                <li>pixelate</li>
+                <li>wave</li>
+                <li>swirl</li>
+                <li>barrel</li>
+                <li>spherical</li>
+                <li>globe</li>
+                <li>slice</li>
+              </ul>
+            </div>
+          </div>
+          <p>
+            Each effect has its own parameter space. Some are simple — posterize takes a levels
+            count. Others are deep — lens-distortion has 5 sub-modes with chromatic aberration,
+            radius, frequency, and falloff. The kaleidoscope alone has segments, zoom, rotation,
+            angle offsets, source panning, and source rotation.
+          </p>
+        </section>
+
+        <section class="section" id="pipelines">
+          <h2>Pipelines</h2>
+          <p>
+            The real power is chaining effects with pipes. Each pipe feeds the output of one
+            step into the next. You can stack as many as you want.
+          </p>
+          <div class="example" set:html={`<pre><code>@suchbot &gt;&gt;
 generate dark forest
 mask {:mode noise :scale 0.02}
 kaleidoscope {:segments 6 :zoom 1.5}
 rgb-shift {:masked true :shift 25}</code></pre>`} />
-        <p>
-          There's also <strong>parallel blending</strong> — run multiple independent
-          pipelines and composite them together with blend modes like screen, multiply,
-          overlay, difference, and more:
-        </p>
-        <div class="example">
-          <code>[plasma | swirl] [grid | invert]::screen</code>
-        </div>
-      </section>
+          <p>
+            There's also <strong>parallel blending</strong> — run multiple independent
+            pipelines and composite them together with blend modes like screen, multiply,
+            overlay, difference, and more:
+          </p>
+          <div class="example">
+            <code>[plasma | swirl] [grid | invert]::screen</code>
+          </div>
+        </section>
 
-      <section class="section">
-        <h2>Masking</h2>
-        <p>
-          This is where it gets interesting. Masks let you apply effects to specific regions
-          of an image while leaving the rest untouched. There are 7 mask modes:
-        </p>
-        <div class="mask-grid">
-          <span class="mask-tag">saturation</span>
-          <span class="mask-tag">luminosity</span>
-          <span class="mask-tag">color</span>
-          <span class="mask-tag">radial</span>
-          <span class="mask-tag">noise</span>
-          <span class="mask-tag">edges</span>
-          <span class="mask-tag">blocks</span>
-          <span class="mask-tag">spiral</span>
-          <span class="mask-tag">grid</span>
-          <span class="mask-tag">circles</span>
-          <span class="mask-tag">stripes</span>
-          <span class="mask-tag">hexgrid</span>
-          <span class="mask-tag">ring</span>
-          <span class="mask-tag">diamond</span>
-          <span class="mask-tag">waves</span>
-          <span class="mask-tag">crosshatch</span>
-        </div>
-        <p>
-          Set a mask, apply effects with <code>{'{:masked true}'}</code>, then clear it.
-          You can layer multiple masks with different effects on the same image:
-        </p>
-        <div class="example" set:html={`<pre><code>mask {:mode blocks :count 5}
+        <section class="section" id="masking">
+          <h2>Masking</h2>
+          <p>
+            This is where it gets interesting. Masks let you apply effects to specific regions
+            of an image while leaving the rest untouched. There are 7 mask modes:
+          </p>
+          <div class="mask-grid">
+            <span class="mask-tag">saturation</span>
+            <span class="mask-tag">luminosity</span>
+            <span class="mask-tag">color</span>
+            <span class="mask-tag">radial</span>
+            <span class="mask-tag">noise</span>
+            <span class="mask-tag">edges</span>
+            <span class="mask-tag">blocks</span>
+            <span class="mask-tag">spiral</span>
+            <span class="mask-tag">grid</span>
+            <span class="mask-tag">circles</span>
+            <span class="mask-tag">stripes</span>
+            <span class="mask-tag">hexgrid</span>
+            <span class="mask-tag">ring</span>
+            <span class="mask-tag">diamond</span>
+            <span class="mask-tag">waves</span>
+            <span class="mask-tag">crosshatch</span>
+          </div>
+          <p>
+            Set a mask, apply effects with <code>{'{:masked true}'}</code>, then clear it.
+            You can layer multiple masks with different effects on the same image:
+          </p>
+          <div class="example" set:html={`<pre><code>mask {:mode blocks :count 5}
 kaleidoscope {:masked true :segments 6}
 mask clear
 mask {:mode noise :scale 0.02}
 dither {:masked true}</code></pre>`} />
-        <p>
-          That gives you kaleidoscope in geometric block regions and dither in organic
-          noise regions, on the same image, in a single command.
-        </p>
-      </section>
+          <p>
+            That gives you kaleidoscope in geometric block regions and dither in organic
+            noise regions, on the same image, in a single command.
+          </p>
+        </section>
 
-      <section class="section">
-        <h2>AI-powered steps</h2>
-        <p>
-          On top of the local effects, the pipeline includes AI-powered steps:
-        </p>
-        <ul>
-          <li>
-            <strong>generate</strong> — text-to-image via Flux (Schnell or Dev).
-            Create something from nothing and pipe it into effects.
-          </li>
-          <li>
-            <strong>img2img</strong> — transform an existing image with a text prompt.
-            Supports SDXL via fal.ai and ControlNet for structure-preserving edits.
-          </li>
-          <li>
-            <strong>inpaint</strong> — AI inpainting within a masked region. Paint out
-            parts of an image and fill them with something new, guided by a text prompt.
-          </li>
-        </ul>
-        <p>
-          These steps cost credits (the local effects are free). The system estimates cost
-          before running and deducts after completion.
-        </p>
-      </section>
+        <section class="section" id="ai-powered">
+          <h2>AI-powered steps</h2>
+          <p>
+            On top of the local effects, the pipeline includes AI-powered steps:
+          </p>
+          <ul>
+            <li>
+              <strong>generate</strong> — text-to-image via Flux (Schnell or Dev).
+              Create something from nothing and pipe it into effects.
+            </li>
+            <li>
+              <strong>img2img</strong> — transform an existing image with a text prompt.
+              Supports SDXL via fal.ai and ControlNet for structure-preserving edits.
+            </li>
+            <li>
+              <strong>inpaint</strong> — AI inpainting within a masked region. Paint out
+              parts of an image and fill them with something new, guided by a text prompt.
+            </li>
+          </ul>
+          <p>
+            These steps cost credits (the local effects are free). The system estimates cost
+            before running and deducts after completion.
+          </p>
+        </section>
 
-      <section class="section">
-        <h2>Remix</h2>
-        <p>
-          Remix pulls images from the conversation thread — parent casts, the thread root,
-          or quoted casts. Inject them mid-pipeline to glitch something someone else posted:
-        </p>
-        <div class="example">
-          <code>@suchbot remix | posterize | invert</code>
-        </div>
-        <p>
-          You can target specific images: <code>remix quote</code> grabs from a quoted
-          cast, <code>remix root</code> from the thread root, and <code>remix last(2)</code>
-          gets the second image from the parent.
-        </p>
-      </section>
+        <section class="section" id="remix">
+          <h2>Remix</h2>
+          <p>
+            Remix pulls images from the conversation thread — parent casts, the thread root,
+            or quoted casts. Inject them mid-pipeline to glitch something someone else posted:
+          </p>
+          <div class="example">
+            <code>@suchbot remix | posterize | invert</code>
+          </div>
+          <p>
+            You can target specific images: <code>remix quote</code> grabs from a quoted
+            cast, <code>remix root</code> from the thread root, and <code>remix last(2)</code>
+            gets the second image from the parent.
+          </p>
+        </section>
 
-      <section class="section">
-        <h2>The bare <code>glitch</code></h2>
-        <p>
-          When you just say <code>@suchbot glitch</code> with no effects specified, it
-          doesn't apply a random pile. It generates a structured composition: a randomized
-          mask, a color effect within the mask, a second mask with a different mode, and
-          a distortion effect. Each cast gets a unique seed so the same image glitched
-          twice produces different results.
-        </p>
-      </section>
+        <section class="section" id="bare-glitch">
+          <h2>The bare <code>glitch</code></h2>
+          <p>
+            When you just say <code>@suchbot glitch</code> with no effects specified, it
+            doesn't apply a random pile. It generates a structured composition: a randomized
+            mask, a color effect within the mask, a second mask with a different mode, and
+            a distortion effect. Each cast gets a unique seed so the same image glitched
+            twice produces different results.
+          </p>
+        </section>
 
-      <section class="section">
-        <h2>Presets</h2>
-        <p>
-          There are 126 presets across all effects — curated parameter combinations that
-          hit specific aesthetics. Syntax is <code>effect/preset</code>:
-        </p>
-        <div class="example" set:html={`<pre><code>channel-shift/diagonal
+        <section class="section" id="presets">
+          <h2>Presets</h2>
+          <p>
+            There are 126 presets across all effects — curated parameter combinations that
+            hit specific aesthetics. Syntax is <code>effect/preset</code>:
+          </p>
+          <div class="example" set:html={`<pre><code>channel-shift/diagonal
 duotone/cyber
 kaleidoscope/star
 datamosh/bleed
 dither/atkinson</code></pre>`} />
-        <p>
-          Preset params merge first, then your custom <code>{'{:}'}</code> params override
-          them. So you can use a preset as a starting point and tweak from there.
-        </p>
-      </section>
+          <p>
+            Preset params merge first, then your custom <code>{'{:}'}</code> params override
+            them. So you can use a preset as a starting point and tweak from there.
+          </p>
+        </section>
 
-      <section class="section reference">
-        <h2>Reference & docs</h2>
-        <p>
-          Full parameter documentation for every effect, mask mode, source generator,
-          and blend mode — including the pipeline syntax, EDN params, and all the
-          presets:
-        </p>
-        <a href="https://bot.mxjxn.com/glitch" target="_blank" class="ref-link">
-          bot.mxjxn.com/glitch →
-        </a>
-      </section>
+        <section class="section reference" id="reference">
+          <h2>Reference & docs</h2>
+          <p>
+            Full parameter documentation for every effect, mask mode, source generator,
+            and blend mode — including the pipeline syntax, EDN params, and all the
+            presets:
+          </p>
+          <a href="https://bot.mxjxn.com/glitch" target="_blank" class="ref-link">
+            bot.mxjxn.com/glitch →
+          </a>
+        </section>
 
-    </article>
+      </article>
 
-    <footer class="footer">
-      <p>© 2026 Max Jackson</p>
-    </footer>
+      <footer class="footer">
+        <p>© 2026 Max Jackson</p>
+      </footer>
 
-  </main>
+    </main>
+  </div>
 </Layout>
 
+<script is:inline>
+  // Scroll-spy TOC
+  (function() {
+    var tocLinks = document.querySelectorAll('.toc-link');
+    var sections = [];
+    tocLinks.forEach(function(link) {
+      var id = link.getAttribute('data-target');
+      var el = document.getElementById(id);
+      if (el) sections.push({ id: id, el: el, link: link });
+    });
+
+    if (!sections.length) return;
+
+    // Mark the first section active on load
+    sections[0].link.classList.add('active');
+
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          // Deactivate all
+          tocLinks.forEach(function(l) { l.classList.remove('active'); });
+          // Find and activate the matching link
+          var match = sections.find(function(s) { return s.el === entry.target; });
+          if (match) {
+            match.link.classList.add('active');
+            // Also activate parent section if this is a sub-item
+            if (match.link.classList.contains('toc-sub-link')) {
+              var parentLi = match.link.closest('li');
+              var parentItem = parentLi ? parentLi.closest('.toc-list > li') : null;
+              if (parentItem) {
+                var parentLink = parentItem.querySelector(':scope > .toc-link');
+                if (parentLink) parentLink.classList.add('active');
+              }
+            }
+          }
+        }
+      });
+    }, {
+      rootMargin: '-10% 0px -75% 0px',
+      threshold: 0
+    });
+
+    sections.forEach(function(s) { observer.observe(s.el); });
+
+    // Smooth scroll on click
+    tocLinks.forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        var id = this.getAttribute('data-target');
+        var el = document.getElementById(id);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  })();
+</script>
+
 <style>
+  .glitch-layout {
+    display: flex;
+    max-width: 960px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  /* TOC sidebar */
+  .toc {
+    position: sticky;
+    top: 2rem;
+    width: 180px;
+    min-width: 180px;
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+    padding: 2rem 0.75rem 2rem 1.25rem;
+    align-self: flex-start;
+  }
+
+  .toc-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    opacity: 0.6;
+    margin-bottom: 0.75rem;
+  }
+
+  .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-left: 1px solid var(--border);
+  }
+
+  .toc-list > li {
+    margin-bottom: 0;
+  }
+
+  .toc-sub {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-left: none;
+    padding-left: 0.75rem;
+    border-left: 1px solid rgba(139, 92, 246, 0.1);
+    margin-left: 0.25rem;
+  }
+
+  .toc-link {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 0.35rem 0.5rem;
+    transition: color 0.15s, border-color 0.15s;
+    border-left: 2px solid transparent;
+    margin-left: -1px;
+    line-height: 1.3;
+  }
+
+  .toc-link:hover {
+    color: var(--text);
+  }
+
+  .toc-link.active {
+    color: var(--accent-light);
+    border-left-color: var(--accent);
+  }
+
+  .toc-sub-link {
+    font-size: 0.6rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  /* Main content area */
   .page {
     max-width: 560px;
-    margin: 0 auto;
+    flex: 1;
+    min-width: 0;
     padding: 2rem 1.25rem 3rem;
   }
 
@@ -276,6 +455,7 @@ dither/atkinson</code></pre>`} />
 
   .section {
     margin-bottom: 2rem;
+    scroll-margin-top: 2rem;
   }
 
   .section h2 {
@@ -410,10 +590,21 @@ dither/atkinson</code></pre>`} />
     font-family: 'Space Mono', monospace;
   }
 
-  @media (max-width: 480px) {
+  /* Hide TOC on mobile, show content full-width */
+  @media (max-width: 768px) {
+    .glitch-layout {
+      display: block;
+    }
+
+    .toc {
+      display: none;
+    }
+
     .page {
+      max-width: 100%;
       padding: 1.5rem 1rem 2.5rem;
     }
+
     .two-col {
       grid-template-columns: 1fr;
     }
