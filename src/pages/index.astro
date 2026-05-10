@@ -8,6 +8,10 @@ const recently = await reader.collections.recently.all();
 const art = await reader.collections.art.all();
 const projects = await reader.collections.projects.all();
 const links = await reader.collections.links.all();
+const posts = (await reader.collections.posts.all())
+  .filter(({ entry }) => !entry.draft)
+  .sort((a, b) => new Date(b.entry.date).getTime() - new Date(a.entry.date).getTime())
+  .slice(0, 3);
 
 const now = new Date();
 const romeHour = (now.getUTCHours() + 2) % 24;
@@ -120,6 +124,22 @@ const isDaytime = romeHour >= 6 && romeHour < 20;
         </div>
       </section>
     </div>
+
+    <!-- Writing -->
+    <section class="section">
+      <h2 class="section-label">Writing</h2>
+      <div class="links">
+        {posts.map(({ entry, slug }) => (
+          <a href={`/blog/${entry.slug ?? slug}`} class="link-card">
+            <div>
+              <span class="link-title">{entry.title}</span>
+              <span class="link-sub">{new Date(entry.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+            </div>
+            <span class="link-arrow">↗</span>
+          </a>
+        ))}
+      </div>
+    </section>
 
     <!-- Links -->
     <section class="section">

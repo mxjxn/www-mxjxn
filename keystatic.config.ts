@@ -2,11 +2,14 @@ import { config, fields, singleton, collection } from '@keystatic/core';
 
 export default config({
   storage: {
-    kind: 'local',
+    kind: 'github',
+    repo: 'mxjxn/www-mxjxn',
   },
   singletons: {
     hero: singleton({
       label: 'Hero',
+      path: 'src/content/hero/',
+      format: { data: 'yaml' },
       schema: {
         tagline: fields.text({
           label: 'Tagline',
@@ -24,12 +27,13 @@ export default config({
     }),
     about: singleton({
       label: 'About Page',
+      path: 'src/content/about/',
+      format: { data: 'yaml' },
       schema: {
         paragraphs: fields.array(fields.text({
           label: 'Paragraph',
         }), {
           label: 'Paragraphs',
-          itemLabel: 'Paragraph',
         }),
       },
     }),
@@ -39,9 +43,10 @@ export default config({
       label: 'Skills',
       path: 'src/content/skills/*/',
       slugField: 'title',
+      format: { data: 'yaml' },
       schema: {
         icon: fields.text({ label: 'Icon (emoji)' }),
-        title: fields.text({ label: 'Title' }),
+        title: fields.slug({ name: { label: 'Title' } }),
         description: fields.text({ label: 'Description' }),
       },
     }),
@@ -49,9 +54,10 @@ export default config({
       label: 'Recently',
       path: 'src/content/recently/*/',
       slugField: 'title',
+      format: { data: 'yaml' },
       schema: {
         tag: fields.text({ label: 'Tag', description: 'e.g. Residency' }),
-        title: fields.text({ label: 'Title' }),
+        title: fields.slug({ name: { label: 'Title' } }),
         description: fields.text({ label: 'Description' }),
         date: fields.text({ label: 'Date', description: 'e.g. Apr — May 2026' }),
       },
@@ -60,8 +66,9 @@ export default config({
       label: 'Art',
       path: 'src/content/art/*/',
       slugField: 'title',
+      format: { data: 'yaml' },
       schema: {
-        title: fields.text({ label: 'Title' }),
+        title: fields.slug({ name: { label: 'Title' } }),
         subtitle: fields.text({ label: 'Subtitle' }),
         url: fields.text({ label: 'URL' }),
         gradient: fields.text({ label: 'Gradient', description: 'CSS linear-gradient value' }),
@@ -71,9 +78,10 @@ export default config({
       label: 'Projects',
       path: 'src/content/projects/*/',
       slugField: 'title',
+      format: { data: 'yaml' },
       schema: {
         icon: fields.text({ label: 'Icon (emoji)' }),
-        title: fields.text({ label: 'Title' }),
+        title: fields.slug({ name: { label: 'Title' } }),
         subtitle: fields.text({ label: 'Subtitle' }),
         url: fields.text({ label: 'URL' }),
       },
@@ -82,9 +90,10 @@ export default config({
       label: 'Links',
       path: 'src/content/links/*/',
       slugField: 'title',
+      format: { data: 'yaml' },
       schema: {
         icon: fields.text({ label: 'Icon (emoji)' }),
-        title: fields.text({ label: 'Title' }),
+        title: fields.slug({ name: { label: 'Title' } }),
         subtitle: fields.text({ label: 'Subtitle' }),
         url: fields.text({ label: 'URL' }),
       },
@@ -93,14 +102,13 @@ export default config({
       label: 'Blog Posts',
       path: 'src/content/posts/*/',
       slugField: 'slug',
-      format: { contentField: 'body' },
+      format: { contentField: 'body', data: 'yaml' },
       schema: {
         title: fields.text({ label: 'Title' }),
-        slug: fields.text({ label: 'Slug', description: 'Short name used in the URL, e.g. keystatic-cms' }),
+        slug: fields.slug({ name: { label: 'Slug' } }),
         date: fields.date({ label: 'Publish Date' }),
         tags: fields.array(fields.text({ label: 'Tag' }), {
           label: 'Tags',
-          itemLabel: 'Tag',
         }),
         excerpt: fields.text({ label: 'Excerpt', description: 'Short description for the post listing' }),
         draft: fields.checkbox({ label: 'Draft', description: 'Drafts are hidden from the blog listing' }),

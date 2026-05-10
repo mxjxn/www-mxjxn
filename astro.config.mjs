@@ -12,6 +12,6 @@ export default defineConfig({
   }),
   integrations: [react(), markdoc(), keystatic()],
   server: {
-    allowedHosts: ['www.mxjxn.com', 'mxjxn.com'],
+    allowedHosts: ['www.mxjxn.com', 'mxjxn.com', 'preview.mxjxn.com'],
   },
 });
