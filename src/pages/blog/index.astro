@@ -42,7 +42,7 @@ const formatDate = (d: string) =>
     ) : (
       <div class="post-list">
         {posts.map((post) => (
-          <a href={`/blog/${post.slug}/`} class="post-card">
+          <a href={`/blog/${post.data.slug}/`} class="post-card">
             <div class="post-meta">
               <time datetime={post.data.date}>{formatDate(post.data.date)}</time>
               {(post.data.tags ?? []).map((tag: string) => (

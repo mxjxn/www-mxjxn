@@ -112,7 +112,7 @@ export default config({
         }),
         excerpt: fields.text({ label: 'Excerpt', description: 'Short description for the post listing' }),
         draft: fields.checkbox({ label: 'Draft', description: 'Drafts are hidden from the blog listing' }),
-        body: fields.markdoc({ label: 'Body' }),
+        body: fields.markdoc({ label: 'Body', extension: 'md' }),
       },
     }),
   },
