@@ -62,25 +62,9 @@ experience:
     role: Frontend Web Developer
     period: 2013 — 2015
     bullets:
-      - Build and maintained blogs for boston.com
+      - Build and maintained blogs for Boston.com
       - 'Participated in the 2015 full rebuild of Boston.com '
 projects:
-  - name: Suchbot
-    url: https://bot.mxjxn.com
-    period: 2026 — present
-    description: >-
-      Autonomous AI agent running as a persistent system with multi-platform
-      gateway (Telegram, Farcaster, CLI), tool orchestration, scheduled tasks,
-      and MCP server integration. Manages infrastructure, posts to social media,
-      researches and writes reports and blogposts, processes image generation
-      and manipulation requests.
-    tech:
-      - TypeScript
-      - MCP
-      - LLM orchestration
-      - Third party APIs
-      - Farcaster
-      - webhooks
   - name: Cryptoart Auctionhouse
     url: https://cryptoart.social
     period: 2025 — present
@@ -98,6 +82,22 @@ projects:
       - PostgreSQL
       - React
       - Subgraphs
+  - name: Suchbot
+    url: https://bot.mxjxn.com
+    period: 2026 — present
+    description: >-
+      Autonomous AI agent running as a persistent system with multi-platform
+      gateway (Telegram, Farcaster, CLI), tool orchestration, scheduled tasks,
+      and MCP server integration. Manages infrastructure, posts to social media,
+      researches and writes reports and blogposts, processes image generation
+      and manipulation requests.
+    tech:
+      - TypeScript
+      - MCP
+      - LLM orchestration
+      - Third party APIs
+      - Farcaster
+      - webhooks
   - name: MXJXN website
     url: https://www.mxjxn.com
     period: 2015 — present
