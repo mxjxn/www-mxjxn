@@ -1,10 +1,9 @@
 headline: Full Stack Engineer — Agentic AI & Creative Systems
 summary: >-
-  Engineer building at the intersection of autonomous AI agents, creative
-  tooling, and web3 infrastructure. Shipped multi-platform agent systems with
-  tool orchestration and MCP servers, full-stack NFT marketplaces with smart
-  contract deployment, and generative art pipelines serving thousands of users.
-  Comfortable owning the stack from Solidity to frontend.
+  I ship full-stack web3 products from Solidity through React, self-host
+  everything, and use autonomous AI agents as a core part of my development
+  workflow — code generation, infra management, content automation, and creative
+  pipelines.
 skills:
   - category: Languages
     items:
