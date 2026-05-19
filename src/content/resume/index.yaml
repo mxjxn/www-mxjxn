@@ -8,16 +8,15 @@ skills:
   - category: Languages
     items:
       - TypeScript
-      - Clojure
+      - Javascript
       - Solidity
       - SQL
   - category: AI / Agents
     items:
-      - LLM orchestration
-      - MCP (Model Context Protocol)
-      - Tool-use patterns
-      - fal.ai pipelines
-      - ComfyUI workflows
+      - LLM integration into production
+      - Generative image systems
+      - RAG and vector search
+      - AI-assisted development as core daily workflow
   - category: Frontend
     items:
       - React
