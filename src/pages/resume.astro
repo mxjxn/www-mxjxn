@@ -13,11 +13,11 @@ const resume = await reader.singletons.resume.read();
       <h1 class="name">Max Jackson</h1>
       <p class="headline">{resume?.headline}</p>
       <div class="contact">
-        <a href="mailto:suchteam.dev@gmail.com">suchteam.dev@gmail.com</a>
+        <a href="mailto:modulations@gmail.com">modulations@gmail.com</a>
         <span class="dot">·</span>
         <a href="https://github.com/mxjxn" target="_blank" rel="noopener">github.com/mxjxn</a>
         <span class="dot">·</span>
-        <a href="https://warpcast.com/mxjxn" target="_blank" rel="noopener">warpcast.com/mxjxn</a>
+        <a href="https://mxjxn.com" target="_blank" rel="noopener">mxjxn.com</a>
         <span class="dot">·</span>
         <span>Boston, MA (Remote)</span>
       </div>
@@ -163,7 +163,7 @@ const resume = await reader.singletons.resume.read();
 
   /* Sections */
   .section {
-    margin-bottom: 1.75rem;
+    margin-bottom: 1.25rem;
   }
 
   .section-title {
@@ -173,35 +173,39 @@ const resume = await reader.singletons.resume.read();
     letter-spacing: 0.1em;
     color: var(--text-muted);
     border-bottom: 1px solid var(--border);
-    padding-bottom: 0.35rem;
-    margin-bottom: 1rem;
+    padding-bottom: 0.25rem;
+    margin-bottom: 0.65rem;
   }
 
   /* Summary */
   .summary {
     font-size: 0.95rem;
-    line-height: 1.65;
+    line-height: 1.55;
     color: var(--text);
   }
 
   /* Skills */
   .skills-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem 2rem;
+  }
+
+  .skill-group {
+    break-inside: avoid;
   }
 
   .skill-category {
     font-size: 0.8rem;
     font-weight: 600;
     color: var(--text);
-    margin-bottom: 0.15rem;
+    margin-bottom: 0.1rem;
   }
 
   .skill-items {
     font-size: 0.85rem;
     color: var(--text-muted);
-    line-height: 1.5;
+    line-height: 1.4;
   }
 
   /* Entries (experience, education) */
@@ -351,26 +355,34 @@ const resume = await reader.singletons.resume.read();
       padding: 0;
     }
 
-    body {
+    body, .summary, .entry-title, .entry-description, .entry-bullets li, .name, .skill-category {
       background: white;
-      color: black;
+      color: #111;
     }
 
     .section-title {
-      color: #333;
-      border-bottom-color: #ccc;
+      color: #222;
+      border-bottom-color: #aaa;
     }
 
     .headline, .entry-role {
-      color: #555;
+      color: #333;
     }
 
-    .contact a, .skill-items, .entry-period, .tag {
-      color: #666;
+    .contact, .contact a, .skill-items, .entry-period, .tag {
+      color: #444;
     }
 
     .tag {
-      border-color: #ccc;
+      border-color: #bbb;
+    }
+
+    .entry-note {
+      color: #555;
+    }
+
+    .skills-grid {
+      gap: 0.3rem 1.5rem;
     }
   }
 </style>
