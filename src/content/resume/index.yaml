@@ -35,9 +35,7 @@ skills:
       - Solidity
       - Foundry
       - Ethers.js
-      - EIP-721
-      - EIP-1155
-      - EIP-2981
+      - on-chain indexing
 experience:
   - company: Charged Particles
     role: Lead Frontend Developer
@@ -76,18 +74,17 @@ experience:
         Managed homepage layout, breaking news updates, and multimedia story
         packages
 projects:
-  - name: Hermes Agent
-    url: https://github.com/mxjxn/hermes
-    period: 2024 — present
+  - name: Suchbot
+    url: https://bot.mxjxn.com
+    period: 2026 — present
     description: >-
       Autonomous AI agent running as a persistent system with multi-platform
       gateway (Telegram, Farcaster, CLI), tool orchestration, scheduled tasks,
       and MCP server integration. Manages infrastructure, posts to social media,
-      processes image generation requests, and coordinates between 6+ MCP tool
-      servers in real-time.
+      researches and writes reports and blogposts, processes image generation
+      and manipulation requests.
     tech:
       - TypeScript
-      - Python
       - MCP
       - LLM orchestration
       - Telegram API
