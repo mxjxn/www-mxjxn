@@ -50,11 +50,11 @@ experience:
         resolving long-standing stability and UX issues
   - company: Freelance Web Development
     role: Full Stack Developer
-    period: 2019 — 2021
+    period: 2016 — 2021
     bullets:
       - >-
         Built and deployed websites and web applications for small businesses
-        using React, Next.js, and Node.js
+        using React, Next.js, Node.js and occasionally Clojure(script)
       - >-
         Managed hosting, domains, and DNS for client projects on VPS
         infrastructure
