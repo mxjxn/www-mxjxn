@@ -104,8 +104,8 @@ projects:
       - TypeScript
       - Drizzle ORM
       - PostgreSQL
-      - Astro
       - React
+      - Subgraphs
   - name: suchbot
     url: https://warpcast.com/suchbot
     period: 2024 — present
