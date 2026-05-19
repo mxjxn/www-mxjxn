@@ -38,21 +38,16 @@ skills:
       - on-chain indexing
 experience:
   - company: Charged Particles
-    role: Lead Frontend Developer
-    period: Aug 2021 — Feb 2023
+    role: Fullstack Web3 Developer
+    period: June 2021 — February 2023
     bullets:
       - >-
-        Led frontend development for Ethereum DeFi protocol — React dApp
-        interacting with smart contracts for NFT-backed token vaults
+        Frontend development for Ethereum DeFi NFT protocol — React dApp
+        interacting with smart contracts for NFT token vaults
+      - Wrote and updated indexer subgraphs in Assemblyscript
       - >-
-        Integrated Web3 wallets (MetaMask, WalletConnect) and Ethers.js for
-        on-chain transactions across multiple EVM networks
-      - >-
-        Built real-time token balance dashboards and NFT gallery views pulling
-        from on-chain data and The Graph subgraphs
-      - >-
-        Collaborated directly with founder on product direction, UX flows, and
-        protocol feature design
+        Led refactoring of prototype dApp to production-quality codebase,
+        resolving long-standing stability and UX issues
   - company: Freelance Web Development
     role: Full Stack Developer
     period: 2019 — 2021
@@ -64,15 +59,11 @@ experience:
         Managed hosting, domains, and DNS for client projects on VPS
         infrastructure
   - company: The Boston Globe
-    role: Web Producer
-    period: 2017 — 2018
+    role: Frontend Web Developer
+    period: 2013 — 2015
     bullets:
-      - >-
-        Produced and published content for bostonglobe.com under daily editorial
-        deadlines
-      - >-
-        Managed homepage layout, breaking news updates, and multimedia story
-        packages
+      - Build and maintained blogs for boston.com
+      - 'Participated in the 2015 full rebuild of Boston.com '
 projects:
   - name: Suchbot
     url: https://bot.mxjxn.com
@@ -123,7 +114,7 @@ projects:
       - Caddy
       - pm2
 education:
-  - school: University of Massachusetts Boston
-    degree: BA, Philosophy — Minor in Computer Science
-    period: 2013 — 2015
-    note: Transferred from Berklee College of Music (Piano Performance, 2010–2012)
+  - school: New England Institute of Art
+    degree: BS, Web Design & Development
+    period: 2003 — 2007
+    note: Focus on interactive media design and game development
