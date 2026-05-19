@@ -1,0 +1,133 @@
+headline: "Full Stack Engineer — Agentic AI & Creative Systems"
+summary: >-
+  Engineer building at the intersection of autonomous AI agents, creative tooling, and web3 infrastructure.
+  Shipped multi-platform agent systems with tool orchestration and MCP servers, full-stack NFT marketplaces
+  with smart contract deployment, and generative art pipelines serving thousands of users. Comfortable
+  owning the stack from Solidity to frontend.
+
+skills:
+  - category: Languages
+    items:
+      - TypeScript
+      - Python
+      - Solidity
+      - SQL
+  - category: AI / Agents
+    items:
+      - LLM orchestration
+      - MCP (Model Context Protocol)
+      - Tool-use patterns
+      - fal.ai pipelines
+      - ComfyUI workflows
+  - category: Frontend
+    items:
+      - React
+      - Astro
+      - Next.js
+      - Tailwind CSS
+      - Farcaster Mini Apps
+  - category: Backend & Infra
+    items:
+      - Node.js
+      - PostgreSQL
+      - Docker
+      - Caddy
+      - pm2
+      - VPS administration
+  - category: Web3
+    items:
+      - Solidity
+      - Foundry
+      - Ethers.js
+      - EIP-721
+      - EIP-1155
+      - EIP-2981
+
+projects:
+  - name: Hermes Agent
+    url: "https://github.com/mxjxn/hermes"
+    period: "2024 — present"
+    description: >-
+      Autonomous AI agent running as a persistent system with multi-platform gateway (Telegram, Farcaster, CLI),
+      tool orchestration, scheduled tasks, and MCP server integration. Manages infrastructure, posts to social
+      media, processes image generation requests, and coordinates between 6+ MCP tool servers in real-time.
+    tech:
+      - TypeScript
+      - Python
+      - MCP
+      - LLM orchestration
+      - Telegram API
+      - Farcaster
+  - name: cryptoart.studio
+    url: "https://github.com/mxjxn/cryptoart-studio"
+    period: "2024 — present"
+    description: >-
+      Full-stack NFT marketplace and collection deployment platform on Base and Ethereum mainnet.
+      Monorepo with Foundry smart contracts, Drizzle ORM + PostgreSQL backend, Astro/React frontend,
+      and server-side transaction receipt watcher. Custom ERC-721 factory with extension registration
+      and royalty enforcement.
+    tech:
+      - Solidity
+      - Foundry
+      - TypeScript
+      - Drizzle ORM
+      - PostgreSQL
+      - Astro
+      - React
+  - name: suchbot
+    url: "https://warpcast.com/suchbot"
+    period: "2024 — present"
+    description: >-
+      Farcaster bot serving 870k+ users with AI-powered glitch art generation, LLM-based mention
+      classification and routing, and sticker reaction system. Runs as a persistent service with
+      webhook receiver, classifier, and response pipeline.
+    tech:
+      - TypeScript
+      - LLM classification
+      - Farcaster API
+      - fal.ai
+      - Webhooks
+  - name: www.mxjxn.com
+    url: "https://www.mxjxn.com"
+    period: "2023 — present"
+    description: >-
+      Personal site and Farcaster Mini App with Keystatic CMS (GitHub mode), SSR with Astro,
+      blog system with Markdoc rendering, dynamic OG image generation via satori, and automated
+      deployment pipeline via GitHub webhooks.
+    tech:
+      - Astro
+      - React
+      - Keystatic CMS
+      - Satori
+      - Caddy
+      - pm2
+
+experience:
+  - company: Charged Particles
+    role: Lead Frontend Developer
+    period: "Aug 2021 — Feb 2023"
+    bullets:
+      - "Led frontend development for Ethereum DeFi protocol — React dApp interacting with smart contracts for NFT-backed token vaults"
+      - "Integrated Web3 wallets (MetaMask, WalletConnect) and Ethers.js for on-chain transactions across multiple EVM networks"
+      - "Built real-time token balance dashboards and NFT gallery views pulling from on-chain data and The Graph subgraphs"
+      - "Collaborated directly with founder on product direction, UX flows, and protocol feature design"
+
+  - company: Freelance Web Development
+    role: Full Stack Developer
+    period: "2019 — 2021"
+    bullets:
+      - "Built and deployed websites and web applications for small businesses using React, Next.js, and Node.js"
+      - "Managed hosting, domains, and DNS for client projects on VPS infrastructure"
+
+  - company: The Boston Globe
+    role: Web Producer
+    period: "2017 — 2018"
+    bullets:
+      - "Produced and published content for bostonglobe.com under daily editorial deadlines"
+      - "Managed homepage layout, breaking news updates, and multimedia story packages"
+
+education:
+  - school: University of Massachusetts Boston
+    degree: "BA, Philosophy — Minor in Computer Science"
+    period: "2013 — 2015"
+    note: "Transferred from Berklee College of Music (Piano Performance, 2010–2012)"

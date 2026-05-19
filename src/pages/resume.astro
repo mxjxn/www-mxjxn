@@ -1,0 +1,376 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { reader } from '../lib/reader';
+
+const resume = await reader.singletons.resume.read();
+---
+
+<Layout title="Resume — Max Jackson" description="Max Jackson — Full Stack Engineer resume. Agentic AI, creative systems, web3.">
+  <main class="page">
+    <a href="/" class="back-link">← Back</a>
+
+    <header class="resume-header">
+      <h1 class="name">Max Jackson</h1>
+      <p class="headline">{resume?.headline}</p>
+      <div class="contact">
+        <a href="mailto:suchteam.dev@gmail.com">suchteam.dev@gmail.com</a>
+        <span class="dot">·</span>
+        <a href="https://github.com/mxjxn" target="_blank" rel="noopener">github.com/mxjxn</a>
+        <span class="dot">·</span>
+        <a href="https://warpcast.com/mxjxn" target="_blank" rel="noopener">warpcast.com/mxjxn</a>
+        <span class="dot">·</span>
+        <span>Boston, MA (Remote)</span>
+      </div>
+    </header>
+
+    <section class="section">
+      <h2 class="section-title">Summary</h2>
+      <p class="summary">{resume?.summary}</p>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Skills</h2>
+      <div class="skills-grid">
+        {resume?.skills?.map((group: any) => (
+          <div class="skill-group">
+            <h3 class="skill-category">{group.category}</h3>
+            <p class="skill-items">{group.items.join(', ')}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Projects</h2>
+      {resume?.projects?.map((project: any) => (
+        <div class="entry">
+          <div class="entry-header">
+            {project.url ? (
+              <a href={project.url} target="_blank" rel="noopener" class="entry-title">{project.name}</a>
+            ) : (
+              <span class="entry-title">{project.name}</span>
+            )}
+            <span class="entry-period">{project.period}</span>
+          </div>
+          <p class="entry-description">{project.description}</p>
+          <div class="tech-tags">
+            {project.tech.map((t: string) => (
+              <span class="tag">{t}</span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Experience</h2>
+      {resume?.experience?.map((job: any) => (
+        <div class="entry">
+          <div class="entry-header">
+            <span class="entry-title">{job.company}</span>
+            <span class="entry-period">{job.period}</span>
+          </div>
+          <p class="entry-role">{job.role}</p>
+          <ul class="entry-bullets">
+            {job.bullets.map((b: string) => (
+              <li>{b}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Education</h2>
+      {resume?.education?.map((edu: any) => (
+        <div class="entry">
+          <div class="entry-header">
+            <span class="entry-title">{edu.school}</span>
+            <span class="entry-period">{edu.period}</span>
+          </div>
+          <p class="entry-role">{edu.degree}</p>
+          {edu.note && <p class="entry-note">{edu.note}</p>}
+        </div>
+      ))}
+    </section>
+
+    <footer class="footer">
+      <p><a href="/">mxjxn.com</a></p>
+    </footer>
+  </main>
+</Layout>
+
+<style>
+  .page {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 3rem;
+  }
+
+  .back-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    display: inline-block;
+  }
+
+  .back-link:hover {
+    color: var(--accent-light);
+  }
+
+  /* Header */
+  .resume-header {
+    margin-bottom: 2rem;
+  }
+
+  .name {
+    font-size: 1.75rem;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.25rem;
+  }
+
+  .headline {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--accent-light);
+    margin-bottom: 0.75rem;
+  }
+
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .contact a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .contact a:hover {
+    color: var(--accent-light);
+  }
+
+  .dot {
+    color: var(--border);
+  }
+
+  /* Sections */
+  .section {
+    margin-bottom: 1.75rem;
+  }
+
+  .section-title {
+    font-size: 0.7rem;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.35rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Summary */
+  .summary {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--text);
+  }
+
+  /* Skills */
+  .skills-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .skill-category {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.15rem;
+  }
+
+  .skill-items {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* Entries (experience, education) */
+  .entry {
+    margin-bottom: 1.25rem;
+  }
+
+  .entry:last-child {
+    margin-bottom: 0;
+  }
+
+  .entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+
+  .entry-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  a.entry-title:hover {
+    color: var(--accent-light);
+  }
+
+  .entry-period {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .entry-role {
+    font-size: 0.85rem;
+    color: var(--accent-light);
+    margin-top: 0.1rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .entry-description {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .entry-note {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .entry-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .entry-bullets li {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--text);
+    padding-left: 1rem;
+    position: relative;
+    margin-bottom: 0.2rem;
+  }
+
+  .entry-bullets li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent-light);
+    font-size: 0.75rem;
+  }
+
+  /* Tech tags */
+  .tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--text-muted);
+  }
+
+  /* Footer */
+  .footer {
+    padding-top: 2rem;
+    margin-top: 2.5rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .footer p {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* Responsive */
+  @media (min-width: 640px) {
+    .page {
+      max-width: 600px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      max-width: 680px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .page {
+      padding: 1.5rem 1rem 2.5rem;
+    }
+
+    .contact {
+      font-size: 0.72rem;
+    }
+
+    .entry-header {
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+  }
+
+  /* Print */
+  @media print {
+    .back-link, .footer {
+      display: none;
+    }
+
+    .page {
+      max-width: 100%;
+      padding: 0;
+    }
+
+    body {
+      background: white;
+      color: black;
+    }
+
+    .section-title {
+      color: #333;
+      border-bottom-color: #ccc;
+    }
+
+    .headline, .entry-role {
+      color: #555;
+    }
+
+    .contact a, .skill-items, .entry-period, .tag {
+      color: #666;
+    }
+
+    .tag {
+      border-color: #ccc;
+    }
+  }
+</style>

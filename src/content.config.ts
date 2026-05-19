@@ -69,6 +69,37 @@ const recently = defineCollection({
   }),
 });
 
+const resume = defineCollection({
+  loader: glob({ pattern: '**/*.yaml', base: './src/content/resume' }),
+  schema: z.object({
+    headline: z.string(),
+    summary: z.string(),
+    skills: z.array(z.object({
+      category: z.string(),
+      items: z.array(z.string()),
+    })),
+    experience: z.array(z.object({
+      company: z.string(),
+      role: z.string(),
+      period: z.string(),
+      bullets: z.array(z.string()),
+    })),
+    projects: z.array(z.object({
+      name: z.string(),
+      url: z.string().optional(),
+      period: z.string(),
+      description: z.string(),
+      tech: z.array(z.string()),
+    })),
+    education: z.array(z.object({
+      school: z.string(),
+      degree: z.string(),
+      period: z.string(),
+      note: z.string().optional(),
+    })),
+  }),
+});
+
 const skills = defineCollection({
   loader: glob({ pattern: '**/*.yaml', base: './src/content/skills' }),
   schema: z.object({
@@ -86,5 +117,6 @@ export const collections = {
   posts,
   projects,
   recently,
+  resume,
   skills,
 };

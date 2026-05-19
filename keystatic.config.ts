@@ -37,6 +37,38 @@ export default config({
         }),
       },
     }),
+    resume: singleton({
+      label: 'Resume',
+      path: 'src/content/resume/',
+      format: { data: 'yaml' },
+      schema: {
+        headline: fields.text({ label: 'Headline', description: 'e.g. Full Stack Engineer — Agentic AI & Creative Systems' }),
+        summary: fields.text({ label: 'Summary', description: '2-3 sentence professional summary.' }),
+        skills: fields.array(fields.object({
+          category: fields.text({ label: 'Category', description: 'e.g. Languages, AI/ML, Infrastructure' }),
+          items: fields.array(fields.text({ label: 'Skill' }), { label: 'Skills' }),
+        }), { label: 'Skill Groups' }),
+        experience: fields.array(fields.object({
+          company: fields.text({ label: 'Company' }),
+          role: fields.text({ label: 'Role' }),
+          period: fields.text({ label: 'Period', description: 'e.g. July 2021 — February 2023' }),
+          bullets: fields.array(fields.text({ label: 'Bullet' }), { label: 'Bullets' }),
+        }), { label: 'Experience' }),
+        projects: fields.array(fields.object({
+          name: fields.text({ label: 'Project Name' }),
+          url: fields.text({ label: 'URL', description: 'Optional link' }),
+          period: fields.text({ label: 'Period', description: 'e.g. 2024 — present' }),
+          description: fields.text({ label: 'Description' }),
+          tech: fields.array(fields.text({ label: 'Tech' }), { label: 'Tech Stack' }),
+        }), { label: 'Projects' }),
+        education: fields.array(fields.object({
+          school: fields.text({ label: 'School' }),
+          degree: fields.text({ label: 'Degree' }),
+          period: fields.text({ label: 'Period' }),
+          note: fields.text({ label: 'Note', description: 'Optional detail' }),
+        }), { label: 'Education' }),
+      },
+    }),
   },
   collections: {
     skills: collection({
