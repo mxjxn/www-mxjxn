@@ -87,11 +87,12 @@ projects:
       - TypeScript
       - MCP
       - LLM orchestration
-      - Telegram API
+      - Third party APIs
       - Farcaster
-  - name: cryptoart.studio
-    url: https://github.com/mxjxn/cryptoart-studio
-    period: 2024 — present
+      - webhooks
+  - name: Cryptoart Auctionhouse
+    url: https://cryptoart.social
+    period: 2025 — present
     description: >-
       Full-stack NFT marketplace and collection deployment platform on Base and
       Ethereum mainnet. Monorepo with Foundry smart contracts, Drizzle ORM +
@@ -106,28 +107,14 @@ projects:
       - PostgreSQL
       - React
       - Subgraphs
-  - name: suchbot
-    url: https://warpcast.com/suchbot
-    period: 2024 — present
-    description: >-
-      Farcaster bot serving 870k+ users with AI-powered glitch art generation,
-      LLM-based mention classification and routing, and sticker reaction system.
-      Runs as a persistent service with webhook receiver, classifier, and
-      response pipeline.
-    tech:
-      - TypeScript
-      - LLM classification
-      - Farcaster API
-      - fal.ai
-      - Webhooks
-  - name: www.mxjxn.com
+  - name: MXJXN website
     url: https://www.mxjxn.com
-    period: 2023 — present
+    period: 2015 — present
     description: >-
-      Personal site and Farcaster Mini App with Keystatic CMS (GitHub mode), SSR
-      with Astro, blog system with Markdoc rendering, dynamic OG image
-      generation via satori, and automated deployment pipeline via GitHub
-      webhooks.
+      Personal site with Keystatic CMS (GitHub mode), SSR with Astro, blog
+      system with Markdoc rendering, dynamic OG image generation via satori, and
+      automated deployment pipeline via GitHub webhooks. Farcaster mini-app
+      compatible.
     tech:
       - Astro
       - React
