@@ -20,8 +20,8 @@ skills:
   - category: Frontend
     items:
       - React
-      - Astro
       - Next.js
+      - Astro
       - Tailwind CSS
       - Farcaster Mini Apps
   - category: Backend & Infra
@@ -29,8 +29,6 @@ skills:
       - Node.js
       - PostgreSQL
       - Docker
-      - Caddy
-      - pm2
       - VPS administration
   - category: Web3
     items:
