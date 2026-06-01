@@ -1,16 +1,21 @@
-headline: Full Stack Engineer — Agentic AI & Creative Systems
+headline: Full Stack Engineer — building products, leading teams, running infrastructure
 summary: >-
-  I ship full-stack web3 products from Solidity through React, self-host
-  everything, and use autonomous AI agents as a core part of my development
-  workflow — code generation, infra management, editorial workflow, and creative
-  pipelines.
+  I ship full-stack products from database through UI, self-host everything, and
+  use autonomous AI agents as a core part of my development workflow. I've led
+  engineering teams, managed budgets and contractors, and built microservice
+  architectures for fintech and marketplace applications. Currently working across
+  TypeScript, Elixir/Phoenix LiveView, and Solidity.
 skills:
   - category: Languages
     items:
       - TypeScript
-      - Javascript
+      - JavaScript
+      - Elixir
+      - ClojureScript
       - Solidity
       - SQL
+      - Python
+      - PHP
   - category: AI / Agents
     items:
       - LLM integration into production
@@ -23,13 +28,27 @@ skills:
       - Next.js
       - Astro
       - Tailwind CSS
+      - Phoenix LiveView
       - Farcaster Mini Apps
   - category: Backend & Infra
     items:
+      - Elixir/Phoenix
       - Node.js
       - PostgreSQL
       - Docker
-      - VPS administration
+      - Docker Compose
+      - AWS
+      - Linux server administration
+      - VPS deployment
+      - automated deployment pipelines
+  - category: Practices
+    items:
+      - Agile (Scrum)
+      - Microservices architecture
+      - REST API design
+      - CI/CD
+      - Code review
+      - Test-driven development
   - category: Web3
     items:
       - Solidity
@@ -37,33 +56,83 @@ skills:
       - Ethers.js
       - on-chain indexing
 experience:
+  - company: cryptoart.social
+    role: Founder & Lead Developer
+    period: 2024 – Present
+    bullets:
+      - >-
+        Digital asset marketplace and community platform. Manage distributed
+        team of contract developers and designers.
+      - Architect and maintain 6 microservices handling data indexing, marketplace operations, and real-time event processing
+      - >-
+        Direct remote developers via code review, issue triage, and release
+        management on GitHub
+      - >-
+        Coordinate with artists and designers on feature specifications
+        and UX requirements
+      - >-
+        Manage project finances, contractor payments, and engineering
+        operating model documentation
+  - company: Self-employed
+    role: Systems Administrator & AI/Agent Engineer
+    period: 2024 – Present
+    bullets:
+      - >-
+        Design, deploy, and maintain self-hosted infrastructure and AI-powered
+        automation systems.
+      - >-
+        Administer services (mxjxn.com, bot.mxjxn.com, ops.mxjxn.com) including
+        monitoring, logging, and uptime management
+      - >-
+        Build and operate AI agent systems for automated task execution; integrate
+        Claude, Cursor, and custom agent pipelines
+  - company: /cryptoart DAO
+    role: Founder & Council Lead
+    period: 2024 – 2025
+    bullets:
+      - >-
+        Founded and managed a digital art organization with funded treasury
+        and governance processes.
+      - >-
+        Led council through proposal, review, and voting cycles; managed
+        treasury finances and funding allocations
+      - >-
+        Established and documented operating model, membership criteria,
+        and safety protocols
   - company: Charged Particles
-    role: Fullstack Web3 Developer
-    period: June 2021 — February 2023
+    role: Lead Developer & Project Manager
+    period: 2021 – 2023
     bullets:
       - >-
-        Frontend development for Ethereum DeFi NFT protocol — React dApp
-        interacting with smart contracts for NFT token vaults
-      - Wrote and updated indexer subgraphs in Assemblyscript
+        Led a team of 3–5 developers building financial infrastructure
+        and tools for digital asset management.
       - >-
-        Led refactoring of prototype dApp to production-quality codebase,
-        resolving long-standing stability and UX issues
-  - company: Freelance Web Development
-    role: Full Stack Developer
-    period: 2016 — 2021
+        Led team through weekly agile sprints — planning, standups,
+        retrospectives, demos
+      - >-
+        Interfaced with designers, product managers, writers, and CEO
+        on product requirements
+      - Oversaw architecture for event-driven microservice infrastructure
+      - >-
+        Established engineering standards, code review processes, deployment
+        workflows, and team hiring
+  - company: Self-employed
+    role: Project Lead
+    period: 2015 – 2016
     bullets:
       - >-
-        Built and deployed websites and web applications for small businesses
-        using React, Next.js, Node.js and occasionally Clojure(script)
-      - >-
-        Managed hosting, domains, and DNS for client projects on VPS
-        infrastructure
+        Co-founded and led development of a marketplace platform with price
+        discovery across primary and secondary markets.
   - company: The Boston Globe
-    role: Frontend Web Developer
-    period: 2013 — 2015
+    role: Web Developer
+    period: 2012 – 2015
     bullets:
-      - Build and maintained blogs for Boston.com
-      - 'Participated in the 2015 full rebuild of Boston.com '
+      - >-
+        Built and maintained boston.com and bostonglobe.com within an
+        agile engineering team.
+      - >-
+        Supporting engineer for the rebuild of Boston.com to a new
+        CMS platform.
 projects:
   - name: Cryptoart Auctionhouse
     url: https://cryptoart.social
@@ -115,6 +184,6 @@ projects:
       - pm2
 education:
   - school: New England Institute of Art
-    degree: BS, Web Design & Development
+    degree: Bachelor of Science — Web Design & Development
     period: 2003 — 2007
-    note: Focus on interactive media design and game development
+    note: Concentration in Interactive Media Design & Game Development
