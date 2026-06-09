@@ -39,6 +39,9 @@ const isDaytime = romeHour >= 6 && romeHour < 20;
           <span class="status-dot"></span>
           <span class="status-text">{hero?.status ?? ''}</span>
         </div>
+        {hero?.cta && hero?.cta_url && (
+          <a href={hero.cta_url} class="hero-cta">{hero.cta}</a>
+        )}
       </div>
     </div>
   </section>
@@ -387,6 +390,26 @@ const isDaytime = romeHour >= 6 && romeHour < 20;
 
   .status-text {
     font-family: 'Space Mono', monospace;
+  }
+
+  /* ── Hero CTA ── */
+  .hero-cta {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.6rem 1.5rem;
+    background: var(--accent);
+    color: #000;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: 9999px;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+
+  .hero-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
   }
 
   /* ── Sections ── */

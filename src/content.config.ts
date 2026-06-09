@@ -24,6 +24,8 @@ const hero = defineCollection({
     tagline: z.string(),
     bio: z.string(),
     status: z.string(),
+    cta: z.string().optional(),
+    cta_url: z.string().optional(),
   }),
 });
 
