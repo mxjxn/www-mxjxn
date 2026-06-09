@@ -21,7 +21,15 @@ export default config({
         }),
         status: fields.text({
           label: 'Status',
-          description: 'e.g. Currently in Rome',
+          description: 'e.g. Open to freelance · Boston, MA',
+        }),
+        cta: fields.text({
+          label: 'CTA Text',
+          description: 'Hero call-to-action button text, e.g. Get in touch. Leave empty to hide.',
+        }),
+        cta_url: fields.text({
+          label: 'CTA URL',
+          description: 'URL for the CTA button, e.g. mailto:you@example.com',
         }),
       },
     }),
