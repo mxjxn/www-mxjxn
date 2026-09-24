@@ -96,7 +96,7 @@ const resume = defineCollection({
     education: z.array(z.object({
       school: z.string(),
       degree: z.string(),
-      period: z.string(),
+      period: z.string().optional(),
       note: z.string().optional(),
     })),
   }),
