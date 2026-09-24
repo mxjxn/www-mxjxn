@@ -153,7 +153,7 @@ if (!resume) throw new Error("Resume content is missing");
               <article>
                 <div class="cv-entry-top">
                   <h3>{edu.school}</h3>
-                  <span class="cv-period">{edu.period}</span>
+                  {edu.period && <span class="cv-period">{edu.period}</span>}
                 </div>
                 <p>{edu.degree}</p>
                 {edu.note && <p class="cv-note">{edu.note}</p>}
