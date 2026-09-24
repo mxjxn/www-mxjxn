@@ -1,187 +1,123 @@
-headline: Full Stack Engineer — building products, leading teams, running infrastructure
+headline: Developer & artist
 summary: >-
-  I ship full-stack products from database through UI, self-host everything, and
-  use autonomous AI agents as a core part of my development workflow. I've led
-  engineering teams, managed budgets and contractors, and built microservice
-  architectures for fintech and marketplace applications. Currently working across
-  TypeScript, Elixir/Phoenix LiveView, and Solidity.
+  I build web applications, run my own infrastructure, and work with Hermes every
+  day. My recent projects include Suchbot, an agent on Farcaster, and logseqd,
+  a service I started so my tools and agent could use the same notes.
 skills:
-  - category: Languages
+  - category: Agents & development tools
     items:
-      - TypeScript
-      - JavaScript
-      - Elixir
-      - ClojureScript
-      - Solidity
-      - SQL
-      - Python
-      - PHP
-  - category: AI / Agents
+      - Hermes
+      - Cursor
+      - GitHub Copilot
+      - MCP
+      - Tool integrations
+      - Scheduled workflows
+  - category: Development
     items:
-      - LLM integration into production
-      - Generative image systems
-      - RAG and vector search
-      - AI-assisted development as core daily workflow
-  - category: Frontend
-    items:
+      - TypeScript / JavaScript
       - React
-      - Next.js
-      - Astro
-      - Tailwind CSS
-      - Phoenix LiveView
-      - Farcaster Mini Apps
-  - category: Backend & Infra
-    items:
-      - Elixir/Phoenix
       - Node.js
-      - PostgreSQL
-      - Docker
-      - Docker Compose
-      - AWS
-      - Linux server administration
-      - VPS deployment
-      - automated deployment pipelines
-  - category: Practices
+      - Astro
+      - Next.js
+      - Elixir / Phoenix
+      - Clojure / ClojureScript
+      - Python
+  - category: Data & infrastructure
     items:
-      - Agile (Scrum)
-      - Microservices architecture
-      - REST API design
-      - CI/CD
-      - Code review
-      - Test-driven development
-  - category: Web3
+      - PostgreSQL
+      - DataScript / Datalog
+      - Docker
+      - Linux
+      - Caddy
+      - Deployment workflows
+      - AWS
+  - category: Smart contracts
     items:
       - Solidity
       - Foundry
       - Ethers.js
-      - on-chain indexing
+      - On-chain indexing
 experience:
   - company: cryptoart.social
     role: Founder & Lead Developer
     period: 2024 – Present
     bullets:
-      - >-
-        Digital asset marketplace and community platform. Manage distributed
-        team of contract developers and designers.
-      - Architect and maintain 6 microservices handling data indexing, marketplace operations, and real-time event processing
-      - >-
-        Direct remote developers via code review, issue triage, and release
-        management on GitHub
-      - >-
-        Coordinate with artists and designers on feature specifications
-        and UX requirements
-      - >-
-        Manage project finances, contractor payments, and engineering
-        operating model documentation
+      - Build and maintain the contracts, indexing services, and website; no other developers have contributed code.
+      - Own feature decisions and usability, with design collaboration on the current UI/UX.
+      - Develop gallery tools for curators as part of the platform’s expansion.
   - company: Self-employed
-    role: Systems Administrator & AI/Agent Engineer
+    role: Independent Developer
     period: 2024 – Present
     bullets:
-      - >-
-        Design, deploy, and maintain self-hosted infrastructure and AI-powered
-        automation systems.
-      - >-
-        Administer services (mxjxn.com, bot.mxjxn.com, ops.mxjxn.com) including
-        monitoring, logging, and uptime management
-      - >-
-        Build and operate AI agent systems for automated task execution; integrate
-        Claude, Cursor, and custom agent pipelines
+      - Build and run the infrastructure behind my websites, creative tools, and agent workflows.
+      - Work daily with Hermes on development and operations, including Suchbot and the shared knowledge system behind it.
   - company: /cryptoart DAO
     role: Founder & Council Lead
     period: 2024 – 2025
     bullets:
-      - >-
-        Founded and managed a digital art organization with funded treasury
-        and governance processes.
-      - >-
-        Led council through proposal, review, and voting cycles; managed
-        treasury finances and funding allocations
-      - >-
-        Established and documented operating model, membership criteria,
-        and safety protocols
+      - Founded a cryptoart community organization with a shared treasury.
+      - Led the council’s proposals, voting, and funding decisions.
   - company: Charged Particles
     role: Lead Developer & Project Manager
     period: 2021 – 2023
     bullets:
-      - >-
-        Led a team of 3–5 developers building financial infrastructure
-        and tools for digital asset management.
-      - >-
-        Led team through weekly agile sprints — planning, standups,
-        retrospectives, demos
-      - >-
-        Interfaced with designers, product managers, writers, and CEO
-        on product requirements
-      - Oversaw architecture for event-driven microservice infrastructure
-      - >-
-        Established engineering standards, code review processes, deployment
-        workflows, and team hiring
-  - company: Self-employed
-    role: Project Lead
-    period: 2015 – 2016
-    bullets:
-      - >-
-        Co-founded and led development of a marketplace platform with price
-        discovery across primary and secondary markets.
+      - Refactored large React files into focused hooks.
+      - Recommended React Query, which the CTO adopted.
+      - Moved into project coordination, helping developers, designers, and leadership communicate about the work.
   - company: The Boston Globe
     role: Web Developer
     period: 2012 – 2015
     bullets:
-      - >-
-        Built and maintained boston.com and bostonglobe.com within an
-        agile engineering team.
-      - >-
-        Supporting engineer for the rebuild of Boston.com to a new
-        CMS platform.
+      - Built and maintained boston.com and bostonglobe.com, and helped move Boston.com to a new CMS.
 projects:
+  - name: logseqd + Hermes knowledge workflow
+    url: https://github.com/mxjxn/logseqd
+    period: 2026 — present
+    description: >-
+      Logseq caught my interest because it organizes documents into blocks. That
+      structure turned out to make a useful brain for Hermes. I wanted my agent and
+      my other tools to work from the same notes, so I decided to build logseqd to
+      make them quickly queryable. I worked with Hermes on the implementation and
+      built a mobile interface so I could use the system from my phone.
+    tech:
+      - Clojure
+      - DataScript
+      - HTTP API
+      - Hermes
+      - PWA
+  - name: Suchbot
+    url: https://farcaster.xyz/suchbot
+    period: 2026 — present
+    description: >-
+      Suchbot is the public face of my Hermes experiments throughout 2026. It
+      publishes in-depth reports to its own blog every day and gives people access
+      to creative tools directly in the Farcaster timeline. People can chain dozens
+      of image commands together. I've refined its writing standards to avoid
+      clichés and connected it to Logseq, with public documents available to timeline
+      interactions and private work kept separate.
+    tech:
+      - Hermes
+      - MCP
+      - Third-party APIs
+      - Webhooks
+      - Farcaster
   - name: Cryptoart Auctionhouse
     url: https://cryptoart.social
     period: 2025 — present
     description: >-
-      Full-stack NFT marketplace and collection deployment platform on Base and
-      Ethereum mainnet. Monorepo with Foundry smart contracts, Drizzle ORM +
-      PostgreSQL backend, Astro/React frontend, and server-side transaction
-      receipt watcher. Custom ERC-721 factory with extension registration and
-      royalty enforcement.
+      I built cryptoart.social because I wanted to use Manifold's marketplace
+      contracts through Farcaster. I cloned the contracts, deployed a new subgraph,
+      and built the site around them. Artists receive notifications when bids come
+      in, and bidders hear when they've been outbid, helping keep them involved in
+      the auction. I'm now expanding it into a broader marketplace, with work in
+      progress on NFT liquidity pools, a Farcaster client, and curated galleries
+      that can earn referral fees through auctionhouse links.
     tech:
-      - Solidity
-      - Foundry
+      - Solidity / Foundry
       - TypeScript
-      - Drizzle ORM
       - PostgreSQL
       - React
-      - Subgraphs
-  - name: Suchbot
-    url: https://bot.mxjxn.com
-    period: 2026 — present
-    description: >-
-      Autonomous AI agent running as a persistent system with multi-platform
-      gateway (Telegram, Farcaster, CLI), tool orchestration, scheduled tasks,
-      and MCP server integration. Manages infrastructure, posts to social media,
-      researches and writes reports and blogposts, processes image generation
-      and manipulation requests.
-    tech:
-      - TypeScript
-      - MCP
-      - LLM orchestration
-      - Third party APIs
-      - Farcaster
-      - webhooks
-  - name: MXJXN website
-    url: https://www.mxjxn.com
-    period: 2015 — present
-    description: >-
-      Personal site with Keystatic CMS (GitHub mode), SSR with Astro, blog
-      system with Markdoc rendering, dynamic OG image generation via satori, and
-      automated deployment pipeline via GitHub webhooks. Farcaster mini-app
-      compatible.
-    tech:
-      - Astro
-      - React
-      - Keystatic CMS
-      - Satori
-      - Caddy
-      - pm2
+      - On-chain indexing
 education:
   - school: New England Institute of Art
     degree: Bachelor of Science — Web Design & Development

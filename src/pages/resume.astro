@@ -1,401 +1,177 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import { reader } from '../lib/reader';
-
-const resume = await reader.singletons.resume.read();
+import PortfolioLayout from "../layouts/PortfolioLayout.astro";
+import { getEntry } from "astro:content";
+import "../styles/resume.css";
+const resume = (await getEntry("resume", "index"))?.data;
+if (!resume) throw new Error("Resume content is missing");
 ---
 
-<Layout title="Resume — Max Jackson" description="Max Jackson — Full Stack Engineer resume. Agentic AI, creative systems, web3.">
-  <main class="page">
-    <a href="/" class="back-link">← Back</a>
-
-    <a href="/resume/max-jackson-director-software-engineering.pdf" download class="download-btn">↓ Download PDF</a>
-
-    <header class="resume-header">
-      <h1 class="name">Max Jackson</h1>
-      <p class="headline">{resume?.headline}</p>
-      <div class="contact">
-        <a href="mailto:mjackson84@gmail.com">mjackson84@gmail.com</a>
-        <span class="dot">·</span>
-        <a href="https://linkedin.com/in/max-jackson-002742291" target="_blank" rel="noopener">LinkedIn</a>
-        <span class="dot">·</span>
-        <a href="https://github.com/mxjxn" target="_blank" rel="noopener">github.com/mxjxn</a>
-        <span class="dot">·</span>
-        <span>Boston, MA</span>
-      </div>
+<PortfolioLayout
+  title="Max Jackson — Résumé"
+  description="Full-stack engineer working across agent systems, integrations, and self-hosted infrastructure. Experience and selected projects by Max Jackson."
+>
+  <a class="skip-link" href="#resume-main">
+    Skip to résumé
+  </a>
+  <div class="site-shell resume-shell">
+    <header class="masthead resume-nav">
+      <a class="wordmark" href="/" aria-label="Max Jackson home">
+        mxjxn<span>_</span>
+      </a>
+      <span class="masthead-note">EXPERIENCE / SELECTED SYSTEMS</span>
+      <nav aria-label="Main navigation">
+        <a href="/#work">Work</a>
+        <a href="/#about">About</a>
+        <a href="/resume" aria-current="page">
+          Résumé
+        </a>
+        <a class="nav-contact" href="mailto:mjackson84@gmail.com">
+          Let’s talk ↗
+        </a>
+      </nav>
     </header>
-
-    <section class="section">
-      <h2 class="section-title">Summary</h2>
-      <p class="summary">{resume?.summary}</p>
-    </section>
-
-    <section class="section">
-      <h2 class="section-title">Skills</h2>
-      <div class="skills-grid">
-        {resume?.skills?.map((group: any) => (
-          <div class="skill-group">
-            <h3 class="skill-category">{group.category}</h3>
-            <p class="skill-items">{group.items.join(', ')}</p>
-          </div>
-        ))}
+    <main id="resume-main">
+      <header class="cv-header">
+        <div>
+          <p class="eyebrow">RÉSUMÉ / BOSTON, MA</p>
+          <h1>
+            Max Jackson<span class="green">.</span>
+          </h1>
+          <p class="cv-headline">{resume.headline}</p>
+        </div>
+        <div class="cv-actions">
+          <button class="button" id="print-resume" type="button">
+            Print / Save PDF <span aria-hidden="true">↗</span>
+          </button>
+          <a class="text-link" href="mailto:mjackson84@gmail.com">
+            mjackson84@gmail.com
+          </a>
+        </div>
+      </header>
+      <div class="cv-intro">
+        <p>{resume.summary}</p>
+        <div class="cv-intent">
+          <span class="square" aria-hidden="true"></span>
+          <p>
+            Open to forward deployed
+            <br />
+            engineering roles
+          </p>
+        </div>
       </div>
-    </section>
-
-    <section class="section">
-      <h2 class="section-title">Projects</h2>
-      {resume?.projects?.map((project: any) => (
-        <div class="entry">
-          <div class="entry-header">
-            {project.url ? (
-              <a href={project.url} target="_blank" rel="noopener" class="entry-title">{project.name}</a>
-            ) : (
-              <span class="entry-title">{project.name}</span>
-            )}
-            <span class="entry-period">{project.period}</span>
-          </div>
-          <p class="entry-description">{project.description}</p>
-          <div class="tech-tags">
-            {project.tech.map((t: string) => (
-              <span class="tag">{t}</span>
+      <div class="cv-grid">
+        <aside class="cv-sidebar" aria-label="Skills and contact">
+          <section aria-labelledby="skills-title">
+            <h2 id="skills-title" class="eyebrow">
+              01 / SKILLS
+            </h2>
+            {resume.skills.map((group) => (
+              <div class="cv-skill">
+                <h3>{group.category}</h3>
+                <p>{group.items.join(" · ")}</p>
+              </div>
             ))}
-          </div>
-        </div>
-      ))}
-    </section>
-
-    <section class="section">
-      <h2 class="section-title">Experience</h2>
-      {resume?.experience?.map((job: any) => (
-        <div class="entry">
-          <div class="entry-header">
-            <span class="entry-title">{job.company}</span>
-            <span class="entry-period">{job.period}</span>
-          </div>
-          <p class="entry-role">{job.role}</p>
-          <ul class="entry-bullets">
-            {job.bullets.map((b: string) => (
-              <li>{b}</li>
+          </section>
+          <section class="cv-contact" aria-labelledby="links-title">
+            <h2 id="links-title" class="eyebrow">
+              FIND ME
+            </h2>
+            <a href="https://github.com/mxjxn">github.com/mxjxn ↗</a>
+            <a href="https://www.linkedin.com/in/max-jackson-002742291">
+              LinkedIn ↗
+            </a>
+            <a href="/">mxjxn.com ↗</a>
+          </section>
+        </aside>
+        <div class="cv-content">
+          <section class="cv-section" aria-labelledby="systems-title">
+            <div class="cv-section-title">
+              <p class="eyebrow">02 / SELECTED SYSTEMS</p>
+              <h2 id="systems-title">Hands-on work.</h2>
+            </div>
+            {resume.projects.map((project) => (
+              <article class="cv-project">
+                <div class="cv-entry-top">
+                  <h3>
+                    {project.url ? (
+                      <a href={project.url}>
+                        {project.name} <span aria-hidden="true">↗</span>
+                      </a>
+                    ) : (
+                      project.name
+                    )}
+                  </h3>
+                  <span class="cv-period">{project.period}</span>
+                </div>
+                <p>{project.description}</p>
+                <p class="cv-tech">{project.tech.join(" / ")}</p>
+              </article>
             ))}
-          </ul>
+          </section>
+          <section class="cv-section" aria-labelledby="experience-title">
+            <div class="cv-section-title">
+              <p class="eyebrow">03 / ENGINEERING EXPERIENCE</p>
+              <h2 id="experience-title">Experience</h2>
+            </div>
+            {resume.experience.map((job) => (
+              <article class="cv-job">
+                <div class="cv-entry-top">
+                  <h3>{job.company}</h3>
+                  <span class="cv-period">{job.period}</span>
+                </div>
+                <p class="cv-role">{job.role}</p>
+                <ul>
+                  {job.bullets.map((bullet) => (
+                    <li>{bullet}</li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </section>
+          <section class="cv-section" aria-labelledby="people-title">
+            <div class="cv-section-title">
+              <p class="eyebrow">04 / WORKING WITH PEOPLE</p>
+              <h2 id="people-title">Teaching &amp; customer work</h2>
+            </div>
+            <p class="cv-context">
+              I currently work full time as a bicycle mechanic while building
+              software and making art outside work. I’m often the person who
+              steps in with frustrated customers. Previously, I taught swimming
+              and drove a pedicab—work that taught me to adapt to different
+              people, build confidence, and handle rejection without taking it
+              personally.
+            </p>
+          </section>
+          <section
+            class="cv-section cv-education"
+            aria-labelledby="education-title"
+          >
+            <h2 id="education-title" class="eyebrow">
+              05 / EDUCATION
+            </h2>
+            {resume.education.map((edu) => (
+              <article>
+                <div class="cv-entry-top">
+                  <h3>{edu.school}</h3>
+                  <span class="cv-period">{edu.period}</span>
+                </div>
+                <p>{edu.degree}</p>
+                {edu.note && <p class="cv-note">{edu.note}</p>}
+              </article>
+            ))}
+          </section>
         </div>
-      ))}
-    </section>
-
-    <section class="section">
-      <h2 class="section-title">Education</h2>
-      {resume?.education?.map((edu: any) => (
-        <div class="entry">
-          <div class="entry-header">
-            <span class="entry-title">{edu.school}</span>
-            <span class="entry-period">{edu.period}</span>
-          </div>
-          <p class="entry-role">{edu.degree}</p>
-          {edu.note && <p class="entry-note">{edu.note}</p>}
-        </div>
-      ))}
-    </section>
-
-    <footer class="footer">
-      <a href="/resume/max-jackson-director-software-engineering.pdf" download class="download-btn">↓ Download PDF</a>
-      <p><a href="/">mxjxn.com</a></p>
+      </div>
+    </main>
+    <footer class="cv-footer">
+      <a href="/">← Back to selected work</a>
+      <a href="mailto:mjackson84@gmail.com">Let’s talk ↗</a>
+      <span>MAX JACKSON / BOSTON, MA</span>
     </footer>
-  </main>
-</Layout>
-
-<style>
-  .page {
-    max-width: 520px;
-    margin: 0 auto;
-    padding: 2rem 1.25rem 3rem;
-  }
-
-  .back-link {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    margin-bottom: 1.5rem;
-    display: inline-block;
-  }
-
-  .back-link:hover {
-    color: var(--accent-light);
-  }
-
-  /* Header */
-  .resume-header {
-    margin-bottom: 2rem;
-  }
-
-  .name {
-    font-size: 1.75rem;
-    letter-spacing: -0.03em;
-    margin-bottom: 0.25rem;
-  }
-
-  .headline {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.85rem;
-    color: var(--accent-light);
-    margin-bottom: 0.75rem;
-  }
-
-  .contact {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    font-family: 'Space Mono', monospace;
-  }
-
-  .contact a {
-    color: var(--text-muted);
-    text-decoration: none;
-    transition: color 0.15s;
-  }
-
-  .contact a:hover {
-    color: var(--accent-light);
-  }
-
-  .dot {
-    color: var(--border);
-  }
-
-  /* Sections */
-  .section {
-    margin-bottom: 1.75rem;
-  }
-
-  .section-title {
-    font-size: 0.7rem;
-    font-family: 'Space Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text-muted);
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 0.35rem;
-    margin-bottom: 1rem;
-  }
-
-  /* Summary */
-  .summary {
-    font-size: 0.95rem;
-    line-height: 1.65;
-    color: var(--text);
-  }
-
-  /* Skills */
-  .skills-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .skill-category {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 0.15rem;
-  }
-
-  .skill-items {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    line-height: 1.5;
-  }
-
-  /* Entries (experience, education) */
-  .entry {
-    margin-bottom: 1.25rem;
-  }
-
-  .entry:last-child {
-    margin-bottom: 0;
-  }
-
-  .entry-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 0.5rem;
-  }
-
-  .entry-title {
-    font-weight: 600;
-    font-size: 0.95rem;
-    color: var(--text);
-    text-decoration: none;
-  }
-
-  a.entry-title:hover {
-    color: var(--accent-light);
-  }
-
-  .entry-period {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .entry-role {
-    font-size: 0.85rem;
-    color: var(--accent-light);
-    margin-top: 0.1rem;
-    margin-bottom: 0.35rem;
-  }
-
-  .entry-description {
-    font-size: 0.9rem;
-    line-height: 1.6;
-    color: var(--text);
-    margin-bottom: 0.5rem;
-  }
-
-  .entry-note {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    font-style: italic;
-  }
-
-  .entry-bullets {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .entry-bullets li {
-    font-size: 0.88rem;
-    line-height: 1.6;
-    color: var(--text);
-    padding-left: 1rem;
-    position: relative;
-    margin-bottom: 0.2rem;
-  }
-
-  .entry-bullets li::before {
-    content: '→';
-    position: absolute;
-    left: 0;
-    color: var(--accent-light);
-    font-size: 0.75rem;
-  }
-
-  /* Tech tags */
-  .tech-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem;
-  }
-
-  .tag {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    padding: 0.15rem 0.5rem;
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    color: var(--text-muted);
-  }
-
-  /* Download button */
-  .download-btn {
-    display: inline-block;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.78rem;
-    padding: 0.5rem 1rem;
-    background: var(--accent-light);
-    color: var(--bg);
-    border-radius: 4px;
-    text-decoration: none;
-    transition: opacity 0.15s;
-    margin-bottom: 1rem;
-  }
-
-  .download-btn:hover {
-    opacity: 0.85;
-  }
-
-  /* Footer */
-  .footer {
-    padding-top: 2rem;
-    margin-top: 2.5rem;
-    border-top: 1px solid var(--border);
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .footer p {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    font-family: 'Space Mono', monospace;
-  }
-
-  /* Responsive */
-  @media (min-width: 640px) {
-    .page {
-      max-width: 600px;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .page {
-      max-width: 680px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .page {
-      padding: 1.5rem 1rem 2.5rem;
-    }
-
-    .contact {
-      font-size: 0.72rem;
-    }
-
-    .entry-header {
-      flex-direction: column;
-      gap: 0.15rem;
-    }
-  }
-
-  /* Print */
-  @media print {
-    .back-link, .footer .download-btn {
-      display: none;
-    }
-
-    .page {
-      max-width: 100%;
-      padding: 0;
-    }
-
-    body {
-      background: white;
-      color: black;
-    }
-
-    .section-title {
-      color: #333;
-      border-bottom-color: #ccc;
-    }
-
-    .headline, .entry-role {
-      color: #555;
-    }
-
-    .contact a, .skill-items, .entry-period, .tag {
-      color: #666;
-    }
-
-    .tag {
-      border-color: #ccc;
-    }
-  }
-</style>
+  </div>
+</PortfolioLayout>
+<script>
+  document
+    .getElementById("print-resume")
+    ?.addEventListener("click", () => window.print());
+</script>

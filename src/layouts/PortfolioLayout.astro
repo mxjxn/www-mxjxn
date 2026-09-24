@@ -1,0 +1,67 @@
+---
+import "../styles/portfolio.css";
+interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = "Max Jackson — Developer & Artist",
+  description = "Full-stack engineering, agent systems, and creative practice. Selected work by Max Jackson.",
+} = Astro.props;
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={pageUrl} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#080a08" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={pageUrl} />
+    <meta
+      property="og:image"
+      content="https://www.mxjxn.com/art/render-48.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta
+      name="twitter:image"
+      content="https://www.mxjxn.com/art/render-48.jpg"
+    />
+    <meta
+      name="fc:miniapp"
+      content={JSON.stringify({
+        version: "1",
+        imageUrl: "https://www.mxjxn.com/art/render-48.jpg",
+        aspectRatio: "3:2",
+        button: {
+          title: "Open",
+          action: {
+            type: "launch_miniapp",
+            url: pageUrl,
+            name: "Max Jackson",
+            splashImageUrl: "https://www.mxjxn.com/splash.png",
+            splashBackgroundColor: "#080a08",
+          },
+        },
+      })}
+    />
+  </head>
+  <body>
+    <slot />
+    <script>
+      import { sdk } from "@farcaster/miniapp-sdk";
+      sdk.actions.ready().catch(() => {
+        /* Normal browser visits have no miniapp host. */
+      });
+    </script>
+  </body>
+</html>

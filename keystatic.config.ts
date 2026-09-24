@@ -17,11 +17,11 @@ export default config({
         }),
         bio: fields.text({
           label: 'Bio',
-          description: 'Typewriter text — the sentence that types out on the homepage.',
+          description: 'Introductory paragraph on the homepage.',
         }),
         status: fields.text({
           label: 'Status',
-          description: 'e.g. Open to freelance · Boston, MA',
+          description: 'e.g. Open to forward deployed engineering roles',
         }),
         cta: fields.text({
           label: 'CTA Text',

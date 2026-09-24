@@ -1,0 +1,488 @@
+.resume-shell {
+  max-width: 1320px;
+}
+.resume-nav a[aria-current="page"] {
+  color: var(--green);
+}
+.cv-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 35px;
+  padding: 64px 0 32px;
+}
+.cv-header h1 {
+  font-size: clamp(48px, 6vw, 80px);
+  margin: 19px 0 17px;
+  letter-spacing: -0.055em;
+}
+.cv-headline {
+  font: 14px/1.8 var(--mono);
+  color: var(--muted);
+}
+.cv-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 20px;
+  flex-shrink: 0;
+}
+.cv-actions .button {
+  cursor: pointer;
+}
+.cv-intro {
+  border-block: 1px solid var(--line);
+  padding: 29px 0;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 70px;
+}
+.cv-intro > p {
+  font-size: 17px;
+  max-width: 750px;
+  line-height: 1.8;
+}
+.cv-intent {
+  display: flex;
+  align-items: start;
+  justify-content: flex-end;
+  gap: 3px;
+  padding-top: 7px;
+  color: var(--green);
+  font: 11px/1.8 var(--mono);
+}
+.cv-intent .square {
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+.cv-grid {
+  display: grid;
+  grid-template-columns: 245px minmax(0, 1fr);
+  gap: 65px;
+  padding-top: 47px;
+}
+.cv-sidebar {
+  border-right: 1px solid var(--line);
+  padding-right: 30px;
+}
+.cv-sidebar h2 {
+  font-size: 10px;
+}
+.cv-skill {
+  margin: 26px 0;
+}
+.cv-skill h3 {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 9px;
+}
+.cv-skill p {
+  font: 11px/1.9 var(--mono);
+  color: var(--muted);
+}
+.cv-contact {
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  margin-top: 30px;
+}
+.cv-contact a {
+  display: block;
+  font: 11px/1.8 var(--mono);
+  margin-top: 15px;
+}
+.cv-section {
+  padding: 0 0 37px;
+  margin-bottom: 38px;
+  border-bottom: 1px solid var(--line);
+}
+.cv-section-title {
+  margin-bottom: 28px;
+}
+.cv-section-title h2 {
+  font-size: 27px;
+  margin-top: 13px;
+  letter-spacing: -0.035em;
+}
+.cv-entry-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 20px;
+}
+.cv-entry-top h3 {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.025em;
+}
+.cv-entry-top h3 a span {
+  color: var(--green);
+  font-size: 13px;
+  white-space: nowrap;
+}
+.cv-period {
+  font: 10px/1.7 var(--mono);
+  color: var(--muted);
+  white-space: nowrap;
+}
+.cv-project + .cv-project {
+  margin-top: 29px;
+  padding-top: 25px;
+  border-top: 1px solid #202820;
+}
+.cv-project > p {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--muted);
+  margin-top: 13px;
+}
+.cv-project > p.cv-tech {
+  font: 10px/1.8 var(--mono);
+  color: var(--green);
+  margin-top: 14px;
+}
+.cv-job + .cv-job {
+  margin-top: 32px;
+}
+.cv-role {
+  font: 12px/1.7 var(--mono);
+  color: var(--green);
+  margin: 7px 0 10px;
+}
+.cv-job ul {
+  padding-left: 18px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.8;
+}
+.cv-job li {
+  padding-left: 3px;
+  margin: 5px 0;
+}
+.cv-job li::marker {
+  color: var(--green);
+}
+.cv-context {
+  font-size: 15px;
+  line-height: 1.8;
+  margin-bottom: 24px;
+}
+.cv-people {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+}
+.cv-people h3 {
+  font: 12px var(--mono);
+  color: var(--green);
+  margin-bottom: 12px;
+}
+.cv-people p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+.cv-education > h2 {
+  margin-bottom: 22px;
+}
+.cv-education p {
+  font-size: 14px;
+  margin-top: 10px;
+}
+.cv-education .cv-note {
+  color: var(--muted);
+  font-size: 12px;
+}
+.cv-education {
+  border: 0;
+  margin-bottom: 10px;
+}
+.cv-footer {
+  border-top: 1px solid var(--line);
+  min-height: 95px;
+}
+.cv-footer > span {
+  margin-left: auto;
+  font-size: 9px;
+}
+.cv-footer a {
+  font-size: 11px;
+}
+@media (max-width: 1000px) {
+  .cv-header {
+    align-items: start;
+    flex-direction: column;
+  }
+  .cv-actions {
+    flex-direction: row;
+    align-items: center;
+  }
+  .cv-grid {
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: 35px;
+  }
+  .cv-entry-top {
+    flex-direction: column;
+    gap: 5px;
+  }
+  .cv-people {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .cv-intro {
+    gap: 30px;
+  }
+  .cv-headline {
+    font-size: 13px;
+  }
+}
+@media (max-width: 700px) {
+  .cv-header {
+    padding: 40px 0 26px;
+    gap: 22px;
+  }
+  .cv-header h1 {
+    font-size: 51px;
+  }
+  .cv-actions {
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+  .cv-actions .text-link {
+    font-size: 11px;
+  }
+  .cv-intro {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 24px 0;
+  }
+  .cv-intro > p {
+    font-size: 15px;
+  }
+  .cv-intent {
+    justify-content: flex-start;
+    padding: 0;
+  }
+  .cv-intent br {
+    display: none;
+  }
+  .cv-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+    padding-top: 30px;
+  }
+  .cv-sidebar {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    padding: 0 0 20px;
+  }
+  .cv-sidebar > section:first-child {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .cv-sidebar h2 {
+    grid-column: 1/-1;
+  }
+  .cv-skill {
+    margin: 0;
+  }
+  .cv-skill p {
+    font-size: 10px;
+  }
+  .cv-contact {
+    display: none;
+  }
+  .cv-section {
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+  }
+  .cv-section-title h2 {
+    font-size: 25px;
+  }
+  .cv-entry-top h3 {
+    font-size: 18px;
+  }
+  .cv-footer {
+    gap: 20px;
+  }
+  .cv-footer > span {
+    width: 100%;
+    margin: 0;
+  }
+}
+@media print {
+  @page {
+    size: auto;
+    margin: 14mm 16mm;
+  }
+  :root {
+    color-scheme: light;
+    --bg: #fff;
+    --paper: #111;
+    --muted: #333;
+    --green: #164922;
+    --line: #bbb;
+  }
+  body {
+    background: #fff !important;
+    color: #111 !important;
+    font-size: 10pt;
+    line-height: 1.4;
+  }
+  .resume-shell {
+    max-width: none;
+    padding: 0;
+  }
+  .resume-nav,
+  .cv-actions,
+  .skip-link,
+  .cv-footer,
+  .cv-intent {
+    display: none !important;
+  }
+  .cv-header {
+    padding: 0 0 12pt;
+    display: block;
+  }
+  .cv-header h1 {
+    font-size: 30pt;
+    margin: 7pt 0;
+  }
+  .cv-headline {
+    font-size: 10pt;
+  }
+  .cv-header .eyebrow {
+    font-size: 8pt;
+  }
+  .cv-header::after {
+    content: "mjackson84@gmail.com  ·  github.com/mxjxn  ·  mxjxn.com";
+    display: block;
+    font-size: 9pt;
+    margin-top: 8pt;
+  }
+  .cv-intro {
+    display: block;
+    padding: 12pt 0;
+  }
+  .cv-intro > p {
+    font-size: 10pt;
+    line-height: 1.5;
+    max-width: none;
+  }
+  .cv-grid {
+    display: block;
+    padding-top: 14pt;
+  }
+  .cv-sidebar {
+    border: 0;
+    padding: 0 0 12pt;
+  }
+  .cv-sidebar > section:first-child {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9pt 20pt;
+  }
+  .cv-sidebar h2 {
+    grid-column: 1/-1;
+  }
+  .cv-skill {
+    margin: 0;
+  }
+  .cv-skill h3 {
+    font-size: 9pt;
+    margin-bottom: 3pt;
+  }
+  .cv-skill p {
+    font-size: 8pt;
+    line-height: 1.5;
+  }
+  .cv-contact {
+    display: none;
+  }
+  .cv-section {
+    padding-bottom: 12pt;
+    margin-bottom: 14pt;
+  }
+  .cv-section-title {
+    margin-bottom: 12pt;
+    break-after: avoid;
+  }
+  .cv-section-title h2 {
+    font-size: 16pt;
+    margin-top: 5pt;
+  }
+  .eyebrow {
+    font-size: 8pt !important;
+  }
+  .cv-entry-top {
+    display: flex;
+    flex-direction: row;
+    gap: 12pt;
+  }
+  .cv-entry-top h3 {
+    font-size: 12pt;
+  }
+  .cv-period {
+    font-size: 8pt;
+  }
+  .cv-project,
+  .cv-job,
+  .cv-people article,
+  .cv-education article {
+    break-inside: avoid;
+  }
+  .cv-project + .cv-project {
+    padding-top: 10pt;
+    margin-top: 12pt;
+  }
+  .cv-project > p,
+  .cv-job ul,
+  .cv-context,
+  .cv-education p {
+    font-size: 9pt;
+    line-height: 1.5;
+  }
+  .cv-project > p {
+    margin-top: 6pt;
+  }
+  .cv-project > p.cv-tech {
+    font-size: 8pt;
+    margin-top: 6pt;
+  }
+  .cv-job + .cv-job {
+    margin-top: 14pt;
+  }
+  .cv-role {
+    font-size: 9pt;
+    margin: 4pt 0;
+  }
+  .cv-job li {
+    margin: 3pt 0;
+  }
+  .cv-people {
+    display: block;
+  }
+  .cv-people article + article {
+    margin-top: 10pt;
+  }
+  .cv-people h3 {
+    font-size: 9pt;
+    margin-bottom: 4pt;
+  }
+  .cv-people p,
+  .cv-education .cv-note {
+    font-size: 9pt;
+    line-height: 1.5;
+  }
+  .cv-education > h2 {
+    margin-bottom: 10pt;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
