@@ -27,7 +27,7 @@ const hero = await reader.singletons.hero.read();
         </a>
       </nav>
     </header>
-    <main id="main">
+    <main id="main" tabindex="-1">
       <section class="hero" aria-labelledby="intro-title">
         <div class="hero-copy">
           <p class="eyebrow">
@@ -74,20 +74,44 @@ const hero = await reader.singletons.hero.read();
         </figure>
       </section>
       <div class="capability-strip" aria-label="Areas of practice">
-        <span>AGENT SYSTEMS</span>
-        <span>FULL-STACK DEVELOPMENT</span>
-        <span>HUMAN CONNECTION</span>
-        <span>GENERATIVE ART</span>
+        <span>UNDERSTAND THE WORKFLOW</span>
+        <span>BUILD & INTEGRATE</span>
+        <span>DEPLOY & ITERATE</span>
+      </div>
+      <div class="experience-context">
+        <p>Engineering experience at <strong>The Boston Globe</strong> and <strong>Charged Particles</strong>. Independent work across product, integrations, and operations.</p>
+        <a class="text-link" href="/resume">Experience & résumé ↗</a>
       </div>
       <section id="work" class="work section" aria-labelledby="work-title">
         <div class="section-heading">
           <p class="eyebrow">01 / SELECTED WORK</p>
-          <h2 id="work-title">Selected work</h2>
+          <h2 id="work-title">Problems I’ve worked through.</h2>
         </div>
+        <article class="featured-project auction-project" id="cryptoart">
+          <div class="project-story">
+            <p class="eyebrow">001 <span class="muted">/ PRODUCT & INTEGRATION</span></p>
+            <h3>Cryptoart.social</h3>
+            <p class="project-name">An auction house built around the artist’s workflow.</p>
+            <p>I wanted Farcaster notifications built into my auction house, and control over curation. I built Cryptoart.social to bring those needs into one experience.</p>
+            <p>I adapted Manifold’s marketplace contracts, deployed a subgraph, and built the website around them. Artists receive notifications when bids arrive; bidders hear when they’ve been outbid.</p>
+            <p>I own the contracts, indexing, website, and feature decisions, with design collaboration on the current UI/UX. Curator tools are part of the ongoing expansion.</p>
+            <div class="tags"><span>Solidity</span><span>On-chain indexing</span><span>React</span><span>Farcaster</span></div>
+            <div class="project-links"><a href="https://cryptoart.social/">Explore the auction house ↗</a></div>
+          </div>
+          <aside class="project-evidence" aria-label="Cryptoart.social recognition and integration">
+            <p class="eyebrow">RECOGNITION</p>
+            <p class="grant-value">$5,000</p>
+            <p>Builder grant from the<br /><strong>Clanker Ecosystem Fund</strong></p>
+            <p class="rome-support">The project also led to a paid stay with <strong>Kismet Casa</strong> for FarCon Rome.</p>
+            <div class="integration-path" aria-label="Auction integration flow">
+              <span>Auction contracts</span><span aria-hidden="true">↓</span><span>Indexed auction events</span><span aria-hidden="true">↓</span><span>Artist & bidder notifications</span>
+            </div>
+          </aside>
+        </article>
         <article class="featured-project">
           <div class="project-story">
             <p class="eyebrow">
-              001 <span class="muted">/ KNOWLEDGE & AGENTS</span>
+              002 <span class="muted">/ KNOWLEDGE & AGENTS</span>
             </p>
             <h3>logseqd</h3>
             <p class="project-name">
@@ -99,6 +123,7 @@ const hero = await reader.singletons.hero.read();
               tools could query the same notes, then added a mobile interface.
               The system supports my own work and Suchbot’s knowledge.
             </p>
+            <p><strong>My role:</strong> I initiated the project, set the workflow and interface requirements, and tested it in daily use. Hermes contributed substantially to implementation.</p>
             <div class="tags">
               <span>Clojure</span>
               <span>DataScript</span>
@@ -199,7 +224,7 @@ const hero = await reader.singletons.hero.read();
         </article>
         <div class="project-pair">
           <article class="compact-project suchbot-project">
-            <p class="eyebrow">002 / SUCHBOT</p>
+            <p class="eyebrow">003 / AGENT OPERATIONS</p>
             <img
               class="suchbot-portrait"
               src="/art/suchbot.png"
@@ -215,13 +240,14 @@ const hero = await reader.singletons.hero.read();
               Farcaster timeline. I’ve shaped its writing standards, tools, and
               access to public and private knowledge.
             </p>
+            <p class="decision-note"><strong>Feedback into checks.</strong> Repeated corrections to its writing became a mechanical style check before publication. Public interactions use explicitly published knowledge; private notes stay behind a server-side access boundary.</p>
             <div class="project-links">
               <a href="https://farcaster.xyz/suchbot">Suchbot on Farcaster ↗</a>
               <a href="https://bot.mxjxn.com/">Read the blog ↗</a>
             </div>
           </article>
           <article class="compact-project">
-            <p class="eyebrow">003 / GLITCH PIPELINE</p>
+            <p class="eyebrow">004 / CREATIVE TOOLS</p>
             <h3>Glitch Pipeline</h3>
             <p>
               Make and transform images through commands you can chain together,
@@ -233,7 +259,7 @@ const hero = await reader.singletons.hero.read();
             </div>
           </article>
           <article class="compact-project snap-project">
-            <p class="eyebrow">004 / SUCH SNAP</p>
+            <p class="eyebrow">005 / PUBLIC INTERFACES</p>
             <h3>Such Snap</h3>
             <p>
               A Farcaster snap server with templates for guides, multi-page
@@ -249,7 +275,6 @@ const hero = await reader.singletons.hero.read();
         </div>
         <div class="more-work">
           <span class="eyebrow">ALSO IN THE WORKSHOP</span>
-          <a href="https://cryptoart.social/">Cryptoart.social ↗</a>
           <a href="https://such.gallery/">such.gallery ↗</a>
           <a href="https://rogue.boston/">Rogue Pedicab ↗</a>
           <a href="https://github.com/mxjxn">GitHub ↗</a>
@@ -258,20 +283,20 @@ const hero = await reader.singletons.hero.read();
       <section id="about" class="about section" aria-labelledby="about-title">
         <div class="section-heading">
           <p class="eyebrow">02 / THE PERSON</p>
-          <h2 id="about-title">A little about me</h2>
+          <h2 id="about-title">Working with people.</h2>
         </div>
         <div class="about-copy">
           <p>
-            I’m a developer and artist based in Boston. I currently work as a
-            bicycle mechanic and spend much of my time outside work building
-            software and making art. I’ve also taught swimming, driven a
-            pedicab, and worked on engineering teams at The Boston Globe and
-            Charged Particles.
+            At Charged Particles, I moved from development into project
+            coordination, helping developers, designers, and leadership
+            communicate about the work. At The Boston Globe, I built and
+            maintained publishing sites and helped with a CMS migration.
           </p>
           <p>
-            Working with people has been a constant through all of it. I’m
-            comfortable starting conversations, teaching, and helping when
-            someone is frustrated.
+            I’m also a working bicycle mechanic, a former swimming instructor,
+            and a former pedicab driver. I’m comfortable starting conversations,
+            teaching, and helping when someone is frustrated. Understanding the
+            person and explaining the next step are part of the work.
           </p>
           <details class="human-story">
             <summary>
@@ -322,9 +347,10 @@ const hero = await reader.singletons.hero.read();
         </h2>
         <div>
           <p>
-            I’m looking for a developer role where I can work directly with
-            people to build useful software and agent systems. If that sounds
-            like your team, I’d like to talk.
+            I’m looking for a forward deployed engineering role: working directly
+            with people to understand their needs, build useful integrations,
+            and support the software in use. If that sounds like your team,
+            I’d like to talk.
           </p>
           <a
             class="button"
@@ -340,7 +366,7 @@ const hero = await reader.singletons.hero.read();
         mxjxn<span>_</span>
       </a>
       <div>
-        <a href="/blog">Writing</a>
+        <a href="https://notes.mxjxn.com/">Notes & writing ↗</a>
         <a href="https://github.com/mxjxn">GitHub ↗</a>
         <a href="https://www.linkedin.com/in/max-jackson-002742291">
           LinkedIn ↗

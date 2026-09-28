@@ -284,6 +284,24 @@ h2 {
   grid-template-columns: 1.1fr 1fr;
   background: #0c100c;
 }
+.featured-project + .featured-project { margin-top: 32px; }
+.experience-context { display: flex; align-items: baseline; justify-content: space-between; gap: 30px; padding: 28px 0 0; color: var(--muted); font-size: 14px; }
+.experience-context p { max-width: 740px; }
+.experience-context strong { color: var(--paper); font-weight: 500; }
+.experience-context a { flex-shrink: 0; }
+.project-evidence { margin: 36px; padding: 30px; border-left: 1px solid var(--line); align-self: center; font-size: 14px; color: var(--muted); }
+.project-evidence strong { color: var(--paper); font-weight: 500; }
+.grant-value { color: var(--green); font-size: clamp(3rem, 6vw, 5rem); line-height: 1.1; letter-spacing: -.055em; margin: 20px 0 14px; }
+.rome-support { margin-top: 22px; }
+.integration-path { display: flex; flex-direction: column; gap: 8px; margin-top: 34px; padding-top: 24px; border-top: 1px solid var(--line); font: 12px/1.5 var(--mono); }
+.integration-path [aria-hidden] { color: var(--green); }
+.decision-note { margin-top: 22px; }
+.decision-note strong { color: var(--paper); font-weight: 500; }
+@media (max-width: 700px) {
+  .experience-context { flex-direction: column; gap: 14px; }
+  .project-evidence { margin: 0 25px 25px; padding: 25px 0 0; border-left: 0; border-top: 1px solid var(--line); }
+  .hero-position { overflow-wrap: anywhere; }
+}
 .project-story {
   padding: 36px;
 }

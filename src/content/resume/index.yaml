@@ -1,8 +1,9 @@
-headline: Developer & artist
+headline: Full-stack & agent systems engineer
 summary: >-
-  I build web applications, run my own infrastructure, and work with Hermes every
-  day. My recent projects include Suchbot, an agent on Farcaster, and logseqd,
-  a service I started so my tools and agent could use the same notes.
+  I translate practical needs into deployed software and improve it through
+  daily use. My work connects contracts, indexing, and notifications at
+  Cryptoart.social; agent tools and knowledge systems with Hermes; and
+  experience coordinating developers, designers, and leadership.
 skills:
   - category: Agents & development tools
     items:
@@ -45,6 +46,7 @@ experience:
       - Build and maintain the contracts, indexing services, and website; no other developers have contributed code.
       - Own feature decisions and usability, with design collaboration on the current UI/UX.
       - Develop gallery tools for curators as part of the platform’s expansion.
+      - Received a $5,000 builder grant from the Clanker Ecosystem Fund; the project also led to a paid stay with Kismet Casa for FarCon Rome.
   - company: Self-employed
     role: Independent Developer
     period: 2024 – Present
