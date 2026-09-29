@@ -1,0 +1,29 @@
+{
+  "glitchTitle": "Glitch Pipeline",
+  "glitchDescription": "Make and transform images through commands you can chain together, right in the Farcaster timeline:",
+  "snapTitle": "Such Snap",
+  "snapDescription": "A Farcaster snap server with templates for guides, multi-page tutorials, polls, quizzes, and token interactions. Interactive snaps store responses per user in SQLite, preserving votes and answers when people return and showing live results. Such Snap won a hackathon award leading up to FarCon Rome.",
+  "links": {
+    "link0": {
+      "label": "Open Glitch Pipeline",
+      "url": "/glitch"
+    },
+    "link1": {
+      "label": "Explore Such Snap",
+      "url": "https://snap.mxjxn.com/"
+    },
+    "link2": {
+      "label": "such.gallery",
+      "url": "https://such.gallery/"
+    },
+    "link3": {
+      "label": "Rogue Pedicab",
+      "url": "https://rogue.boston/"
+    },
+    "link4": {
+      "label": "GitHub",
+      "url": "https://github.com/mxjxn"
+    }
+  },
+  "example": "@suchbot >> generate a flying cat | kaleidoscope::3 | pixel-sort::5"
+}

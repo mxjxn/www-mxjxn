@@ -46,7 +46,7 @@ experience:
       - Build and maintain the contracts, indexing services, and website; no other developers have contributed code.
       - Own feature decisions and usability, with design collaboration on the current UI/UX.
       - Develop gallery tools for curators as part of the platform’s expansion.
-      - Received a $5,000 builder grant from the Clanker Ecosystem Fund; the project also led to a paid stay with Kismet Casa for FarCon Rome.
+      - Recipient of Clanker Ecosystem Fund’s Builder Grant. Sponsored by Kismet Casa to host the auction at FarCon Rome.
   - company: Self-employed
     role: Independent Developer
     period: 2024 – Present
@@ -72,7 +72,7 @@ experience:
     bullets:
       - Built and maintained boston.com and bostonglobe.com, and helped move Boston.com to a new CMS.
 projects:
-  - name: logseqd + Hermes knowledge workflow
+  - name: Suchbot’s knowledge system — Logseq + logseqd
     url: https://github.com/mxjxn/logseqd
     period: 2026 — present
     description: >-

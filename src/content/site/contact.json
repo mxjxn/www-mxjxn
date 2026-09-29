@@ -1,0 +1,18 @@
+{
+  "title": "Get in touch",
+  "invitation": "I’m looking for a forward deployed engineering role: working directly with people to understand their needs, build useful integrations, and support the software in use. If that sounds like your team, I’d like to talk.",
+  "links": {
+    "link1": {
+      "label": "Notes & writing",
+      "url": "https://notes.mxjxn.com/"
+    },
+    "link2": {
+      "label": "GitHub",
+      "url": "https://github.com/mxjxn"
+    },
+    "link3": {
+      "label": "LinkedIn",
+      "url": "https://www.linkedin.com/in/max-jackson-002742291"
+    }
+  }
+}

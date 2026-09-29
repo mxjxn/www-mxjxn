@@ -1,0 +1,15 @@
+{
+  "title": "Cryptoart.social",
+  "subtitle": "An auction house built around the artist’s workflow.",
+  "motivation": "I wanted Farcaster notifications built into my auction house, and control over curation. I built Cryptoart.social to bring those needs into one experience.",
+  "implementation": "I adapted Manifold’s marketplace contracts, deployed a subgraph, and built the website around them. Artists receive notifications when bids arrive; bidders hear when they’ve been outbid.",
+  "ownership": "I own the contracts, indexing, website, and feature decisions, with design collaboration on the current UI/UX. Curator tools are part of the ongoing expansion.",
+  "grant": "Recipient of Clanker Ecosystem Fund’s Builder Grant",
+  "sponsorship": "Sponsored by Kismet Casa to host the auction at FarCon Rome.",
+  "links": {
+    "link0": {
+      "label": "Explore the auction house",
+      "url": "https://cryptoart.social/"
+    }
+  }
+}
