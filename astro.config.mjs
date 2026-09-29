@@ -7,6 +7,9 @@ import keystatic from '@keystatic/astro';
 export default defineConfig({
   site: 'https://www.mxjxn.com',
   output: 'server',
+  security: {
+    allowedDomains: [{ protocol: 'https', hostname: 'www.mxjxn.com' }],
+  },
   adapter: node({
     mode: 'standalone',
   }),
