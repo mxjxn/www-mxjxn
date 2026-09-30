@@ -1,4 +1,5 @@
 ---
+import AgentGraph from "../components/AgentGraph.astro";
 import PortfolioLayout from "../layouts/PortfolioLayout.astro";
 import { reader } from "../lib/reader";
 const [hero, cryptoart, suchbot, tools, person, practice, contact, framing] = await Promise.all([
@@ -93,19 +94,24 @@ const [hero, cryptoart, suchbot, tools, person, practice, contact, framing] = aw
       </div>
       <section id="work" class="work section" aria-labelledby="work-title">
         <div class="section-heading">
-          <p class="eyebrow">01 / SELECTED WORK</p>
+          <p class="eyebrow section-marker">01 / SELECTED WORK</p>
           <h2 id="work-title">{framing.workTitle}</h2>
         </div>
         <article class="featured-project auction-project" id="cryptoart">
           <div class="project-story">
-            <p class="eyebrow">001 <span class="muted">/ PRODUCT & INTEGRATION</span></p>
+            <p class="eyebrow"><span class="project-number">001</span> <span class="muted">/ PRODUCT & INTEGRATION</span></p>
             <h3>{cryptoart.title}</h3>
             <p class="project-name">{cryptoart.subtitle}</p>
             <p>{cryptoart.motivation}</p>
             <p>{cryptoart.implementation}</p>
             <p>{cryptoart.ownership}</p>
+            <p>{cryptoart.tooling}</p>
             <div class="tags"><span>Solidity</span><span>On-chain indexing</span><span>React</span><span>Farcaster</span></div>
-            <div class="project-links"><a href={cryptoart.links.link0.url}>{cryptoart.links.link0.label} ↗</a></div>
+            <div class="project-links">
+              <a class="primary-project-link" href={cryptoart.links.link0.url}>{cryptoart.links.link0.label} ↗</a>
+              <a href={cryptoart.links.link1.url}>{cryptoart.links.link1.label} ↗</a>
+              <a href={cryptoart.links.link2.url}>{cryptoart.links.link2.label} ↗</a>
+            </div>
           </div>
           <aside class="project-evidence" aria-label="Cryptoart.social recognition and integration">
             <p class="eyebrow">RECOGNITION</p>
@@ -116,12 +122,13 @@ const [hero, cryptoart, suchbot, tools, person, practice, contact, framing] = aw
             </div>
           </aside>
         </article>
-        <article class="featured-project">
+        <section class="suchbot-family" aria-labelledby="suchbot-title">
+        <article class="featured-project suchbot-parent">
           <div class="project-story">
             <p class="eyebrow">
-              002 <span class="muted">/ SUCHBOT & THE SYSTEM BEHIND IT</span>
+              <span class="project-number">002</span> <span class="muted">/ SUCHBOT & THE SYSTEM BEHIND IT</span>
             </p>
-            <h3>{suchbot.title}</h3>
+            <h3 id="suchbot-title">{suchbot.title}</h3>
             <p class="project-name">{suchbot.subtitle}</p>
             <p>{suchbot.overview}</p>
             <p>{suchbot.knowledge}</p>
@@ -134,55 +141,13 @@ const [hero, cryptoart, suchbot, tools, person, practice, contact, framing] = aw
               <span>PWA</span>
             </div>
             <div class="project-links">
-              <a href={suchbot.links.link0.url}>{suchbot.links.link0.label} ↗</a>
+              <a class="primary-project-link" href={suchbot.links.link0.url}>{suchbot.links.link0.label} ↗</a>
               <a href={suchbot.links.link1.url}>{suchbot.links.link1.label} ↗</a>
               <a href={suchbot.links.link2.url}>{suchbot.links.link2.label} ↗</a>
               <a href={suchbot.links.link3.url}>{suchbot.links.link3.label} ↗</a>
             </div>
           </div>
-          <div class="system-panel">
-            <div class="panel-title">
-              <span>THE KNOWLEDGE LAYER</span>
-              <span aria-hidden="true">[ GRAPH ]</span>
-            </div>
-            <div
-              class="system-diagram"
-              role="img"
-              aria-label="Logseq clients and a web interface connect to Markdown notes and logseqd, giving Hermes a shared knowledge source."
-            >
-              <div class="diagram-inputs">
-                <span>
-                  LOGSEQ
-                  <br />
-                  <small>phone / desktop</small>
-                </span>
-                <span>
-                  WEB INTERFACE
-                  <br />
-                  <small>capture / review</small>
-                </span>
-              </div>
-              <div class="diagram-lines" aria-hidden="true">
-                <span>│</span>
-                <span>│</span>
-              </div>
-              <div class="diagram-core">
-                <span class="core-mark" aria-hidden="true">
-                  ⌘
-                </span>
-                <strong>Logseq document graph</strong>
-                <span>QUERY SERVICE · logseqd</span>
-              </div>
-              <div class="diagram-arrow" aria-hidden="true">
-                ↕
-              </div>
-              <div class="diagram-agent">
-                <span class="square"></span> HERMES{" "}
-                <small>read / reason / write back</small>
-              </div>
-            </div>
-            <p class="panel-footnote">{framing.graphCaption}</p>
-          </div>
+          <AgentGraph />
           <details class="project-details">
             <summary>
               <span>How it works</span>
@@ -209,23 +174,30 @@ const [hero, cryptoart, suchbot, tools, person, practice, contact, framing] = aw
             </div>
           </details>
         </article>
+        <div class="suchbot-offshoots">
+          <header class="offshoot-heading">
+            <p class="eyebrow">{tools.familyLabel}</p>
+            <p>{tools.familyDescription}</p>
+          </header>
         <div class="project-pair">
           <article class="compact-project">
             <p class="eyebrow">SUCHBOT / CREATIVE TOOLS</p>
-            <h3>{tools.glitchTitle}</h3>
+            <h4>{tools.glitchTitle}</h4>
             <p>{tools.glitchDescription}</p>
             <pre class="pipeline-example"><code>{tools.example}</code></pre>
-            <div class="project-links"><a href={tools.links.link0.url}>{tools.links.link0.label} ↗</a></div>
+            <div class="project-links"><a class="primary-project-link" href={tools.links.link0.url}>{tools.links.link0.label} ↗</a></div>
           </article>
           <article class="compact-project snap-project">
             <p class="eyebrow">SUCHBOT / PUBLIC INTERFACES</p>
-            <h3>{tools.snapTitle}</h3>
+            <h4>{tools.snapTitle}</h4>
             <p>{tools.snapDescription}</p>
             <div class="project-links">
-              <a href={tools.links.link1.url}>{tools.links.link1.label} ↗</a>
+              <a class="primary-project-link" href={tools.links.link1.url}>{tools.links.link1.label} ↗</a>
             </div>
           </article>
         </div>
+        </div>
+        </section>
         <div class="more-work">
           <span class="eyebrow">ALSO IN THE WORKSHOP</span>
           <a href={tools.links.link2.url}>{tools.links.link2.label} ↗</a>
@@ -235,7 +207,7 @@ const [hero, cryptoart, suchbot, tools, person, practice, contact, framing] = aw
       </section>
       <section id="about" class="about section" aria-labelledby="about-title">
         <div class="section-heading">
-          <p class="eyebrow">02 / THE PERSON</p>
+          <p class="eyebrow section-marker">02 / THE PERSON</p>
           <h2 id="about-title">{person.title}</h2>
         </div>
         <div class="about-copy">
@@ -261,14 +233,14 @@ const [hero, cryptoart, suchbot, tools, person, practice, contact, framing] = aw
           <figcaption>DAILY 3D PRACTICE / BLENDER</figcaption>
         </figure>
         <div class="practice-copy">
-          <p class="eyebrow">03 / CREATIVE PRACTICE</p>
+          <p class="eyebrow section-marker">03 / CREATIVE PRACTICE</p>
           <h2 id="practice-title">{practice.title}</h2>
           <p>{practice.description}</p>
           <a class="text-link" href={practice.links.link0.url}>{practice.links.link0.label} ↗</a>
         </div>
       </section>
       <section class="contact section" aria-labelledby="contact-title">
-        <p class="eyebrow">04 / START A CONVERSATION</p>
+        <p class="eyebrow section-marker">04 / START A CONVERSATION</p>
         <h2 id="contact-title">{contact.title}</h2>
         <div>
           <p>{contact.invitation}</p>

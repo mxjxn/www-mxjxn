@@ -23,6 +23,7 @@ export default config({
             }
         }),
         cryptoart: singleton({ label: "02 \u00b7 Cryptoart.social", path: 'src/content/site/cryptoart', format: { data: 'json' }, schema: {
+                tooling: copy('Tests, deployment tooling and documentation contribution', true),
                 title: copy("Project name", false),
                 subtitle: copy("One-sentence introduction", true),
                 motivation: copy("What problem made you build this?", true),
@@ -31,6 +32,8 @@ export default config({
                 grant: copy("Grant recognition \u2014 shown beside the story", true),
                 sponsorship: copy("Sponsorship \u2014 shown below the grant", true),
                 links: fields.object({
+                    link1: fields.object({ label: copy('Link text'), url: copy('Destination URL') }, { label: 'CryptoArt Studio reference' }),
+                    link2: fields.object({ label: copy('Link text'), url: copy('Destination URL') }, { label: 'LSSVM documentation' }),
                     link0: fields.object({ label: copy('Link text'), url: copy('Destination URL') }, { label: "Explore the auction house" }),
                 }, { label: 'Links shown in this section' }),
             } }),
@@ -55,6 +58,8 @@ export default config({
                 }, { label: 'Links shown in this section' }),
             } }),
         tools: singleton({ label: "04 \u00b7 Suchbot public tools", path: 'src/content/site/tools', format: { data: 'json' }, schema: {
+                familyLabel: copy('Label connecting these projects to Suchbot'),
+                familyDescription: copy('How were these projects created with Suchbot?', true),
                 glitchTitle: copy("First tool: name", false),
                 glitchDescription: copy("First tool: what can someone do with it?", true),
                 example: copy('Example command shown in the code block', true),

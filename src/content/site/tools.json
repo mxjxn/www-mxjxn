@@ -1,8 +1,8 @@
 {
   "glitchTitle": "Glitch Pipeline",
-  "glitchDescription": "Make and transform images through commands you can chain together, right in the Farcaster timeline:",
+  "glitchDescription": "Generate an image and manipulate it, or chain operations on an existing image, directly in the Farcaster timeline. Without AI generation, image transformations can return almost immediately. For example:",
   "snapTitle": "Such Snap",
-  "snapDescription": "A Farcaster snap server with templates for guides, multi-page tutorials, polls, quizzes, and token interactions. Interactive snaps store responses per user in SQLite, preserving votes and answers when people return and showing live results. Such Snap won a hackathon award leading up to FarCon Rome.",
+  "snapDescription": "Suchbot can quickly create inline Farcaster UIs using prepared jsonrender templates for guides, tutorials, polls, quizzes, and token interactions. Interactive snaps store responses per user in SQLite, preserving votes and answers when people return and showing live results. Such Snap won a hackathon award leading up to FarCon Rome.",
   "links": {
     "link0": {
       "label": "Open Glitch Pipeline",
@@ -25,5 +25,7 @@
       "url": "https://github.com/mxjxn"
     }
   },
-  "example": "@suchbot >> generate a flying cat | kaleidoscope::3 | pixel-sort::5"
+  "example": "@suchbot >> generate a flying cat | kaleidoscope::3 | pixel-sort::5",
+  "familyLabel": "BUILT WITH SUCHBOT",
+  "familyDescription": "Projects I created with Suchbot’s help, extending the same agent practice into creative tools and public interfaces."
 }

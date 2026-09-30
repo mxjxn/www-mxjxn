@@ -1,0 +1,84 @@
+<scroll-vines aria-hidden="true"><canvas></canvas></scroll-vines>
+<script>
+class ScrollVines extends HTMLElement {
+  cleanup?:()=>void;
+  connectedCallback(){
+    if(this.cleanup)return;
+    const canvas=this.querySelector('canvas')!;
+    const ctx=canvas.getContext('2d');if(!ctx)return;
+    const reduce=matchMedia('(prefers-reduced-motion: reduce)');
+    const candidates=[...document.querySelectorAll<HTMLElement>('.auction-project, .suchbot-family')];
+    // Other pages can participate where a section has a complete border.
+    if(!candidates.length)document.querySelectorAll<HTMLElement>('main section, main article').forEach(el=>{
+      const style=getComputedStyle(el);
+      if(['borderTopWidth','borderRightWidth','borderBottomWidth','borderLeftWidth'].every(key=>parseFloat(style[key as keyof CSSStyleDeclaration] as string)>0))candidates.push(el);
+    });
+    const visible=new Set<HTMLElement>();
+    let width=innerWidth,height=innerHeight,frame=0,lastPaint=0,start=performance.now();
+    const cell=6;
+    const resize=()=>{
+      width=innerWidth;height=innerHeight;
+      const dpr=Math.min(devicePixelRatio||1,2);
+      canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+    };
+    const render=(now:number)=>{
+      frame=0;
+      if(reduce.matches||document.hidden||!visible.size)return;
+      // Fixed cadence retains the character-cell feel without tying it to scrolling.
+      if(now-lastPaint>=80){
+        lastPaint=now;ctx.clearRect(0,0,width,height);
+        ctx.font='7px monospace';ctx.textAlign='center';ctx.textBaseline='middle';
+        const seconds=(now-start)/1000;
+        const entrance=Math.min(1,seconds/2);
+        candidates.forEach((el,index)=>{
+          if(!visible.has(el))return;
+          const r=el.getBoundingClientRect();
+          const w=r.width-1,h=r.height-1,perimeter=2*(w+h);
+          if(w<=0||h<=0)return;
+          const phase=(seconds*22+perimeter*(.08+index*.37))%perimeter;
+          const head=Math.floor(phase/cell)*cell;
+          const position=(distance:number)=>{
+            const d=(distance%perimeter+perimeter)%perimeter;
+            // Leftwards over the top, then down the left side into the section.
+            if(d<w)return {x:r.right-1-d,y:r.top,glyph:'─'};
+            if(d<w+h)return {x:r.left,y:r.top+d-w,glyph:'│'};
+            if(d<2*w+h)return {x:r.left+d-w-h,y:r.bottom-1,glyph:'─'};
+            return {x:r.right-1,y:r.bottom-1-(d-2*w-h),glyph:'│'};
+          };
+          // Red gently replaces green near the top-left corner; no separate event.
+          const cornerDistance=Math.min(Math.abs(phase-w),perimeter-Math.abs(phase-w));
+          const red=Math.max(0,1-cornerDistance/180);
+          const color=[110+(184-110)*red,153+(88-153)*red,119+(78-119)*red];
+          for(let i=0;i<30;i++){
+            const p=position(head-i*cell);
+            if(p.y< -8||p.y>height+8)continue;
+            const tail=Math.pow(1-i/30,2);
+            ctx.fillStyle=`rgba(${color.map(Math.round).join(',')},${entrance*tail*.62})`;
+            ctx.fillText(i===0?'▪':p.glyph,Math.round(p.x),Math.round(p.y));
+          }
+        });
+      }
+      frame=requestAnimationFrame(render);
+    };
+    const sync=()=>{
+      cancelAnimationFrame(frame);frame=0;
+      if(reduce.matches||document.hidden||!visible.size){ctx.clearRect(0,0,width,height);return;}
+      lastPaint=0;frame=requestAnimationFrame(render);
+    };
+    const observer=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{if(entry.isIntersecting)visible.add(entry.target as HTMLElement);else visible.delete(entry.target as HTMLElement);});
+      sync();
+    },{rootMargin:'100px'});
+    resize();candidates.forEach(el=>observer.observe(el));
+    window.addEventListener('resize',resize);document.addEventListener('visibilitychange',sync);reduce.addEventListener('change',sync);
+    this.cleanup=()=>{cancelAnimationFrame(frame);observer.disconnect();window.removeEventListener('resize',resize);document.removeEventListener('visibilitychange',sync);reduce.removeEventListener('change',sync);};
+  }
+  disconnectedCallback(){this.cleanup?.();this.cleanup=undefined;}
+}
+if(!customElements.get('scroll-vines'))customElements.define('scroll-vines',ScrollVines);
+</script>
+<style>
+scroll-vines{position:fixed;inset:0;z-index:20;pointer-events:none;overflow:hidden;contain:strict}canvas{display:block;width:100%;height:100%}
+@media(prefers-reduced-motion:reduce),print{scroll-vines{display:none}}
+</style>

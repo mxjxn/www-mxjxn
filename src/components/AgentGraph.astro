@@ -1,0 +1,16 @@
+<aside class="agent-workspace" aria-label="Suchbot context and document access">
+  <p class="eyebrow">SUCHBOT’S WORKSPACE</p>
+  <h4>Context & document access</h4>
+  <p class="workspace-intro">Suchbot uses working memory, looks up documents, and invokes tools as needed.</p>
+  <div class="knowledge-access">
+    <section><h5>On the public timeline</h5><p>The Farcaster webhook can look up <strong>public Logseq articles only</strong>, including topics Suchbot has written about.</p></section>
+    <section><h5>In my private instance</h5><p>Fast lookup across our discussions and public and private documents through <strong>logseqd and DataScript queries</strong>.</p></section>
+  </div>
+</aside>
+<style>
+.agent-workspace{margin:30px;align-self:center;min-width:0;padding:8px 0;border-block:1px solid var(--line)}
+h4{font-size:24px;line-height:1.25;font-weight:500;margin:18px 0}h5{font-size:15px;font-weight:500;margin:0 0 8px}
+p{font-size:13px;line-height:1.8;color:var(--muted)}.eyebrow{font:10px var(--mono);color:var(--green);margin-top:20px}
+.knowledge-access section{padding:18px 0}.knowledge-access section+section{border-top:1px dashed var(--line)}strong{font-weight:500;color:var(--text,#eee)}
+@media(max-width:700px){.agent-workspace{margin:20px 25px 30px}}
+</style>

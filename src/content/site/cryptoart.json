@@ -10,6 +10,15 @@
     "link0": {
       "label": "Explore the auction house",
       "url": "https://cryptoart.social/"
+    },
+    "link1": {
+      "label": "CryptoArt Studio reference",
+      "url": "https://mxjxn.github.io/cryptoart-studio/"
+    },
+    "link2": {
+      "label": "LSSVM development docs",
+      "url": "https://mxjxn.github.io/such-lssvm/"
     }
-  }
+  },
+  "tooling": "I also built tests and deployment scripts, and documented LSSVM, building on sudoswap’s sudoAMM v2 protocol."
 }
