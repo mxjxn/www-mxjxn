@@ -498,7 +498,7 @@ details[open] .toggle {
 .compact-project + article {
   border-left: 1px solid var(--line);
 }
-.compact-project h3 {
+.compact-project h4 {
   font-size: 30px;
   font-weight: 500;
   letter-spacing: -0.035em;
@@ -922,4 +922,63 @@ footer a {
   font: 12px/1.9 var(--mono);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+}
+
+/* One parent project, with visibly subordinate projects branching below it. */
+.suchbot-family { margin-top: 24px; border: 1px solid var(--line); }
+.suchbot-family .suchbot-parent { margin: 0; border: 0; }
+.suchbot-offshoots { margin: 0 36px 36px; padding: 30px 0 0 28px; border-left: 1px solid var(--green); }
+.offshoot-heading { position: relative; max-width: 660px; }
+.offshoot-heading::before { content: ''; position: absolute; left: -29px; top: 7px; width: 18px; border-top: 1px solid var(--green); }
+.offshoot-heading > p + p { color: var(--muted); font-size: 15px; margin-top: 12px; }
+.suchbot-offshoots .project-pair { border: 0; border-top: 1px solid var(--line); margin-top: 24px; }
+.suchbot-offshoots .compact-project { padding: 28px 28px 0 0; min-width: 0; }
+.suchbot-offshoots .compact-project + article { padding-left: 28px; }
+.suchbot-offshoots .compact-project h4 { font-size: 26px; }
+@media (max-width: 700px) {
+  .suchbot-offshoots { margin: 0 20px 25px; padding: 24px 0 0 18px; }
+  .offshoot-heading::before { left: -19px; width: 11px; }
+  .suchbot-offshoots .compact-project { padding: 22px 0; }
+  .suchbot-offshoots .compact-project + article { padding-left: 0; padding-bottom: 0; }
+}
+
+@font-face {
+  font-family: 'Pirata One';
+  src: url('/fonts/PirataOne-Regular.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+.hero-copy #intro-title {
+  font-family: 'Pirata One', Georgia, serif;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.08;
+}
+
+/* Red marks entry points and the next action; supporting references stay muted. */
+.section-marker,
+.project-number { color: var(--red); }
+.project-links .primary-project-link {
+  position: relative;
+  border-bottom-color: transparent;
+  transition: color 160ms ease;
+}
+.primary-project-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 22px;
+  height: 1px;
+  background: var(--red);
+  transition: width 180ms ease;
+}
+.project-links .primary-project-link:hover,
+.project-links .primary-project-link:focus-visible { color: var(--red); }
+.primary-project-link:hover::after,
+.primary-project-link:focus-visible::after { width: 100%; }
+@media (prefers-reduced-motion: reduce) {
+  .project-links .primary-project-link,
+  .primary-project-link::after { transition: none; }
 }

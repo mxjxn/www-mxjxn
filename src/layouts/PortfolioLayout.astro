@@ -1,4 +1,5 @@
 ---
+import ScrollVines from "../components/ScrollVines.astro";
 import "../styles/portfolio.css";
 interface Props {
   title?: string;
@@ -63,5 +64,6 @@ const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
         /* Normal browser visits have no miniapp host. */
       });
     </script>
+  <ScrollVines />
   </body>
 </html>
