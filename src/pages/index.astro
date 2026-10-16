@@ -2,7 +2,8 @@
 import AgentGraph from "../components/AgentGraph.astro";
 import PortfolioLayout from "../layouts/PortfolioLayout.astro";
 import { reader } from "../lib/reader";
-const [hero, cryptoart, suchbot, tools, person, practice, contact, framing] = await Promise.all([
+import { getEntry } from "astro:content";
+const [hero, cryptoart, suchbot, tools, person, practice, contact, framing, writing] = await Promise.all([
   reader.singletons.hero.readOrThrow(),
   reader.singletons.cryptoart.readOrThrow(),
   reader.singletons.suchbot.readOrThrow(),
@@ -11,7 +12,11 @@ const [hero, cryptoart, suchbot, tools, person, practice, contact, framing] = aw
   reader.singletons.practice.readOrThrow(),
   reader.singletons.contact.readOrThrow(),
   reader.singletons.framing.readOrThrow(),
+  reader.singletons.writing.readOrThrow(),
 ]);
+const featuredPost = writing?.slug
+  ? await getEntry("posts", writing.slug).catch(() => null)
+  : null;
 ---
 
 <PortfolioLayout>
@@ -199,11 +204,27 @@ const [hero, cryptoart, suchbot, tools, person, practice, contact, framing] = aw
         </section>
         <div class="more-work">
           <span class="eyebrow">ALSO IN THE WORKSHOP</span>
+          <a href={tools.links.link5.url}>{tools.links.link5.label} ↗</a>
+          <a href={tools.links.link6.url}>{tools.links.link6.label} ↗</a>
+          <a href={tools.links.link7.url}>{tools.links.link7.label} ↗</a>
           <a href={tools.links.link2.url}>{tools.links.link2.label} ↗</a>
           <a href={tools.links.link3.url}>{tools.links.link3.label} ↗</a>
           <a href={tools.links.link4.url}>{tools.links.link4.label} ↗</a>
         </div>
       </section>
+      {featuredPost && (
+        <section class="writing-strip section" aria-labelledby="writing-title">
+          <p class="eyebrow section-marker">{writing.label}</p>
+          <div class="writing-featured">
+            <h2 id="writing-title">{featuredPost.data.title}</h2>
+            <p>{featuredPost.data.excerpt}</p>
+            <div class="writing-meta">
+              <span>{new Date(featuredPost.data.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</span>
+              <a class="text-link" href={`/blog/${featuredPost.data.slug}/`}>Read the article ↗</a>
+            </div>
+          </div>
+        </section>
+      )}
       <section id="about" class="about section" aria-labelledby="about-title">
         <div class="section-heading">
           <p class="eyebrow section-marker">02 / THE PERSON</p>

@@ -11,6 +11,18 @@
     "link4": {
       "label": "GitHub",
       "url": "https://github.com/mxjxn"
+    },
+    "link5": {
+      "label": "Generant",
+      "url": "https://mxjxn.github.io/Generant"
+    },
+    "link6": {
+      "label": "OSC Score Bridge",
+      "url": "https://mxjxn.github.io/osc-score-bridge/"
+    },
+    "link7": {
+      "label": "Renoise OSC Sequencer",
+      "url": "https://mxjxn.github.io/renoise-osc-sequencer/"
     }
   },
   "familyLabel": "BUILT WITH THE STACK",
