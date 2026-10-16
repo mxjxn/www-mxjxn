@@ -111,7 +111,7 @@ export default config({
                 }),
                 status: fields.text({
                     label: 'Status',
-                    description: 'e.g. Open to forward deployed engineering roles',
+                    description: 'e.g. Looking for work as a developer and creative',
                 }),
                 cta: fields.text({
                     label: 'Contact button text',
