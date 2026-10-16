@@ -8,7 +8,6 @@ export default config({
         framing: singleton({ label: 'Homepage headings & supporting text', path: 'src/content/site/framing', format: { data: 'json' }, schema: { experience: copy("Experience summary \u2014 below the introduction", true),
                 workTitle: copy("Selected work heading", true),
                 graphCaption: copy("Caption below the knowledge diagram", true),
-                poolTitle: copy("Expandable personal story title", true),
                 capability3: copy('Practice strip — item 3'),
                 capability2: copy('Practice strip — item 2'),
                 capability1: copy('Practice strip — item 1'), } }),
@@ -76,8 +75,6 @@ export default config({
         person: singleton({ label: "05 \u00b7 About on the homepage", path: 'src/content/site/person', format: { data: 'json' }, schema: {
                 title: copy("Section heading", false),
                 experience: copy("How has your engineering experience shaped your work?", true),
-                people: copy("What do you bring to working with people?", true),
-                story: copy("The swimming story \u2014 inside the expandable section", true),
                 links: fields.object({
                     link0: fields.object({ label: copy('Link text'), url: copy('Destination URL') }, { label: "Experience & background" }),
                 }, { label: 'Links shown in this section' }),

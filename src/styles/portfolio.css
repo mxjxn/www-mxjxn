@@ -544,22 +544,6 @@ details[open] .toggle {
   font-size: 15px;
   margin-top: 20px;
 }
-.human-story {
-  border-block: 1px solid var(--line);
-  margin: 25px 0;
-}
-.human-story summary {
-  padding: 16px 0;
-  display: flex;
-  justify-content: space-between;
-  font: 12px var(--mono);
-  color: var(--green);
-}
-.human-story p {
-  font-size: 14px;
-  color: var(--muted);
-  padding-bottom: 20px;
-}
 .practice {
   display: grid;
   grid-template-columns: 1fr 1fr;
