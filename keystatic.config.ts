@@ -6,7 +6,8 @@ export default config({
         : { kind: 'github', repo: 'mxjxn/www-mxjxn' },
     singletons: {
         framing: singleton({ label: 'Homepage headings & supporting text', path: 'src/content/site/framing', format: { data: 'json' }, schema: { experience: copy("Experience summary \u2014 below the introduction", true),
-                workTitle: copy("Selected work heading", true),
+                workTitle: copy("Recent work heading", true),
+                workDescription: copy("One-line deck under the work heading", true),
                 graphCaption: copy("Caption below the knowledge diagram", true),
                 capability3: copy('Practice strip — item 3'),
                 capability2: copy('Practice strip — item 2'),
@@ -36,17 +37,13 @@ export default config({
                     link0: fields.object({ label: copy('Link text'), url: copy('Destination URL') }, { label: "Explore the auction house" }),
                 }, { label: 'Links shown in this section' }),
             } }),
-        suchbot: singleton({ label: "03 \u00b7 Suchbot & its knowledge system", path: 'src/content/site/suchbot', format: { data: 'json' }, schema: {
-                title: copy("Project name", false),
+        suchbot: singleton({ label: "03 \u00b7 The agent stack", path: 'src/content/site/suchbot', format: { data: 'json' }, schema: {
+                title: copy("Section title", false),
                 subtitle: copy("One-sentence introduction", true),
-                overview: copy("What is Suchbot part of?", true),
-                knowledge: copy("How do Logseq and logseqd support the agent?", true),
-                feedback: copy("How do feedback and privacy shape the system?", true),
-                contribution: copy("Your contribution and agent implementation credit", true),
+                overview: copy("Lead-in line above the subsystem grid", true),
+                subsystems: fields.array(fields.object({ title: copy('Subsystem title'), text: copy('What it does', true) }), { label: 'Subsystems' }),
                 decisionsTitle: copy("Details: decisions heading", false),
                 decisions: copy("Which decisions mattered, and why?", true),
-                roleTitle: copy("Details: contribution heading", false),
-                role: copy("What did you personally contribute?", true),
                 limitationsTitle: copy("Details: limitations heading", false),
                 limitations: copy("What remains unfinished or requires maintenance?", true),
                 links: fields.object({
