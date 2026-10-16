@@ -67,7 +67,14 @@ export default config({
                     link2: fields.object({ label: copy('Link text'), url: copy('Destination URL') }, { label: "such.gallery" }),
                     link3: fields.object({ label: copy('Link text'), url: copy('Destination URL') }, { label: "Rogue Pedicab" }),
                     link4: fields.object({ label: copy('Link text'), url: copy('Destination URL') }, { label: "GitHub" }),
+                    link5: fields.object({ label: copy('Link text'), url: copy('Destination URL') }, { label: "Generant" }),
+                    link6: fields.object({ label: copy('Link text'), url: copy('Destination URL') }, { label: "OSC Score Bridge" }),
+                    link7: fields.object({ label: copy('Link text'), url: copy('Destination URL') }, { label: "Renoise OSC Sequencer" }),
                 }, { label: 'Links shown in this section' }),
+            } }),
+        writing: singleton({ label: "09 \u00b7 Featured writing", path: 'src/content/site/writing', format: { data: 'json' }, schema: {
+                label: copy("Strip label (e.g. WRITING)"),
+                slug: copy("Post slug to feature (from the posts collection)"),
             } }),
         person: singleton({ label: "05 \u00b7 About on the homepage", path: 'src/content/site/person', format: { data: 'json' }, schema: {
                 title: copy("Section heading", false),
@@ -213,7 +220,7 @@ export default config({
     },
     ui: {
         navigation: {
-            'Homepage — top to bottom': ['hero', 'cryptoart', 'suchbot', 'tools', 'person', 'practice', 'contact', 'framing'],
+            'Homepage — top to bottom': ['hero', 'cryptoart', 'suchbot', 'tools', 'writing', 'person', 'practice', 'contact', 'framing'],
             'Résumé': ['resume'],
             'Other pages': ['about', 'posts'],
             'Legacy content — not used on the homepage': ['skills', 'recently', 'art', 'projects', 'links'],

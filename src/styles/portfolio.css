@@ -1072,3 +1072,27 @@ footer a {
     justify-self: start;
   }
 }
+
+/* --- Writing strip (featured article) --- */
+.writing-strip {
+  border-top: 1px solid var(--line);
+  padding-top: 34px;
+}
+.writing-featured {
+  max-width: 680px;
+  margin-top: 14px;
+}
+.writing-featured p {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.7;
+  margin-top: 14px;
+}
+.writing-meta {
+  display: flex;
+  gap: 24px;
+  align-items: baseline;
+  margin-top: 18px;
+  font: 11px var(--mono);
+  color: var(--muted);
+}
