@@ -1,14 +1,9 @@
 {
-  "title": "Suchbot",
-  "subtitle": "An agent practice built around a shared document graph.",
-  "overview": "Suchbot is the public face of my ongoing work with Hermes: research, publishing, and creative tools people can use in the Farcaster timeline. Behind it is a larger experiment in giving an agent useful context and improving its behavior through daily use.",
-  "knowledge": "Logseq is the document graph. Its linked pages and blocks let me organize the notes that my agent and I work from. I initiated logseqd, a Clojure/DataScript service that makes that graph queryable by the agent and other tools, then added a mobile interface for capture and review.",
-  "feedback": "Feedback becomes part of the system. Repeated writing corrections became a mechanical check before publication. Public interactions can consult explicitly published pages; a server-side gate keeps private documents out of that access path.",
-  "contribution": "My role: I initiated the project, set the workflow and interface requirements, and tested it in daily use. Hermes contributed substantially to implementation.",
+  "title": "Agents in production.",
+  "subtitle": "An agent system run daily since early 2026 — Suchbot is its public face.",
+  "overview": "A larger experiment in giving an agent useful context, and improving its behavior through daily use.",
   "decisionsTitle": "The decisions",
   "decisions": "A service around existing notes, rather than a separate knowledge silo. A mobile interface for quick capture. Journal upkeep shaped around conversation, because that’s how I naturally work.",
-  "roleTitle": "My contribution",
-  "role": "I initiated logseqd, set the workflow and interface requirements, and tested the system in daily use. Hermes contributed substantially to implementation.",
   "limitationsTitle": "The reality",
   "limitations": "A small, self-hosted system with ongoing maintenance. Logseq syntax, indexing, and mobile caching required iteration. The public template is an untested alpha; it is not a finished enterprise product.",
   "links": {
@@ -28,5 +23,19 @@
       "label": "Integration template",
       "url": "https://github.com/mxjxn/hermes-logseq"
     }
-  }
+  },
+  "subsystems": [
+    {
+      "title": "Shared knowledge graph",
+      "text": "Logseq holds the notes my agent and I work from. I initiated logseqd — a Clojure/DataScript service that makes the graph queryable by the agent and other tools — then added a mobile interface for capture and review."
+    },
+    {
+      "title": "Feedback loops",
+      "text": "Repeated writing corrections became a mechanical check before publication. Public interactions can consult explicitly published pages; a server-side gate keeps private documents out of that path."
+    },
+    {
+      "title": "Division of labor",
+      "text": "I initiate the work, set workflow and interface requirements, and test in daily use. Hermes contributes substantially to implementation."
+    }
+  ]
 }

@@ -94,8 +94,9 @@ const [hero, cryptoart, suchbot, tools, person, practice, contact, framing] = aw
       </div>
       <section id="work" class="work section" aria-labelledby="work-title">
         <div class="section-heading">
-          <p class="eyebrow section-marker">01 / SELECTED WORK</p>
+          <p class="eyebrow section-marker">01 / THE WORK</p>
           <h2 id="work-title">{framing.workTitle}</h2>
+          <p class="section-deck">{framing.workDescription}</p>
         </div>
         <article class="featured-project auction-project" id="cryptoart">
           <div class="project-story">
@@ -126,14 +127,19 @@ const [hero, cryptoart, suchbot, tools, person, practice, contact, framing] = aw
         <article class="featured-project suchbot-parent">
           <div class="project-story">
             <p class="eyebrow">
-              <span class="project-number">002</span> <span class="muted">/ SUCHBOT & THE SYSTEM BEHIND IT</span>
+              <span class="project-number">002</span> <span class="muted">/ THE AGENT STACK</span>
             </p>
             <h3 id="suchbot-title">{suchbot.title}</h3>
             <p class="project-name">{suchbot.subtitle}</p>
             <p>{suchbot.overview}</p>
-            <p>{suchbot.knowledge}</p>
-            <p>{suchbot.feedback}</p>
-            <p>{suchbot.contribution}</p>
+            <div class="subsystem-grid">
+              {suchbot.subsystems.map((s) => (
+                <div class="subsystem">
+                  <h4>{s.title}</h4>
+                  <p>{s.text}</p>
+                </div>
+              ))}
+            </div>
             <div class="tags">
               <span>Clojure</span>
               <span>DataScript</span>
@@ -162,10 +168,6 @@ const [hero, cryptoart, suchbot, tools, person, practice, contact, framing] = aw
               <div>
                 <h4>{suchbot.decisionsTitle}</h4>
                 <p>{suchbot.decisions}</p>
-              </div>
-              <div>
-                <h4>{suchbot.roleTitle}</h4>
-                <p>{suchbot.role}</p>
               </div>
               <div>
                 <h4>{suchbot.limitationsTitle}</h4>

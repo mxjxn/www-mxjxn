@@ -1,8 +1,9 @@
 {
   "experience": "Engineering experience at The Boston Globe and Charged Particles. Independent work across product, integrations, and operations.",
-  "workTitle": "Problems I’ve worked through.",
+  "workTitle": "Recent work.",
   "graphCaption": "Logseq holds the documents. logseqd makes them queryable. Hermes uses that context; Suchbot brings the work into public.",
   "capability3": "DEPLOY & ITERATE",
   "capability2": "BUILD & INTEGRATE",
-  "capability1": "UNDERSTAND THE WORKFLOW"
+  "capability1": "UNDERSTAND THE WORKFLOW",
+  "workDescription": "Two systems I run end to end: a marketplace for cryptoartists, and an agent stack built on a shared knowledge graph."
 }
