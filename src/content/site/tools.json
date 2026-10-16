@@ -1,17 +1,5 @@
 {
-  "glitchTitle": "Glitch Pipeline",
-  "glitchDescription": "Generate an image and manipulate it, or chain operations on an existing image, directly in the Farcaster timeline. Without AI generation, image transformations can return almost immediately. For example:",
-  "snapTitle": "Such Snap",
-  "snapDescription": "Suchbot can quickly create inline Farcaster UIs using prepared jsonrender templates for guides, tutorials, polls, quizzes, and token interactions. Interactive snaps store responses per user in SQLite, preserving votes and answers when people return and showing live results. Such Snap won a hackathon award leading up to FarCon Rome.",
   "links": {
-    "link0": {
-      "label": "Open Glitch Pipeline",
-      "url": "/glitch"
-    },
-    "link1": {
-      "label": "Explore Such Snap",
-      "url": "https://snap.mxjxn.com/"
-    },
     "link2": {
       "label": "such.gallery",
       "url": "https://such.gallery/"
@@ -25,7 +13,30 @@
       "url": "https://github.com/mxjxn"
     }
   },
-  "example": "@suchbot >> generate a flying cat | kaleidoscope::3 | pixel-sort::5",
-  "familyLabel": "BUILT WITH SUCHBOT",
-  "familyDescription": "Projects I created with Suchbot’s help, extending the same agent practice into creative tools and public interfaces."
+  "familyLabel": "BUILT WITH THE STACK",
+  "familyDescription": "Domains and tools that exist because of the agent practice — its public record.",
+  "entries": [
+    {
+      "domain": "notes.mxjxn.com",
+      "description": "Notes, made public — the knowledge graph behind the agent, published read-only through a privacy gate.",
+      "url": "https://notes.mxjxn.com"
+    },
+    {
+      "domain": "bot.mxjxn.com",
+      "description": "The agent’s log — research reports and process notes, written and published by the agent.",
+      "url": "https://bot.mxjxn.com"
+    },
+    {
+      "domain": "such.bot",
+      "description": "Self-serve glitch pipelines — generate, transform, chain. From the timeline:",
+      "url": "https://such.bot",
+      "example": "@suchbot >> generate a flying cat | kaleidoscope::3 | pixel-sort::5"
+    },
+    {
+      "domain": "snap.mxjxn.com",
+      "description": "Such Snap — inline Farcaster interfaces. Hackathon winner, FarCon Rome lead-up.",
+      "url": "https://snap.mxjxn.com",
+      "footnote": true
+    }
+  ]
 }

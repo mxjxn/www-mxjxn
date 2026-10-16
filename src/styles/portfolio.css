@@ -1008,3 +1008,67 @@ footer a {
     padding-top: 18px;
   }
 }
+
+/* --- Built-with-the-stack ledger --- */
+.stack-ledger {
+  border-top: 1px solid var(--line);
+  margin-top: 24px;
+}
+.ledger-row {
+  display: grid;
+  grid-template-columns: 168px 1fr auto;
+  gap: 20px;
+  align-items: baseline;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+.ledger-domain {
+  font: 12px var(--mono);
+  color: var(--green);
+}
+.ledger-body p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+.ledger-example {
+  margin: 10px 0 0;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font: 12px var(--mono);
+  color: var(--text, #eee);
+  overflow-x: auto;
+  white-space: pre;
+}
+.ledger-link {
+  font: 11px var(--mono);
+  color: var(--muted);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.ledger-link:hover {
+  color: var(--green);
+}
+.ledger-row.footnote {
+  padding: 12px 0;
+}
+.ledger-row.footnote .ledger-domain,
+.ledger-row.footnote .ledger-body p,
+.ledger-row.footnote .ledger-link {
+  font-size: 12px;
+  opacity: 0.75;
+}
+.ledger-row.footnote .ledger-domain {
+  font-size: 11px;
+}
+@media (max-width: 700px) {
+  .ledger-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .ledger-link {
+    justify-self: start;
+  }
+}

@@ -181,22 +181,19 @@ const [hero, cryptoart, suchbot, tools, person, practice, contact, framing] = aw
             <p class="eyebrow">{tools.familyLabel}</p>
             <p>{tools.familyDescription}</p>
           </header>
-        <div class="project-pair">
-          <article class="compact-project">
-            <p class="eyebrow">SUCHBOT / CREATIVE TOOLS</p>
-            <h4>{tools.glitchTitle}</h4>
-            <p>{tools.glitchDescription}</p>
-            <pre class="pipeline-example"><code>{tools.example}</code></pre>
-            <div class="project-links"><a class="primary-project-link" href={tools.links.link0.url}>{tools.links.link0.label} ↗</a></div>
-          </article>
-          <article class="compact-project snap-project">
-            <p class="eyebrow">SUCHBOT / PUBLIC INTERFACES</p>
-            <h4>{tools.snapTitle}</h4>
-            <p>{tools.snapDescription}</p>
-            <div class="project-links">
-              <a class="primary-project-link" href={tools.links.link1.url}>{tools.links.link1.label} ↗</a>
+        <div class="stack-ledger">
+          {tools.entries.map((e) => (
+            <div class={`ledger-row${e.footnote ? ' footnote' : ''}`}>
+              <span class="ledger-domain">{e.domain}</span>
+              <div class="ledger-body">
+                <p>{e.description}</p>
+                {e.example && (
+                  <pre class="ledger-example"><code>{e.example}</code></pre>
+                )}
+              </div>
+              <a class="ledger-link" href={e.url}>open ↗</a>
             </div>
-          </article>
+          ))}
         </div>
         </div>
         </section>

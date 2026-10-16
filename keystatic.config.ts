@@ -53,17 +53,17 @@ export default config({
                     link3: fields.object({ label: copy('Link text'), url: copy('Destination URL') }, { label: "Integration template" }),
                 }, { label: 'Links shown in this section' }),
             } }),
-        tools: singleton({ label: "04 \u00b7 Suchbot public tools", path: 'src/content/site/tools', format: { data: 'json' }, schema: {
-                familyLabel: copy('Label connecting these projects to Suchbot'),
-                familyDescription: copy('How were these projects created with Suchbot?', true),
-                glitchTitle: copy("First tool: name", false),
-                glitchDescription: copy("First tool: what can someone do with it?", true),
-                example: copy('Example command shown in the code block', true),
-                snapTitle: copy('Second tool: name'),
-                snapDescription: copy('Second tool: capabilities and outcome', true),
+        tools: singleton({ label: "04 \u00b7 Built with the stack \u2014 ledger", path: 'src/content/site/tools', format: { data: 'json' }, schema: {
+                familyLabel: copy('Label connecting the ledger to the agent stack'),
+                familyDescription: copy('What is this record of?', true),
+                entries: fields.array(fields.object({
+                    domain: copy('Domain or name, shown in mono'),
+                    description: copy('One line \u2014 what it is', true),
+                    url: copy('Destination URL'),
+                    example: copy('Optional example line (shown as code)', false),
+                    footnote: fields.checkbox({ label: 'Footnote row (smaller, muted)', defaultValue: false }),
+                }), { label: 'Ledger entries' }),
                 links: fields.object({
-                    link0: fields.object({ label: copy('Link text'), url: copy('Destination URL') }, { label: "Open Glitch Pipeline" }),
-                    link1: fields.object({ label: copy('Link text'), url: copy('Destination URL') }, { label: "Explore Such Snap" }),
                     link2: fields.object({ label: copy('Link text'), url: copy('Destination URL') }, { label: "such.gallery" }),
                     link3: fields.object({ label: copy('Link text'), url: copy('Destination URL') }, { label: "Rogue Pedicab" }),
                     link4: fields.object({ label: copy('Link text'), url: copy('Destination URL') }, { label: "GitHub" }),
