@@ -39,12 +39,6 @@
       "url": "https://bot.mxjxn.com"
     },
     {
-      "domain": "glitch.mxjxn.com",
-      "description": "Self-serve glitch pipelines — generate, transform, chain. From the timeline:",
-      "url": "https://glitch.mxjxn.com",
-      "example": "@suchbot >> generate a flying cat | kaleidoscope::3 | pixel-sort::5"
-    },
-    {
       "domain": "snap.mxjxn.com",
       "description": "Such Snap — inline Farcaster interfaces. Hackathon winner, FarCon Rome lead-up.",
       "url": "https://snap.mxjxn.com",
