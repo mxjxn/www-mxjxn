@@ -1,4 +1,4 @@
-headline: Full-stack & agent systems engineer
+headline: Full-stack engineer
 summary: >-
   I translate practical needs into deployed software and improve it through
   daily use. My work connects contracts, indexing, and notifications at
@@ -48,11 +48,11 @@ experience:
       - Develop gallery tools for curators as part of the platform’s expansion.
       - Recipient of Clanker Ecosystem Fund’s Builder Grant. Sponsored by Kismet Casa to host the auction at FarCon Rome.
   - company: Self-employed
-    role: Independent Developer
+    role: Creative Developer and Artist
     period: 2024 – Present
     bullets:
-      - Build and run the infrastructure behind my websites, creative tools, and agent workflows.
-      - Work daily with Hermes on development and operations, including Suchbot and the shared knowledge system behind it.
+      - Delivering art weekly to 200+ paid subscribers.
+      - Experimenting with onchain formats.
   - company: /cryptoart DAO
     role: Founder & Council Lead
     period: 2024 – 2025
@@ -75,12 +75,7 @@ projects:
   - name: Suchbot’s knowledge system — Logseq + logseqd
     url: https://github.com/mxjxn/logseqd
     period: 2026 — present
-    description: >-
-      Logseq caught my interest because it organizes documents into blocks. That
-      structure turned out to make a useful brain for Hermes. I wanted my agent and
-      my other tools to work from the same notes, so I decided to build logseqd to
-      make them quickly queryable. I worked with Hermes on the implementation and
-      built a mobile interface so I could use the system from my phone.
+    description: HTTP query API over my Logseq graph — one notes source for my agent and my tools.
     tech:
       - Clojure
       - DataScript
@@ -90,13 +85,7 @@ projects:
   - name: Suchbot
     url: https://farcaster.xyz/suchbot
     period: 2026 — present
-    description: >-
-      Suchbot is the public face of my Hermes experiments throughout 2026. It
-      publishes in-depth reports to its own blog every day and gives people access
-      to creative tools directly in the Farcaster timeline. People can chain dozens
-      of image commands together. I've refined its writing standards to avoid
-      clichés and connected it to Logseq, with public documents available to timeline
-      interactions and private work kept separate.
+    description: Hermes agent publishing daily on Farcaster — chained image tools, its own blog.
     tech:
       - Hermes
       - MCP
@@ -106,14 +95,7 @@ projects:
   - name: Cryptoart Auctionhouse
     url: https://cryptoart.social
     period: 2025 — present
-    description: >-
-      I built cryptoart.social because I wanted to use Manifold's marketplace
-      contracts through Farcaster. I cloned the contracts, deployed a new subgraph,
-      and built the site around them. Artists receive notifications when bids come
-      in, and bidders hear when they've been outbid, helping keep them involved in
-      the auction. I'm now expanding it into a broader marketplace, with work in
-      progress on NFT liquidity pools, a Farcaster client, and curated galleries
-      that can earn referral fees through auctionhouse links.
+    description: Marketplace on cloned Manifold contracts — custom subgraph, bid notifications.
     tech:
       - Solidity / Foundry
       - TypeScript

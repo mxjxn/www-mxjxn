@@ -31,8 +31,7 @@
   cursor: pointer;
 }
 .cv-intro {
-  border-block: 1px solid var(--line);
-  padding: 29px 0;
+  padding: 12px 0;
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 70px;
@@ -366,7 +365,8 @@
   }
   .cv-intro {
     display: block;
-    padding: 12pt 0;
+    border: 0;
+    padding: 6pt 0;
   }
   .cv-intro > p {
     font-size: 10pt;
@@ -375,16 +375,16 @@
   }
   .cv-grid {
     display: block;
-    padding-top: 14pt;
+    padding-top: 8pt;
   }
   .cv-sidebar {
     border: 0;
-    padding: 0 0 12pt;
+    padding: 0 0 8pt;
   }
   .cv-sidebar > section:first-child {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 9pt 20pt;
+    gap: 5pt 16pt;
   }
   .cv-sidebar h2 {
     grid-column: 1/-1;
@@ -393,27 +393,27 @@
     margin: 0;
   }
   .cv-skill h3 {
-    font-size: 9pt;
-    margin-bottom: 3pt;
+    font-size: 8pt;
+    margin-bottom: 2pt;
   }
   .cv-skill p {
     font-size: 8pt;
-    line-height: 1.5;
+    line-height: 1.35;
   }
   .cv-contact {
     display: none;
   }
   .cv-section {
-    padding-bottom: 12pt;
-    margin-bottom: 14pt;
+    padding-bottom: 8pt;
+    margin-bottom: 10pt;
   }
   .cv-section-title {
-    margin-bottom: 12pt;
+    margin-bottom: 8pt;
     break-after: avoid;
   }
   .cv-section-title h2 {
-    font-size: 16pt;
-    margin-top: 5pt;
+    font-size: 13.5pt;
+    margin-top: 3pt;
   }
   .eyebrow {
     font-size: 8pt !important;
@@ -436,8 +436,8 @@
     break-inside: avoid;
   }
   .cv-project + .cv-project {
-    padding-top: 10pt;
-    margin-top: 12pt;
+    padding-top: 5pt;
+    margin-top: 8pt;
   }
   .cv-project > p,
   .cv-job ul,
@@ -447,21 +447,21 @@
     line-height: 1.5;
   }
   .cv-project > p {
-    margin-top: 6pt;
+    margin-top: 3pt;
   }
   .cv-project > p.cv-tech {
     font-size: 8pt;
-    margin-top: 6pt;
+    margin-top: 2pt;
   }
   .cv-job + .cv-job {
-    margin-top: 14pt;
+    margin-top: 9pt;
   }
   .cv-role {
     font-size: 9pt;
-    margin: 4pt 0;
+    margin: 2pt 0;
   }
   .cv-job li {
-    margin: 3pt 0;
+    margin: 2pt 0;
   }
   .cv-people {
     display: block;
