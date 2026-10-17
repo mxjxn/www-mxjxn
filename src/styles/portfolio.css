@@ -1096,3 +1096,39 @@ footer a {
   font: 11px var(--mono);
   color: var(--muted);
 }
+.recent-articles {
+  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  padding-top: 34px;
+}
+.recent-articles-list {
+  border-top: 1px solid var(--line);
+}
+.recent-article {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 17px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 15px;
+  text-decoration: none;
+}
+.recent-article span:last-child {
+  color: var(--green);
+  font: 12px var(--mono);
+}
+.recent-article:hover span:first-child,
+.recent-article:focus-visible span:first-child {
+  color: var(--green);
+}
+@media (max-width: 700px) {
+  .recent-articles {
+    display: block;
+  }
+  .recent-articles-list {
+    margin-top: 25px;
+  }
+}

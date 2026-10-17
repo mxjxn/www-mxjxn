@@ -2,6 +2,7 @@
 import AgentGraph from "../components/AgentGraph.astro";
 import PortfolioLayout from "../layouts/PortfolioLayout.astro";
 import { reader } from "../lib/reader";
+import { getRecentPublicNotes, publicNoteUrl } from "../lib/publicNotes";
 import { getEntry } from "astro:content";
 const [hero, cryptoart, suchbot, tools, person, practice, contact, framing, writing] = await Promise.all([
   reader.singletons.hero.readOrThrow(),
@@ -17,6 +18,7 @@ const [hero, cryptoart, suchbot, tools, person, practice, contact, framing, writ
 const featuredPost = writing?.slug
   ? await getEntry("posts", writing.slug).catch(() => null)
   : null;
+const recentNotes = writing?.showRecent === false ? [] : await getRecentPublicNotes(4);
 ---
 
 <PortfolioLayout>
@@ -222,6 +224,22 @@ const featuredPost = writing?.slug
               <span>{new Date(featuredPost.data.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</span>
               <a class="text-link" href={`/blog/${featuredPost.data.slug}/`}>Read the article ↗</a>
             </div>
+          </div>
+        </section>
+      )}
+      {recentNotes.length > 0 && (
+        <section class="recent-articles section" aria-labelledby="recent-articles-title">
+          <div class="section-heading">
+            <p class="eyebrow section-marker">09 / RECENT ARTICLES</p>
+            <h2 id="recent-articles-title">From the notes</h2>
+          </div>
+          <div class="recent-articles-list">
+            {recentNotes.map((note) => (
+              <a class="recent-article" href={publicNoteUrl(note.title)}>
+                <span>{note.title}</span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            ))}
           </div>
         </section>
       )}

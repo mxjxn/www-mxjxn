@@ -73,6 +73,7 @@ export default config({
                 }, { label: 'Links shown in this section' }),
             } }),
         writing: singleton({ label: "09 \u00b7 Featured writing", path: 'src/content/site/writing', format: { data: 'json' }, schema: {
+                showRecent: fields.checkbox({ label: 'Show recent articles on the homepage', defaultValue: true }),
                 label: copy("Strip label (e.g. WRITING)"),
                 slug: copy("Post slug to feature (from the posts collection)"),
             } }),
