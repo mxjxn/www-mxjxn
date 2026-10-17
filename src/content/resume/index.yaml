@@ -39,7 +39,7 @@ skills:
       - Ethers.js
       - On-chain indexing
 experience:
-  - company: cryptoart.social
+  - company: Cryptoart.social
     role: Founder & Lead Developer
     period: 2024 – Present
     bullets:
@@ -53,7 +53,7 @@ experience:
     bullets:
       - Delivering art weekly to 200+ paid subscribers.
       - Experimenting with onchain formats.
-  - company: /cryptoart DAO
+  - company: Cryptoart DAO
     role: Founder & Council Lead
     period: 2024 – 2025
     bullets:
@@ -64,7 +64,6 @@ experience:
     period: 2021 – 2023
     bullets:
       - Refactored large React files into focused hooks.
-      - Recommended React Query, which the CTO adopted.
       - Moved into project coordination, helping developers, designers, and leadership communicate about the work.
   - company: The Boston Globe
     role: Web Developer
@@ -72,16 +71,6 @@ experience:
     bullets:
       - Built and maintained boston.com and bostonglobe.com, and helped move Boston.com to a new CMS.
 projects:
-  - name: Suchbot’s knowledge system — Logseq + logseqd
-    url: https://github.com/mxjxn/logseqd
-    period: 2026 — present
-    description: HTTP query API over my Logseq graph — one notes source for my agent and my tools.
-    tech:
-      - Clojure
-      - DataScript
-      - HTTP API
-      - Hermes
-      - PWA
   - name: Suchbot
     url: https://farcaster.xyz/suchbot
     period: 2026 — present
@@ -92,6 +81,16 @@ projects:
       - Third-party APIs
       - Webhooks
       - Farcaster
+  - name: Agentic knowledge system — Logseq + logseqd + notes app
+    url: https://notes.mxjxn.com
+    period: 2026 — present
+    description: Custom knowledge base tools for my agent and myself.
+    tech:
+      - Clojure
+      - DataScript
+      - HTTP API
+      - Hermes
+      - PWA
   - name: Cryptoart Auctionhouse
     url: https://cryptoart.social
     period: 2025 — present
