@@ -3,24 +3,23 @@ const DEFAULT_PUBLIC_NOTES_API = "https://notes.mxjxn.com/api/public";
 export type PublicNoteSummary = {
   title: string;
   mtime?: number;
+  article?: boolean;
 };
 
 type PublicNotesIndex = {
   pages?: PublicNoteSummary[];
 };
 
-const DATE_PAGE = /^\d{4}[-_]\d{2}[-_]\d{2}/;
-const MONTH_SERIES = /^.+ \d{4}-\d{2}$/;
-const SYSTEM_PAGE = /^(TODAY - |[A-Z][a-z]{2} \d{1,2}(st|nd|rd|th), \d{4})/;
+
 
 function publicNotesApi() {
   return import.meta.env.NOTES_PUBLIC_API || DEFAULT_PUBLIC_NOTES_API;
 }
 
+// Opt-in only: a page appears here when the graph tags it `article:: true`.
+// The reader (notes.mxjxn.com) ignores that flag — it is mxjxn.com-specific.
 function isArticle(page: PublicNoteSummary) {
-  return !DATE_PAGE.test(page.title) &&
-    !MONTH_SERIES.test(page.title) &&
-    !SYSTEM_PAGE.test(page.title);
+  return page.article === true;
 }
 
 /** Read the gated public index during SSR; browsers never query the graph. */
