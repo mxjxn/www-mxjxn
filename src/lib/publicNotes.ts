@@ -11,7 +11,7 @@ type PublicNotesIndex = {
 
 const DATE_PAGE = /^\d{4}[-_]\d{2}[-_]\d{2}/;
 const MONTH_SERIES = /^.+ \d{4}-\d{2}$/;
-const SYSTEM_PAGE = /^(Suchbot|TODAY - |Mon \d{1,2}(st|nd|rd|th), )/;
+const SYSTEM_PAGE = /^(TODAY - |[A-Z][a-z]{2} \d{1,2}(st|nd|rd|th), \d{4})/;
 
 function publicNotesApi() {
   return import.meta.env.NOTES_PUBLIC_API || DEFAULT_PUBLIC_NOTES_API;
