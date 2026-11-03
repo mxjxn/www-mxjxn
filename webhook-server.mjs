@@ -7,6 +7,10 @@ const PORT = parseInt(process.env.PORT || '3999', 10);
 const PROJECT_DIR = '/opt/www-mxjxn';
 const PREVIEW_DIR = '/opt/www-mxjxn-preview';
 
+// GitHub times webhooks out at ~10s — builds here take 20-50s.
+// So: verify signature, ACK 200 immediately, then build async.
+const busy = { net: false, www: false, preview: false };
+
 function verifySignature(payload, signature) {
   if (!SECRET || !signature) return true;
   const hmac = crypto.createHmac('sha256', SECRET);
@@ -17,6 +21,28 @@ function verifySignature(payload, signature) {
   } catch {
     return false;
   }
+}
+
+function runAsync(label, siteKey, fn, res) {
+  if (busy[siteKey]) {
+    console.log(`[${new Date().toISOString()}] ${label} skipped — previous deploy still running`);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ queued: false, skipped: true, site: siteKey }));
+    return;
+  }
+  busy[siteKey] = true;
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({ queued: true, site: siteKey }));
+  setImmediate(() => {
+    try {
+      fn();
+      console.log(`[${new Date().toISOString()}] ${label} complete`);
+    } catch (err) {
+      console.error(`[${new Date().toISOString()}] ${label} FAILED:`, err.message);
+    } finally {
+      busy[siteKey] = false;
+    }
+  });
 }
 
 const server = http.createServer((req, res) => {
@@ -56,42 +82,28 @@ const server = http.createServer((req, res) => {
     const eventType = req.headers['x-github-event'];
     const repo = event.repository?.full_name || '';
 
-    // Push to main (mxjxn.net) → pull, build, restart
+    // Push to main (mxjxn.net) → pull, build, restart (systemd, not pm2)
     if (eventType === 'push' && repo === 'mxjxn/mxjxn.net' && event.ref === 'refs/heads/main') {
       console.log(`[${new Date().toISOString()}] mxjxn.net push to main — deploying...`);
-      try {
+      runAsync('mxjxn.net deploy', 'net', () => {
         execSync('cd /var/www/mxjxn.net && git pull origin main', { timeout: 30000, stdio: 'pipe' });
         execSync('cd /var/www/mxjxn.net && npm install --no-audit --no-fund', { timeout: 120000, stdio: 'pipe' });
         execSync('cd /var/www/mxjxn.net && npm run build', { timeout: 120000, stdio: 'pipe' });
         execSync('systemctl restart mxjxn-net', { timeout: 15000, stdio: 'pipe' });
-        console.log(`[${new Date().toISOString()}] mxjxn.net deploy complete`);
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ deployed: true, site: 'mxjxn.net' }));
-      } catch (err) {
-        console.error(`[${new Date().toISOString()}] mxjxn.net deploy failed:`, err.message);
-        res.writeHead(500, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ deployed: false, site: 'mxjxn.net', error: err.message }));
-      }
+      }, res);
       return;
     }
 
     // Push to main (www site) → build and deploy production
     if (eventType === 'push' && repo === 'mxjxn/www-mxjxn' && event.ref === 'refs/heads/main') {
       console.log(`[${new Date().toISOString()}] Push to main — building and deploying...`);
-      try {
+      runAsync('Production deploy', 'www', () => {
         execSync(`cd ${PROJECT_DIR} && git pull origin main`, { timeout: 30000, stdio: 'pipe' });
         execSync(`cd ${PROJECT_DIR} && npx astro build`, { timeout: 120000, stdio: 'pipe' });
         execSync(`rm -rf /var/www/www.mxjxn.com/client /var/www/www.mxjxn.com/server`, { timeout: 15000, stdio: 'pipe' });
         execSync(`rsync -av --delete --exclude='node_modules' --exclude='specs' ${PROJECT_DIR}/dist/ /var/www/www.mxjxn.com/`, { timeout: 30000, stdio: 'pipe' });
         execSync('pm2 restart www-mxjxn --update-env', { timeout: 15000, stdio: 'pipe' });
-        console.log(`[${new Date().toISOString()}] Production deploy complete`);
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ deployed: true, mode: 'production' }));
-      } catch (err) {
-        console.error(`[${new Date().toISOString()}] Deploy failed:`, err.message);
-        res.writeHead(500, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ deployed: false, error: err.message }));
-      }
+      }, res);
       return;
     }
 
@@ -99,19 +111,12 @@ const server = http.createServer((req, res) => {
     if (eventType === 'push' && repo === 'mxjxn/www-mxjxn' && event.ref.startsWith('refs/heads/')) {
       const branch = event.ref.replace('refs/heads/', '');
       console.log(`[${new Date().toISOString()}] Push to branch "${branch}" — updating preview...`);
-      try {
+      runAsync(`Preview update for branch "${branch}"`, 'preview', () => {
         execSync(`cd ${PREVIEW_DIR} && git fetch origin ${branch}`, { timeout: 30000, stdio: 'pipe' });
         execSync(`cd ${PREVIEW_DIR} && git checkout ${branch}`, { timeout: 15000, stdio: 'pipe' });
         execSync(`cd ${PREVIEW_DIR} && git pull origin ${branch}`, { timeout: 30000, stdio: 'pipe' });
         execSync('pm2 restart www-mxjxn-preview --update-env', { timeout: 15000, stdio: 'pipe' });
-        console.log(`[${new Date().toISOString()}] Preview updated for branch "${branch}"`);
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ preview: true, branch }));
-      } catch (err) {
-        console.error(`[${new Date().toISOString()}] Preview update failed:`, err.message);
-        res.writeHead(500, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ preview: false, error: err.message }));
-      }
+      }, res);
       return;
     }
 
