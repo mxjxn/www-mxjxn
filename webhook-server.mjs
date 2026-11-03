@@ -54,9 +54,29 @@ const server = http.createServer((req, res) => {
     }
 
     const eventType = req.headers['x-github-event'];
+    const repo = event.repository?.full_name || '';
 
-    // Push to main → build and deploy production
-    if (eventType === 'push' && event.ref === 'refs/heads/main') {
+    // Push to main (mxjxn.net) → pull, build, restart
+    if (eventType === 'push' && repo === 'mxjxn/mxjxn.net' && event.ref === 'refs/heads/main') {
+      console.log(`[${new Date().toISOString()}] mxjxn.net push to main — deploying...`);
+      try {
+        execSync('cd /var/www/mxjxn.net && git pull origin main', { timeout: 30000, stdio: 'pipe' });
+        execSync('cd /var/www/mxjxn.net && npm install --no-audit --no-fund', { timeout: 120000, stdio: 'pipe' });
+        execSync('cd /var/www/mxjxn.net && npm run build', { timeout: 120000, stdio: 'pipe' });
+        execSync('systemctl restart mxjxn-net', { timeout: 15000, stdio: 'pipe' });
+        console.log(`[${new Date().toISOString()}] mxjxn.net deploy complete`);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ deployed: true, site: 'mxjxn.net' }));
+      } catch (err) {
+        console.error(`[${new Date().toISOString()}] mxjxn.net deploy failed:`, err.message);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ deployed: false, site: 'mxjxn.net', error: err.message }));
+      }
+      return;
+    }
+
+    // Push to main (www site) → build and deploy production
+    if (eventType === 'push' && repo === 'mxjxn/www-mxjxn' && event.ref === 'refs/heads/main') {
       console.log(`[${new Date().toISOString()}] Push to main — building and deploying...`);
       try {
         execSync(`cd ${PROJECT_DIR} && git pull origin main`, { timeout: 30000, stdio: 'pipe' });
@@ -75,8 +95,8 @@ const server = http.createServer((req, res) => {
       return;
     }
 
-    // Push to any other branch → update preview
-    if (eventType === 'push' && event.ref.startsWith('refs/heads/')) {
+    // Push to any other branch (www repo) → update preview
+    if (eventType === 'push' && repo === 'mxjxn/www-mxjxn' && event.ref.startsWith('refs/heads/')) {
       const branch = event.ref.replace('refs/heads/', '');
       console.log(`[${new Date().toISOString()}] Push to branch "${branch}" — updating preview...`);
       try {
